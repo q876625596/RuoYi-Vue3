@@ -95,8 +95,11 @@ function submitForm() {
   if (userId) {
     loading.value = true;
     getAuthRole(userId).then(response => {
-      form.value = response.user;
-      roles.value = response.roles;
+      if (!response.data) {
+        this.$message.error("角色信息获取异常")
+      }
+      form.value = response.data.user;
+      roles.value = response.data.roleList;
       total.value = roles.value.length;
       nextTick(() => {
         roles.value.forEach(row => {

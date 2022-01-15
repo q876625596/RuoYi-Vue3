@@ -51,12 +51,15 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
-          const user = res.user
+          if (!res.data) {
+            this.$message.error("用户信息获取异常")
+          }
+          const user = res.data.user
           const avatar = user.avatar == "" ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
 
-          if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', res.roles)
-            commit('SET_PERMISSIONS', res.permissions)
+          if (res.data.roleSet && res.data.roleSet.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', res.roleSet)
+            commit('SET_PERMISSIONS', res.permissionSet)
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }

@@ -588,8 +588,11 @@ function handleAdd() {
   reset();
   initTreeData();
   getUser().then(response => {
-    postOptions.value = response.posts;
-    roleOptions.value = response.roles;
+    if (!response.data) {
+      this.$message.error("用户信息获取异常")
+    }
+    postOptions.value = response.data.postList;
+    roleOptions.value = response.data.roleList;
     open.value = true;
     title.value = "添加用户";
     form.password.value = initPassword.value;
@@ -601,11 +604,14 @@ function handleUpdate(row) {
   initTreeData();
   const userId = row.userId || ids.value;
   getUser(userId).then(response => {
-    form.value = response.data;
-    postOptions.value = response.posts;
-    roleOptions.value = response.roles;
-    form.value.postIds = response.postIds;
-    form.value.roleIds = response.roleIds;
+    if (!response.data) {
+      this.$message.error("用户信息获取异常")
+    }
+    form.value = response.data.user;
+    postOptions.value = response.data.postList;
+    roleOptions.value = response.data.roleList;
+    form.value.postIds = response.data.postIdList;
+    form.value.roleIds = response.data.roleIdList;
     open.value = true;
     title.value = "修改用户";
     form.password = "";
