@@ -38,8 +38,9 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid).then(res => {
-          setToken(res.token)
-          commit('SET_TOKEN', res.token)
+          console.log(res);
+          setToken(res.data.access_token)
+          commit('SET_TOKEN', res.data.access_token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -58,8 +59,8 @@ const user = {
           const avatar = user.avatar == "" ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
 
           if (res.data.roleSet && res.data.roleSet.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', res.roleSet)
-            commit('SET_PERMISSIONS', res.permissionSet)
+            commit('SET_ROLES', res.data.roleSet)
+            commit('SET_PERMISSIONS', res.data.permissionSet)
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }
