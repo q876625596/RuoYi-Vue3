@@ -22,28 +22,28 @@
             size="large"
             auto-complete="off"
             placeholder="密码"
-            @keyup.enter="handleLogin"
+            @keyup.enter="useVerify"
         >
           <template #prefix>
             <svg-icon icon-class="password" class="el-input__icon input-icon"/>
           </template>
         </el-input>
       </el-form-item>
-            <el-form-item prop="code" v-if="captchaOnOff">
-              <el-input
-                v-model="loginForm.code"
-                size="large"
-                auto-complete="off"
-                placeholder="验证码"
-                style="width: 63%"
-                @keyup.enter="handleLogin"
-              >
-                <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
-              </el-input>
-              <div class="login-code">
-                <img :src="codeUrl" @click="getCode" class="login-code-img"/>
-              </div>
-            </el-form-item>
+      <!--            <el-form-item prop="code" v-if="captchaOnOff">-->
+      <!--              <el-input-->
+      <!--                v-model="loginForm.code"-->
+      <!--                size="large"-->
+      <!--                auto-complete="off"-->
+      <!--                placeholder="验证码"-->
+      <!--                style="width: 63%"-->
+      <!--                @keyup.enter="handleLogin"-->
+      <!--              >-->
+      <!--                <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>-->
+      <!--              </el-input>-->
+      <!--              <div class="login-code">-->
+      <!--                <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
+      <!--              </div>-->
+      <!--            </el-form-item>-->
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
@@ -51,7 +51,7 @@
             size="large"
             type="primary"
             style="width:100%;"
-            @click.prevent="handleLogin"
+            @click.prevent="useVerify"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
@@ -61,42 +61,42 @@
         </div>
       </el-form-item>
     </el-form>
-    <Verify
-        @success="success"
-        mode="pop"
-        captchaType="blockPuzzle"
-        :imgSize="{ width: '330px', height: '155px' }"
-        ref="verify"
-    ></Verify>
+
     <!--  底部  -->
     <div class="el-login-footer">
       <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
     </div>
   </div>
+  <VerifyWidget
+      @success="success"
+      mode="pop"
+      captchaType="blockPuzzle"
+      :imgSize="{ width: '330px', height: '155px' }"
+      ref="verify"
+  ></VerifyWidget>
 </template>
 
 <script setup>
 import {getCodeImg} from "@/api/login";
 import Cookies from "js-cookie";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
-import {Verify} from "../components/verifition/Verify";
+import Verify from "../components/verifition/Verify";
 
-export default {
-  components: {
-    Verify
-  },
-}
-
+const VerifyWidget = Verify
 const store = useStore();
 const router = useRouter();
 const {proxy} = getCurrentInstance();
+const verify = ref(null);
 
 const loginForm = ref({
   username: "admin",
   password: "admin123",
   rememberMe: false,
   code: "",
-  uuid: ""
+  uuid: "",
+  captchaVO:{
+    captchaVerification:""
+  }
 });
 
 const loginRules = {
@@ -113,6 +113,15 @@ const captchaOnOff = ref(true);
 const register = ref(false);
 const redirect = ref(undefined);
 
+function useVerify() {
+  verify.value.show()
+}
+
+function success(params) {
+  loginForm.value.captchaVO = params;
+  handleLogin()
+}
+
 function handleLogin() {
   proxy.$refs.loginRef.validate(valid => {
     if (valid) {
@@ -128,6 +137,7 @@ function handleLogin() {
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
+      console.log(loginForm.value);
       // 调用action的登录方法
       store.dispatch("Login", loginForm.value).then(() => {
         router.push({path: redirect.value || "/"});
