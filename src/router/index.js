@@ -27,6 +27,7 @@ export const constantRoutes = [
     path: '/redirect',
     component: Layout,
     hidden: true,
+    mode: 'hash',
     children: [
       {
         path: '/redirect/:path(.*)',
