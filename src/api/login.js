@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 登录方法
-export function login(username, password, code, uuid, captchaVO) {
+export function login(username, password, code, uuid, captchaVO, tenantId) {
   const data = {
     username,
     password,
@@ -12,7 +12,8 @@ export function login(username, password, code, uuid, captchaVO) {
   return request({
     url: '/auth/login',
     headers: {
-      isToken: false
+      isToken: false,
+      paramsTenantId: tenantId
     },
     method: 'post',
     data: data

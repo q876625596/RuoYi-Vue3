@@ -76,6 +76,7 @@ const loginForm = ref({
   username: "admin",
   password: "admin123",
   rememberMe: false,
+  tenantId: "",
   code: "",
   uuid: "",
   captchaVO:{
@@ -140,8 +141,8 @@ function getCookie() {
     rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
   };
 }
-
 getCookie();
+loginForm.value.tenantId = proxy.$route.query.tenantId;
 </script>
 
 <style lang='scss' scoped>
