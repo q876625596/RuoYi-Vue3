@@ -13,7 +13,7 @@ export function login(username, password, code, uuid, captchaVO, tenantId) {
     url: '/auth/login',
     headers: {
       isToken: false,
-      paramsTenantId: tenantId
+      tenant_id: tenantId
     },
     method: 'post',
     data: data

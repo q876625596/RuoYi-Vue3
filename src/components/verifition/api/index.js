@@ -10,7 +10,7 @@ export function reqGet(data, tenantId) {
 	return  request({
         url: '/auth/captcha/get',
         headers:{
-            paramsTenantId: tenantId ?? null
+            tenant_id: tenantId ?? null
         },
         method: 'post',
         data
@@ -22,7 +22,7 @@ export function reqCheck(data, tenantId) {
 	return  request({
         url: '/auth/captcha/check',
         headers:{
-            paramsTenantId: tenantId ?? null
+            tenant_id: tenantId ?? null
         },
         method: 'post',
         data
