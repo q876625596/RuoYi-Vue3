@@ -11,11 +11,12 @@
 </template>
 
 <script setup>
-let store = useStore()
+import {piniaStore} from "@/store/indexStore";
+
 const route = useRoute()
-store.dispatch('tagsView/addCachedView', route)
+piniaStore.tagsViewStore.addCachedView(route)
 const cachedViews = computed(() => {
-    return store.state.tagsView.cachedViews
+    return piniaStore.tagsViewStore.cachedViews
 })
 </script>
 

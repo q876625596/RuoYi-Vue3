@@ -1,17 +1,17 @@
-import store from '@/store'
-
 /**
  * 字符权限校验
  * @param {Array} value 校验值
  * @returns {Boolean}
  */
+import {piniaStore} from "@/store/indexStore";
+
 export function checkPermi(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const permissions = store.getters && store.getters.permissions
+
     const permissionDatas = value
     const all_permission = "*:*:*";
 
-    const hasPermission = permissions.some(permission => {
+    const hasPermission = piniaStore.userStore.permissions.some(permission => {
       return all_permission === permission || permissionDatas.includes(permission)
     })
 
@@ -32,11 +32,10 @@ export function checkPermi(value) {
  */
 export function checkRole(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = store.getters && store.getters.roles
     const permissionRoles = value
     const super_admin = "admin";
 
-    const hasRole = roles.some(role => {
+    const hasRole = piniaStore.userStore.roles.some(role => {
       return super_admin === role || permissionRoles.includes(role)
     })
 

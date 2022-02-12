@@ -1,10 +1,10 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
-
 const user = {
   state: {
     token: getToken(),
+    tenantId: '',
     name: '',
     avatar: '',
     roles: [],
@@ -14,6 +14,9 @@ const user = {
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
+    },
+    SET_TENANT_ID: (state, tenantId) => {
+      state.tenantId = tenantId
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -30,6 +33,9 @@ const user = {
   },
 
   actions: {
+    SaveTenantIdForUrl({ commit }, tenantId){
+      commit('SET_TENANT_ID', tenantId);
+    },
     // 登录
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
@@ -68,6 +74,7 @@ const user = {
           }
           commit('SET_NAME', user.userName)
           commit('SET_AVATAR', avatar)
+          commit('SET_TENANT_ID', user.tenantId)
           resolve(res)
         }).catch(error => {
           reject(error)

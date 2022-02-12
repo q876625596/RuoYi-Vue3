@@ -44,6 +44,7 @@
 <script setup>
 import ScrollPane from './ScrollPane'
 import { getNormalPath } from '@/utils/ruoyi'
+import {piniaStore} from "@/store/indexStore";
 
 const visible = ref(false);
 const top = ref(0);
@@ -53,13 +54,12 @@ const affixTags = ref([]);
 const scrollPaneRef = ref(null);
 
 const { proxy } = getCurrentInstance();
-const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
-const visitedViews = computed(() => store.state.tagsView.visitedViews);
-const routes = computed(() => store.state.permission.routes);
-const theme = computed(() => store.state.settings.theme);
+const visitedViews = computed(() => piniaStore.tagsViewStore.visitedViews);
+const routes = computed(() => piniaStore.permissionStore.routes);
+const theme = computed(() => piniaStore.settingsStore.theme);
 
 watch(route, () => {
   addTags()
@@ -131,14 +131,14 @@ function initTags() {
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
-      store.dispatch('tagsView/addVisitedView', tag)
+      piniaStore.tagsViewStore.addVisitedView(tag);
     }
   }
 }
 function addTags() {
   const { name } = route
   if (name) {
-    store.dispatch('tagsView/addView', route)
+    piniaStore.tagsViewStore.addView(route);
   }
   return false
 }
@@ -149,7 +149,7 @@ function moveToCurrentTag() {
         scrollPaneRef.value.moveToTarget(r);
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
-          store.dispatch('tagsView/updateVisitedView', route)
+          piniaStore.tagsViewStore.updateVisitedView(route)
         }
       }
     }

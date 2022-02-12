@@ -27,15 +27,15 @@
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/assets/styles/variables.module.scss'
+import {piniaStore} from "@/store/indexStore";
 
 const route = useRoute();
-const store = useStore();
 
-const sidebarRouters =  computed(() => store.getters.sidebarRouters);
-const showLogo = computed(() => store.state.settings.sidebarLogo);
-const sideTheme = computed(() => store.state.settings.sideTheme);
-const theme = computed(() => store.state.settings.theme);
-const isCollapse = computed(() => !store.state.app.sidebar.opened);
+const sidebarRouters =  computed(() => piniaStore.permissionStore.sidebarRouters);
+const showLogo = computed(() => piniaStore.settingsStore.sidebarLogo);
+const sideTheme = computed(() => piniaStore.settingsStore.sideTheme);
+const theme = computed(() => piniaStore.settingsStore.theme);
+const isCollapse = computed(() => !piniaStore.appStore.sidebar.opened);
 
 const activeMenu = computed(() => {
   const { meta, path } = route;

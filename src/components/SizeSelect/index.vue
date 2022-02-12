@@ -16,10 +16,9 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus'
+import {piniaStore} from "@/store/indexStore";
 
-const store = useStore();
-const size = computed(() => store.getters.size);
+const size = computed(() => piniaStore.appStore.size);
 const route = useRoute();
 const router = useRouter();
 const {proxy} = getCurrentInstance();
@@ -31,7 +30,7 @@ const sizeOptions = ref([
 
 function refreshView() {
   // In order to make the cached page re-rendered
-  store.dispatch('tagsView/delAllCachedViews', route)
+  piniaStore.tagsViewStore.delAllCachedViews()
 
   const { fullPath } = route
 
@@ -43,9 +42,9 @@ function refreshView() {
 }
 function handleSetSize(size) {
   proxy.$modal.loading("正在设置布局大小，请稍候...");
-  store.dispatch('app/setSize', size)
+  piniaStore.appStore.setSize(size)
   setTimeout("window.location.reload()", 1000)
-};
+}
 </script>
 
 <style lang='scss' scoped>

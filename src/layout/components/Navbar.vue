@@ -1,11 +1,11 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="getters.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!$store.state.settings.topNav" />
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="$store.state.settings.topNav" />
+    <hamburger id="hamburger-container" :is-active="piniaStore.appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!piniaStore.settingsStore.topNav" />
+    <top-nav id="topmenu-container" class="topmenu-container" v-if="piniaStore.settingsStore.topNav" />
 
     <div class="right-menu">
-      <template v-if="getters.device !== 'mobile'">
+      <template v-if="piniaStore.appStore.device !== 'mobile'">
         <header-search id="header-search" class="right-menu-item" />
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -25,7 +25,7 @@
       <div class="avatar-container">
         <el-dropdown @command="handleCommand" class="right-menu-item hover-effect" trigger="click">
           <div class="avatar-wrapper">
-            <img :src="getters.avatar" class="user-avatar" />
+            <img :src="piniaStore.userStore.avatar" class="user-avatar" />
             <el-icon><caret-bottom /></el-icon>
           </div>
           <template #dropdown>
@@ -57,12 +57,20 @@ import SizeSelect from '@/components/SizeSelect'
 import HeaderSearch from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
-
-const store = useStore();
-const getters = computed(() => store.getters);
+import {piniaStore} from "@/store/indexStore";
+const component = [
+  Breadcrumb,
+  TopNav,
+  Hamburger,
+  Screenfull,
+  SizeSelect,
+  HeaderSearch,
+  RuoYiGit,
+  RuoYiDoc,
+]
 
 function toggleSideBar() {
-  store.dispatch('app/toggleSideBar')
+  piniaStore.appStore.toggleSideBar()
 }
 
 function handleCommand(command) {
@@ -84,8 +92,8 @@ function logout() {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    store.dispatch('LogOut').then(() => {
-      location.href = '/index';
+    piniaStore.userStore.logOut().then(() => {
+      location.href = '/index&tenantId='+ piniaStore.userStore.tenantId;
     })
   }).catch(() => { });
 }

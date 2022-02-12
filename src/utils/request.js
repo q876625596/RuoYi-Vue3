@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import store from '@/store'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
+import {piniaStore} from "@/store/indexStore";
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -85,10 +85,10 @@ service.interceptors.response.use(res => {
         }
       ).then(() => {
         isReloginShow = false;
-        store.dispatch('LogOut').then(() => {
+        piniaStore.userStore.logOut().then(() => {
           // 如果是登录页面不需要重新加载
           if (window.location.hash.indexOf("#/login") != 0) {
-            location.href = '/index';
+            location.href = '/index&tenantId='+ piniaStore.userStore.tenantId;
           }
         })
       }).catch(() => {

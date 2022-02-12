@@ -30,6 +30,7 @@
 <script setup>
 import { constantRoutes } from "@/router"
 import { isHttp } from '@/utils/validate'
+import {piniaStore} from "@/store/indexStore";
 
 // 顶部栏初始数
 const visibleNumber = ref(null);
@@ -38,13 +39,12 @@ const isFrist = ref(null);
 // 当前激活菜单的 index
 const currentIndex = ref(null);
 
-const store = useStore();
 const route = useRoute();
 
 // 主题颜色
-const theme = computed(() => store.state.settings.theme);
+const theme = computed(() => piniaStore.settingsStore.theme);
 // 所有的路由信息
-const routers = computed(() => store.state.permission.topbarRouters);
+const routers = computed(() => piniaStore.settingsStore.topbarRouters);
 
 // 顶部显示菜单
 const topMenus = computed(() => {
@@ -142,7 +142,7 @@ function activeRoutes(key) {
     });
   }
   if(routes.length > 0) {
-    store.commit("SET_SIDEBAR_ROUTERS", routes);
+    piniaStore.permissionStore.sidebarRouters = routes
   }
   return routes;
 }

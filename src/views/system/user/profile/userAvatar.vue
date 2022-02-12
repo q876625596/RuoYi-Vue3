@@ -54,8 +54,8 @@
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
+import {piniaStore} from "@/store/indexStore";
 
-const store = useStore();
 const { proxy } = getCurrentInstance();
 
 const open = ref(false);
@@ -64,7 +64,7 @@ const title = ref("修改头像");
 
 //图片裁剪数据
 const options = reactive({
-  img: store.getters.avatar, // 裁剪图片的地址
+  img: piniaStore.userStore.avatar, // 裁剪图片的地址
   autoCrop: true, // 是否默认生成截图框
   autoCropWidth: 200, // 默认生成截图框宽度
   autoCropHeight: 200, // 默认生成截图框高度
@@ -116,21 +116,21 @@ function uploadImg() {
     uploadAvatar(formData).then(response => {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.data.imgUrl;
-      store.commit("SET_AVATAR", options.img);
+      piniaStore.userStore.avatar = options.img
       proxy.$modal.msgSuccess("修改成功");
       visible.value = false;
     });
   });
-};
+}
 /** 实时预览 */
 function realTime(data) {
   options.previews = data;
-};
+}
 /** 关闭窗口 */
 function closeDialog() {
-  options.img = store.getters.avatar;
+  options.img = piniaStore.userStore.avatar;
   options.visible = false;
-};
+}
 </script>
 
 <style lang='scss' scoped>

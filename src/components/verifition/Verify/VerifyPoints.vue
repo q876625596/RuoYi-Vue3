@@ -155,7 +155,7 @@
                                 "pointJson":secretKey.value? aesEncrypt(JSON.stringify(checkPosArr),secretKey.value):JSON.stringify(checkPosArr),
                                 "token":backToken.value
                             }
-                            reqCheck(data, proxy.$route.query.tenantId).then(res=>{
+                            reqCheck(data).then(res=>{
                                 if (res.repCode == "0000") {
                                     barAreaColor.value = '#4cae4c'
                                     barAreaBorderColor.value = '#5cb85c'
@@ -213,7 +213,7 @@
                     let data = {
                         captchaType:captchaType.value
                     }
-                    reqGet(data, proxy.$route.query.tenantId).then(res=>{
+                    reqGet(data).then(res=>{
                         if (res.repCode == "0000") {
                             pointBackImgBase.value = res.repData.originalImageBase64
                             backToken.value = res.repData.token

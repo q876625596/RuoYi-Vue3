@@ -16,6 +16,7 @@
 <script setup>
 import variables from '@/assets/styles/variables.module.scss'
 import logo from '@/assets/logo/logo.png'
+import {piniaStore} from "@/store/indexStore";
 
 defineProps({
   collapse: {
@@ -25,8 +26,7 @@ defineProps({
 })
 
 const title = ref('若依管理系统');
-const store = useStore();
-const sideTheme = computed(() => store.state.settings.sideTheme);
+const sideTheme = computed(() => piniaStore.settingsStore.sideTheme);
 </script>
 
 <style lang="scss" scoped>

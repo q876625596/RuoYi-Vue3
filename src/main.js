@@ -1,14 +1,11 @@
 import { createApp } from 'vue'
-
 import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn' // 中文语言
 
 import '@/assets/styles/index.scss' // global css
-
 import App from './App'
-import store from './store'
 import router from './router'
 import directive from './directive' // directive
 
@@ -42,7 +39,10 @@ import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
 
+import pinia from '../src/store.js';
+
 const app = createApp(App)
+app.use(pinia)
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
@@ -63,7 +63,6 @@ app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 
 app.use(router)
-app.use(store)
 app.use(plugins)
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
@@ -78,3 +77,4 @@ app.use(ElementPlus, {
 })
 
 app.mount('#app')
+console.log("ddd");

@@ -83,96 +83,76 @@ import variables from '@/assets/styles/variables.module.scss'
 import originElementPlus from 'element-plus/theme-chalk/index.css'
 import axios from 'axios'
 import { ElLoading, ElMessage } from 'element-plus'
+console.log("aacc");
 import { useDynamicTitle } from '@/utils/dynamicTitle'
+import {piniaStore} from "@/store/indexStore";
 
 const { proxy } = getCurrentInstance();
-const store = useStore();
 const showSettings = ref(false);
-const theme = ref(store.state.settings.theme);
-const sideTheme = ref(store.state.settings.sideTheme);
-const storeSettings = computed(() => store.state.settings);
+const theme = ref(piniaStore.settingsStore.theme);
+const sideTheme = ref(piniaStore.settingsStore.sideTheme);
+const storeSettings = computed(() => piniaStore.settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
 
 /** 是否需要topnav */
 const topNav = computed({
-  get: () => storeSettings.value.topNav,
+  get: () => piniaStore.settingsStore.topNav,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'topNav',
-      value: val
-    })
+    piniaStore.settingsStore.topNav = val
     if (!val) {
-      store.commit("SET_SIDEBAR_ROUTERS", store.state.permission.defaultRoutes);
+      piniaStore.permissionStore.sidebarRouters = piniaStore.permissionStore.defaultRoutes;
     }
   }
 })
 /** 是否需要tagview */
 const tagsView = computed({
-  get: () => storeSettings.value.tagsView,
+  get: () => piniaStore.settingsStore.tagsView,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'tagsView',
-      value: val
-    })
+    piniaStore.settingsStore.tagsView = val
   }
 })
 /**是否需要固定头部 */
 const fixedHeader = computed({
-  get: () => storeSettings.value.fixedHeader,
+  get: () => piniaStore.settingsStore.fixedHeader,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'fixedHeader',
-      value: val
-    })
+    piniaStore.settingsStore.fixedHeader = val
   }
 })
 /**是否需要侧边栏的logo */
 const sidebarLogo = computed({
-  get: () => storeSettings.value.sidebarLogo,
+  get: () => piniaStore.settingsStore.sidebarLogo,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'sidebarLogo',
-      value: val
-    })
+    piniaStore.settingsStore.sidebarLogo = val;
   }
 })
 /**是否需要侧边栏的动态网页的title */
 const dynamicTitle = computed({
-  get: () => storeSettings.value.dynamicTitle,
+  get: () => piniaStore.settingsStore.dynamicTitle,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'dynamicTitle',
-      value: val
-    })
+    piniaStore.settingsStore.dynamicTitle = val;
     // 动态设置网页标题
     useDynamicTitle()
   }
 })
 
 function themeChange(val) {
-  store.dispatch('settings/changeSetting', {
-    key: 'theme',
-    value: val
-  })
+  piniaStore.settingsStore.theme = val;
   theme.value = val;
 }
 function handleTheme(val) {
-  store.dispatch('settings/changeSetting', {
-    key: 'sideTheme',
-    value: val
-  })
+  piniaStore.settingsStore.sideTheme = val;
   sideTheme.value = val;
 }
 function saveSetting() {
   proxy.$modal.loading("正在保存到本地，请稍候...");
   let layoutSetting = {
-    "topNav": storeSettings.value.topNav,
-    "tagsView": storeSettings.value.tagsView,
-    "fixedHeader": storeSettings.value.fixedHeader,
-    "sidebarLogo": storeSettings.value.sidebarLogo,
-    "dynamicTitle": storeSettings.value.dynamicTitle,
-    "sideTheme": storeSettings.value.sideTheme,
-    "theme": storeSettings.value.theme
+    "topNav": piniaStore.settingsStore.topNav,
+    "tagsView": piniaStore.settingsStore.tagsView,
+    "fixedHeader": piniaStore.settingsStore.fixedHeader,
+    "sidebarLogo": piniaStore.settingsStore.sidebarLogo,
+    "dynamicTitle": piniaStore.settingsStore.dynamicTitle,
+    "sideTheme": piniaStore.settingsStore.sideTheme,
+    "theme": piniaStore.settingsStore.theme
   };
   localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
   setTimeout(proxy.$modal.closeLoading(), 1000)

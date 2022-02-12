@@ -17,15 +17,21 @@
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
-import defaultSettings from '@/settings'
+import {piniaStore} from "@/store/indexStore";
+const component = [
+  Sidebar,
+  AppMain,
+  Navbar,
+  Settings,
+  TagsView,
+]
 
-const store = useStore();
-const theme = computed(() => store.state.settings.theme);
-const sideTheme = computed(() => store.state.settings.sideTheme);
-const sidebar = computed(() => store.state.app.sidebar);
-const device = computed(() => store.state.app.device);
-const needTagsView = computed(() => store.state.settings.tagsView);
-const fixedHeader = computed(() => store.state.settings.fixedHeader);
+const theme = computed(() => piniaStore.settingsStore.theme);
+const sideTheme = computed(() => piniaStore.settingsStore.sideTheme);
+const sidebar = computed(() => piniaStore.appStore.sidebar);
+const device = computed(() => piniaStore.appStore.device);
+const needTagsView = computed(() => piniaStore.settingsStore.tagsView);
+const fixedHeader = computed(() => piniaStore.settingsStore.fixedHeader);
 
 const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
@@ -39,18 +45,18 @@ const WIDTH = 992; // refer to Bootstrap's responsive design
 
 watchEffect(() => {
   if (device.value === 'mobile' && sidebar.value.opened) {
-    store.dispatch('app/closeSideBar', { withoutAnimation: false })
+    piniaStore.appStore.closeSideBar(false);
   }
   if (width.value - 1 < WIDTH) {
-    store.dispatch('app/toggleDevice', 'mobile')
-    store.dispatch('app/closeSideBar', { withoutAnimation: true })
+    piniaStore.appStore.toggleDevice('mobile')
+    piniaStore.appStore.closeSideBar(true)
   } else {
-    store.dispatch('app/toggleDevice', 'desktop')
+    piniaStore.appStore.toggleDevice('desktop')
   }
 })
 
 function handleClickOutside() {
-  store.dispatch('app/closeSideBar', { withoutAnimation: false })
+  piniaStore.appStore.closeSideBar(false)
 }
 
 const settingRef = ref(null);

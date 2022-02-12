@@ -247,7 +247,7 @@
                             "pointJson":secretKey.value ? aesEncrypt(JSON.stringify({x:moveLeftDistance,y:5.0}),secretKey.value):JSON.stringify({x:moveLeftDistance,y:5.0}),
                             "token":backToken.value
                         }
-                        reqCheck(data, proxy.$route.query.tenantId).then(res=>{
+                        reqCheck(data).then(res=>{
                             if (res.repCode == "0000") {
                                 moveBlockBackgroundColor.value = '#5cb85c'
                                 leftBarBorderColor.value = '#5cb85c'
@@ -318,7 +318,7 @@
                     let data = {
                         captchaType:captchaType.value
                     }
-                    reqGet(data, proxy.$route.query.tenantId).then(res=>{
+                    reqGet(data).then(res=>{
                         if (res.repCode == "0000") {
                             backImgBase.value = res.repData.originalImageBase64
                             blockBackImgBase.value = res.repData.jigsawImageBase64

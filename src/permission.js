@@ -1,10 +1,10 @@
 import router from './router'
-import store from './store'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
+import {piniaStore} from "@/store/indexStore";
 
 NProgress.configure({ showSpinner: false });
 
@@ -13,17 +13,17 @@ const whiteList = ['/login', '/auth-redirect', '/bind', '/register'];
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
-    to.meta.title && store.dispatch('settings/setTitle', to.meta.title)
+    to.meta.title && piniaStore.settingsStore.setTitle(to.meta.title)
     /* has token*/
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
     } else {
-      console.log(store.getters.roles);
-      if (store.getters.roles.length === 0) {
+      console.log(piniaStore.userStore.roles);
+      if (piniaStore.userStore.roles.length === 0) {
         // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetInfo').then(() => {
-          store.dispatch('GenerateRoutes').then(accessRoutes => {
+        piniaStore.userStore.getInfo().then(() => {
+          piniaStore.permissionStore.generateRoutes().then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
             accessRoutes.forEach(route => {
               if (!isHttp(route.path)) {
@@ -33,9 +33,9 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
         }).catch(err => {
-          store.dispatch('LogOut').then(() => {
+          piniaStore.userStore.logOut().then(() => {
             ElMessage.error(err)
-            next({ path: '/' })
+            next({ path: '/index&tenantId='+ piniaStore.userStore.tenantId })
           })
         })
       } else {

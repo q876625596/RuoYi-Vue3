@@ -10,6 +10,8 @@
 </template>
 
 <script setup>
+import {piniaStore} from "@/store/indexStore";
+
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance();
 
@@ -32,8 +34,7 @@ const emitScroll = () => {
   emits('scroll')
 }
 
-const store = useStore();
-const visitedViews = computed(() => store.state.tagsView.visitedViews);
+const visitedViews = computed(() => piniaStore.tagsViewStore.visitedViews);
 
 function moveToTarget(currentTag) {
   const $container = proxy.$refs.scrollContainer.$el

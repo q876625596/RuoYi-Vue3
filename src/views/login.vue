@@ -65,9 +65,8 @@
 import Cookies from "js-cookie";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
 import Verify from "../components/verifition/Verify";
-
+import {piniaStore} from '@/store/indexStore'
 const VerifyWidget = Verify
-const store = useStore();
 const router = useRouter();
 const {proxy} = getCurrentInstance();
 const verify = ref(null);
@@ -120,9 +119,10 @@ function handleLogin() {
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
+      loginForm.value.tenantId = piniaStore.userStore.tenantId;
       console.log(loginForm.value);
       // 调用action的登录方法
-      store.dispatch("Login", loginForm.value).then(() => {
+      piniaStore.userStore.login(loginForm.value).then(() => {
         router.push({path: redirect.value || "/"});
       }).catch(() => {
         loading.value = false;
@@ -142,7 +142,10 @@ function getCookie() {
   };
 }
 getCookie();
-loginForm.value.tenantId = proxy.$route.query.tenantId;
+let urlTenantId = proxy.$route.query.tenantId;
+if (urlTenantId){
+  piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
+}
 </script>
 
 <style lang='scss' scoped>
