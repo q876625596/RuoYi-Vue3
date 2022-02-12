@@ -36,7 +36,7 @@
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button 
+            <el-button
                type="info"
                plain
                icon="Sort"
@@ -289,11 +289,26 @@
    </div>
 </template>
 
-<script setup name="Menu">
-import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
+<script>
 import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
-
+export default {
+  name:"Menu",
+  components: {
+    SvgIcon,
+    IconSelect
+  }
+}
+</script>
+<script setup>
+import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
+import {reactive, ref} from "@vue/reactivity";
+// import SvgIcon from "@/components/SvgIcon/index";
+// import IconSelect from "@/components/IconSelect/index";
+// const components = [
+//   SvgIcon,
+//       IconSelect
+// ]
 const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
@@ -323,13 +338,21 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
+function a() {
+
+}
 /** 查询菜单列表 */
-function getList() {
+async function getList() {
   loading.value = true;
-  listMenu(queryParams.value).then(response => {
-    menuList.value = proxy.handleTree(response.data, "menuId");
-    loading.value = false;
-  });
+  // listMenu(queryParams.value).then(response => {
+  //   menuList.value = proxy.handleTree(response.data, "menuId");
+  //   loading.value = false;
+  // });
+  await a();
+  let response = await listMenu(queryParams.value)
+  console.log(response);
+  menuList.value = proxy.handleTree(response.data, "menuId");
+  loading.value = false;
 }
 /** 查询菜单下拉树结构 */
 async function getTreeselect() {
@@ -404,38 +427,34 @@ function toggleExpandAll() {
 async function handleUpdate(row) {
   reset();
   await getTreeselect();
-  getMenu(row.menuId).then(response => {
-    form.value = response.data;
-    open.value = true;
-    title.value = "修改菜单";
-  });
+  let response = await getMenu(row.menuId)
+  form.value = response.data;
+  open.value = true;
+  title.value = "修改菜单";
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["menuRef"].validate(valid => {
+  proxy.$refs["menuRef"].validate(async valid => {
     if (valid) {
       if (form.value.menuId != undefined) {
-        updateMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
+        await updateMenu(form.value);
+        proxy.$modal.msgSuccess("修改成功");
+        open.value = false;
+        await getList();
       } else {
-        addMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
+        await addMenu(form.value);
+        proxy.$modal.msgSuccess("新增成功");
+        open.value = false;
+        await getList();
       }
     }
   });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?').then(function() {
-    return delMenu(row.menuId);
-  }).then(() => {
-    getList();
+  proxy.$modal.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?').then(async function() {
+    await delMenu(row.menuId);
+    await getList();
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 }

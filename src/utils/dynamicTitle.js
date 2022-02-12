@@ -1,7 +1,5 @@
 import defaultSettings from '@/settings'
-console.log("aaa");
 import {piniaStore} from "@/store/indexStore";
-console.log("bbb");
 
 /**
  * 动态修改标题

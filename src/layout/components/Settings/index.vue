@@ -83,7 +83,6 @@ import variables from '@/assets/styles/variables.module.scss'
 import originElementPlus from 'element-plus/theme-chalk/index.css'
 import axios from 'axios'
 import { ElLoading, ElMessage } from 'element-plus'
-console.log("aacc");
 import { useDynamicTitle } from '@/utils/dynamicTitle'
 import {piniaStore} from "@/store/indexStore";
 

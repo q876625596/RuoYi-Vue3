@@ -1,8 +1,6 @@
 import {defineStore} from "pinia";
 import defaultSettings from '@/settings'
-console.log("aa");
 import { useDynamicTitle } from '@/utils/dynamicTitle'
-console.log("bb");
 
 const { sideTheme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle } = defaultSettings
 
