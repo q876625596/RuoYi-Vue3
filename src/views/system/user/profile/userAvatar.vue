@@ -115,7 +115,7 @@ function uploadImg() {
     formData.append("avatarfile", data);
     uploadAvatar(formData).then(response => {
       open.value = false;
-      options.img = import.meta.env.VITE_APP_BASE_API + response.data.imgUrl;
+      options.img = response.data.imgUrl;
       piniaStore.userStore.avatar = options.img
       proxy.$modal.msgSuccess("修改成功");
       visible.value = false;
