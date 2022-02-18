@@ -1,6 +1,7 @@
 <template>
   <div :class="{ 'hidden': hidden }" class="pagination-container">
     <el-pagination
+        v-if="pageShow"
       :background="background"
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
@@ -16,6 +17,8 @@
 
 <script setup>
 import { scrollTo } from '@/utils/scroll-to'
+import {nextTick} from "@vue/runtime-core";
+import {ref} from "@vue/reactivity";
 
 const props = defineProps({
   total: {
@@ -59,6 +62,7 @@ const props = defineProps({
   }
 })
 
+const pageShow = ref(true)
 const emit = defineEmits();
 const currentPage = computed({
   get() {
@@ -77,6 +81,12 @@ const pageSize = computed({
   }
 })
 function handleSizeChange(val) {
+  if (currentPage * val > this.total) {
+    pageShow.value = false;
+    nextTick(() => {
+      pageShow.value = true
+    })
+  }
   emit('pagination', { page: currentPage.value, limit: val })
   if (props.autoScroll) {
     scrollTo(0, 800)
