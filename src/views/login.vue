@@ -119,7 +119,7 @@ function handleLogin() {
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
-      loginForm.value.tenantId = piniaStore.userStore.tenantId;
+      loginForm.value.tenantId = piniaStore.userStore.getTenantId;
       console.log(loginForm.value);
       // 调用action的登录方法
       piniaStore.userStore.login(loginForm.value).then(() => {
@@ -142,10 +142,8 @@ function getCookie() {
   };
 }
 getCookie();
-let urlTenantId = proxy.$route.query.tenantId;
-if (urlTenantId){
-  piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
-}
+let urlTenantId = proxy.$route.query.tenantId ?? 1;
+piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
 </script>
 
 <style lang='scss' scoped>

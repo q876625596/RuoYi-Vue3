@@ -27,7 +27,7 @@ service.interceptors.request.use(config => {
   // 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
   if (getToken() && !isToken) {
-    config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   // get请求映射params参数
   if (config.method === 'get' && config.params) {
@@ -88,7 +88,7 @@ service.interceptors.response.use(res => {
         piniaStore.userStore.logOut().then(() => {
           // 如果是登录页面不需要重新加载
           if (window.location.hash.indexOf("#/login") != 0) {
-            location.href = '/index&tenantId='+ piniaStore.userStore.tenantId;
+            location.href = '/index&tenantId='+ piniaStore.userStore.getTenantId;
           }
         })
       }).catch(() => {

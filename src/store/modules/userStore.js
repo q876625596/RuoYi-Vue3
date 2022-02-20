@@ -11,6 +11,9 @@ export const    useUserStore = defineStore('userStore',{
         roles: [],
         permissions: []
     }),
+    getters:{
+        getTenantId: (state) => state.tenantId ?? 1,
+    },
     actions:{
         saveTenantIdForUrl(tenantId){
             this.tenantId = tenantId;
