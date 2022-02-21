@@ -1,7 +1,6 @@
 <template>
   <div :class="{ 'hidden': hidden }" class="pagination-container">
     <el-pagination
-        v-if="pageShow"
       :background="background"
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
@@ -81,11 +80,8 @@ const pageSize = computed({
   }
 })
 function handleSizeChange(val) {
-  if (currentPage * val > this.total) {
-    pageShow.value = false;
-    nextTick(() => {
-      pageShow.value = true
-    })
+  if (currentPage.value * val > props.total) {
+    currentPage.value = 1
   }
   emit('pagination', { page: currentPage.value, limit: val })
   if (props.autoScroll) {

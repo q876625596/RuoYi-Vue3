@@ -5,6 +5,7 @@ import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
 import {piniaStore} from "@/store/indexStore";
+import { isRelogin } from '@/utils/request'
 
 NProgress.configure({ showSpinner: false });
 
@@ -21,8 +22,10 @@ router.beforeEach((to, from, next) => {
     } else {
       console.log(piniaStore.userStore.roles);
       if (piniaStore.userStore.roles.length === 0) {
+        isRelogin.show = true;
         // 判断当前用户是否已拉取完user_info信息
         piniaStore.userStore.getInfo().then(() => {
+          isRelogin.show = false;
           piniaStore.permissionStore.generateRoutes().then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
             accessRoutes.forEach(route => {
