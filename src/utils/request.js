@@ -11,7 +11,7 @@ let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
@@ -50,7 +50,9 @@ service.interceptors.request.use(config => {
       const s_data = sessionObj.data;              // 请求数据
       const s_time = sessionObj.time;              // 请求时间
       const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
-      if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
+      console.log(requestObj.url, requestObj.time);
+      console.log(requestObj.url, s_time);
+      if (requestObj.url != "/auth/captcha/get" && s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
         const message = '数据正在处理，请勿重复提交';
         console.warn(`[${s_url}]: ` + message)
         return Promise.reject(new Error(message))
@@ -88,7 +90,12 @@ service.interceptors.response.use(res => {
         piniaStore.userStore.logOut().then(() => {
           // 如果是登录页面不需要重新加载
           if (window.location.hash.indexOf("#/login") != 0) {
-            location.href = '/index&tenantId='+ piniaStore.userStore.getTenantId;
+            let tenantId = piniaStore.userStore.getTenantId;
+            if (tenantId){
+              location.href = '/index&tenantId=' + piniaStore.userStore.getTenantId;
+            } else {
+              location.href = '/index';
+            }
           }
         })
       }).catch(() => {

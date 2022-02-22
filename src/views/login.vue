@@ -76,20 +76,14 @@ const loginForm = ref({
   password: "admin123",
   rememberMe: false,
   tenantId: "",
-  code: "",
-  uuid: "",
-  captchaVO:{
-    captchaVerification:""
-  }
+  captchaVerification:""
 });
 
 const loginRules = {
   username: [{required: true, trigger: "blur", message: "请输入您的账号"}],
   password: [{required: true, trigger: "blur", message: "请输入您的密码"}],
-  code: [{required: true, trigger: "change", message: "请输入验证码"}]
 };
 
-const codeUrl = ref("");
 const loading = ref(false);
 // 注册开关
 const register = ref(false);
@@ -100,7 +94,7 @@ function useVerify() {
 }
 
 function success(params) {
-  loginForm.value.captchaVO = params;
+  loginForm.value.captchaVerification = params.captchaVerification;
   handleLogin()
 }
 
@@ -189,17 +183,6 @@ piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
   color: #bfbfbf;
 }
 
-.login-code {
-  width: 33%;
-  height: 40px;
-  float: right;
-
-  img {
-    cursor: pointer;
-    vertical-align: middle;
-  }
-}
-
 .el-login-footer {
   height: 40px;
   line-height: 40px;
@@ -211,10 +194,5 @@ piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;
-}
-
-.login-code-img {
-  height: 40px;
-  padding-left: 12px;
 }
 </style>

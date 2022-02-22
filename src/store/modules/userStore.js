@@ -22,15 +22,13 @@ export const    useUserStore = defineStore('userStore',{
         login(userInfo) {
             const username = userInfo.username.trim()
             const password = userInfo.password
-            const code = userInfo.code
-            const uuid = userInfo.uuid
-            const captchaVO = userInfo.captchaVO
+            const captchaVerification = userInfo.captchaVerification
             const tenantId = userInfo.tenantId;
             return new Promise((resolve, reject) => {
-                login(username, password, code, uuid, captchaVO, tenantId).then(res => {
+                login(username, password, captchaVerification, tenantId).then(res => {
                     console.log(res);
-                    setToken(res.data.access_token)
-                    this.token = res.data.access_token
+                    setToken(res.data.tokenValue)
+                    this.token = res.data.tokenValue
                     resolve()
                 }).catch(error => {
                     reject(error)

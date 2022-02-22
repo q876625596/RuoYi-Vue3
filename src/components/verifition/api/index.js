@@ -6,25 +6,25 @@ import {piniaStore} from "@/store/indexStore";
 
 //获取验证图片  以及token
 export function reqGet(data) {
-	return  request({
+    return request({
         url: '/auth/captcha/get',
-        headers:{
+        headers: {
             tenantid: piniaStore.userStore.getTenantId
         },
         method: 'post',
-        data
+        params: data
     })
 }
 
 //滑动或者点选验证
 export function reqCheck(data) {
-	return  request({
+    return request({
         url: '/auth/captcha/check',
-        headers:{
+        headers: {
             tenantid: piniaStore.userStore.getTenantId
         },
         method: 'post',
-        data
+        params: data
     })
 }
 
