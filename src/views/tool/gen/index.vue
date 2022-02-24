@@ -83,6 +83,12 @@
         </template>
       </el-table-column>
       <el-table-column
+        label="库名称"
+        align="center"
+        prop="databaseName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
         label="表名称"
         align="center"
         prop="tableName"
@@ -194,6 +200,7 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+    databaseName: undefined,
     tableName: undefined,
     tableComment: undefined
   },
