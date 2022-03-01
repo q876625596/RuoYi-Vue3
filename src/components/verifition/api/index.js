@@ -12,7 +12,7 @@ export function reqGet(data) {
             tenantid: piniaStore.userStore.getTenantId
         },
         method: 'post',
-        params: data
+        data
     })
 }
 
@@ -24,7 +24,7 @@ export function reqCheck(data) {
             tenantid: piniaStore.userStore.getTenantId
         },
         method: 'post',
-        params: data
+        data
     })
 }
 

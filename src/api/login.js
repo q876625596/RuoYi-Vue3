@@ -13,8 +13,8 @@ export function login(username, password, captchaVerification, tenantId) {
       isToken: false,
       tenantid: tenantId
     },
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
   })
 }
 
