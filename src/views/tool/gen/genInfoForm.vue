@@ -116,7 +116,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <template v-if="info.tplCategory == 'tree'">
       <h4 class="form-header">其他信息</h4>
       <el-row v-show="info.tplCategory == 'tree'">
@@ -258,10 +258,13 @@ function tplSelectChange(value) {
   }
 }
 function setSubTableColumns(value) {
-  for (var item in props.tables) {
-    const name = props.tables[item].tableName;
+  for (let key in props.tables) {
+    if (!props.tables.hasOwnProperty(key)){
+      continue;
+    }
+    const name = props.tables[key].tableName;
     if (value === name) {
-      subColumns.value = props.tables[item].columns;
+      subColumns.value = props.tables[key].columns;
       break;
     }
   }

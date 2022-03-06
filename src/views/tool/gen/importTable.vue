@@ -78,7 +78,6 @@ const emit = defineEmits(["ok"]);
 
 /** 查询参数列表 */
 function show() {
-  getList();
   visible.value = true;
 }
 /** 单击选择行 */
@@ -108,12 +107,12 @@ function resetQuery() {
 }
 /** 导入按钮操作 */
 function handleImportTable() {
-  const tableNames = tables.value.join(",");
+  const tableNames = tables.value;
   if (tableNames == "") {
     proxy.$modal.msgError("请选择要导入的表");
     return;
   }
-  importTable({ databaseName: queryParams.databaseName, tables: tableNames }).then(res => {
+  importTable({ databaseName: queryParams.databaseName, tableNameList: tableNames }).then(res => {
     proxy.$modal.msgSuccess(res.msg);
     if (res.code === 200) {
       visible.value = false;

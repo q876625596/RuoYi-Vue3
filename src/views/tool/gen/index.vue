@@ -146,7 +146,7 @@
             <el-button
               type="text"
               icon="Refresh"
-              @click="handleSynchDb(scope.row)"
+              @click="handleSyncDb(scope.row)"
               v-hasPermi="['tool:gen:edit']"
             ></el-button>
           </el-tooltip>
@@ -186,7 +186,7 @@
 </template>
 
 <script setup name="Gen">
-import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
+import { listTable, previewTable, delTable, genCode, syncDb } from "@/api/tool/gen";
 import router from "@/router";
 import importTable from "./importTable";
 
@@ -200,7 +200,7 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const tableNames = ref([]);
+const tableIds = ref([]);
 const dateRange = ref([]);
 const uniqueId = ref("");
 
@@ -249,24 +249,24 @@ function handleQuery() {
 }
 /** 生成代码操作 */
 function handleGenTable(row) {
-  const tbNames = row.tableName || tableNames.value;
-  if (tbNames == "") {
+  const tbIds = row.tableId || tableIds.value;
+  if (!tbIds) {
     proxy.$modal.msgError("请选择要生成的数据");
     return;
   }
   if (row.genType === "1") {
-    genCode(row.tableName).then(response => {
+    genCode(row.tableId).then(response => {
       proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
     });
   } else {
-    proxy.$download.zip("/code/gen/batchGenCode?tables=" + tbNames, "ruoyi");
+    proxy.$download.zip("/code/gen/batchGenCode?tableIds=" + tbIds, "ruoyi");
   }
 }
 /** 同步数据库操作 */
-function handleSynchDb(row) {
+function handleSyncDb(row) {
   const tableName = row.tableName;
   proxy.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
-    return synchDb(tableName);
+    return syncDb(row.databaseName, row.tableName);
   }).then(() => {
     proxy.$modal.msgSuccess("同步成功");
   }).catch(() => {});
@@ -292,7 +292,7 @@ function handlePreview(row) {
 // 多选框选中数据
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.tableId);
-  tableNames.value = selection.map(item => item.tableName);
+  tableIds.value = selection.map(item => item.tableId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
