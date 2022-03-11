@@ -205,8 +205,8 @@ const typeOptions = ref([]);
 const route = useRoute();
 // 数据标签回显样式
 const listClassOptions = ref([
-  { value: "default", label: "默认" }, 
-  { value: "primary", label: "主要" }, 
+  { value: "default", label: "默认" },
+  { value: "primary", label: "主要" },
   { value: "success", label: "成功" },
   { value: "info", label: "信息" },
   { value: "warning", label: "警告" },
@@ -243,14 +243,14 @@ function getTypes(dictId) {
 /** 查询字典类型列表 */
 function getTypeList() {
   listType().then(response => {
-    typeOptions.value = response.rows;
+    typeOptions.value = response.records;
   });
 }
 /** 查询字典数据列表 */
 function getList() {
   loading.value = true;
   listData(queryParams.value).then(response => {
-    dataList.value = response.rows;
+    dataList.value = response.records;
     total.value = response.total;
     loading.value = false;
   });

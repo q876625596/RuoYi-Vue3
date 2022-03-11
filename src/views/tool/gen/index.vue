@@ -237,7 +237,7 @@ onActivated(() => {
 function getList() {
   loading.value = true;
   listTable(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    tableList.value = response.rows;
+    tableList.value = response.records;
     total.value = response.total;
     loading.value = false;
   });

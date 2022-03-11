@@ -91,7 +91,7 @@ function handleSelectionChange(selection) {
 /** 查询表数据 */
 function getList() {
   listDbTable(queryParams).then(res => {
-    dbTableList.value = res.rows;
+    dbTableList.value = res.records;
     total.value = res.total;
   });
 }
