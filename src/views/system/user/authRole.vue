@@ -46,7 +46,8 @@
 </template>
 
 <script setup name="AuthRole">
-import { getAuthRole, updateAuthRole } from "@/api/system/user";
+import { getAuthRole, updateAuthRole, getUser } from "@/api/system/user";
+import { allRole } from "@/api/system/role";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -90,26 +91,28 @@ function submitForm() {
   });
 };
 
-(() => {
+(async () => {
   const userId = route.params && route.params.userId;
   if (userId) {
     loading.value = true;
-    getAuthRole(userId).then(response => {
-      if (!response.data) {
-        this.$message.error("角色信息获取异常")
+     let authRoleRes = await getAuthRole(userId);
+    roles.value = authRoleRes.data.roleList;
+    form.value = authRoleRes.data.user;
+    total.value = roles.value.length;
+    for (let roleItem of form.value.roles) {
+      let role = roles.value.find(item=>item.roleId == roleItem.roleId);
+      if (role){
+        role.flag = true;
       }
-      form.value = response.data.user;
-      roles.value = response.data.roleList;
-      total.value = roles.value.length;
-      nextTick(() => {
-        roles.value.forEach(row => {
-          if (row.flag) {
-            proxy.$refs["roleRef"].toggleRowSelection(row);
-          }
-        });
+    }
+    nextTick(() => {
+      roles.value.forEach(row => {
+        if (row.flag) {
+          proxy.$refs["roleRef"].toggleRowSelection(row);
+        }
       });
-      loading.value = false;
     });
+    loading.value = false;
   }
 })();
 </script>
