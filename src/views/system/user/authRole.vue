@@ -47,7 +47,6 @@
 
 <script setup name="AuthRole">
 import { getAuthRole, updateAuthRole, getUser } from "@/api/system/user";
-import { allRole } from "@/api/system/role";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

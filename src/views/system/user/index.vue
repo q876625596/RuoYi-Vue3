@@ -371,8 +371,6 @@
 import {getToken} from "@/utils/auth";
 import {treeselect} from "@/api/system/dept";
 import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/user";
-import {allRole} from "@/api/system/role";
-import {allPost} from "@/api/system/post";
 
 const router = useRouter();
 const {proxy} = getCurrentInstance();
@@ -636,34 +634,39 @@ function cancel() {
 };
 
 /** 新增按钮操作 */
-async function handleAdd() {
+function handleAdd() {
   reset();
   initTreeData();
-  let allRoleRes = await allRole();
-  roleOptions.value = allRoleRes.data
-  let allPostRes = await allPost();
-  postOptions.value = allPostRes.data;
-  open.value = true;
-  title.value = "添加用户";
-  form.password.value = initPassword.value;
+  getUser().then(response => {
+    if (!response.data) {
+      this.$message.error("用户信息获取异常")
+    }
+    postOptions.value = response.data.postList;
+    roleOptions.value = response.data.roleList;
+    open.value = true;
+    title.value = "添加用户";
+    form.password.value = initPassword.value;
+  });
 };
 
 /** 修改按钮操作 */
-async function handleUpdate(row) {
+function handleUpdate(row) {
   reset();
   initTreeData();
   const userId = row.userId || ids.value;
-  let allRoleRes = await allRole();
-  roleOptions.value = allRoleRes.data
-  let allPostRes = await allPost();
-  postOptions.value = allPostRes.data;
-  let userRes = await getUser(userId);
-  form.value = userRes.data.user;
-  form.value.postIds = userRes.data.postIdList;
-  form.value.roleIds = userRes.data.roleIdList;
-  open.value = true;
-  title.value = "修改用户";
-  form.password = "";
+  getUser(userId).then(response => {
+    if (!response.data) {
+      this.$message.error("用户信息获取异常")
+    }
+    form.value = response.data.user;
+    postOptions.value = response.data.postList;
+    roleOptions.value = response.data.roleList;
+    form.value.postIds = response.data.postIdList;
+    form.value.roleIds = response.data.roleIdList;
+    open.value = true;
+    title.value = "修改用户";
+    form.password = "";
+  });
 };
 
 /** 提交按钮 */

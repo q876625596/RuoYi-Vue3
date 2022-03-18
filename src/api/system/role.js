@@ -1,13 +1,5 @@
 import request from '@/utils/request'
 
-// 查询全部角色列表
-export function allRole() {
-  return request({
-    url: '/system/role/allRoleList',
-    method: 'post'
-  })
-}
-
 // 查询角色列表
 export function listRole(query) {
   return request({
