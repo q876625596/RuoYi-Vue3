@@ -43,12 +43,12 @@ export const    useUserStore = defineStore('userStore',{
                     if (!res.data) {
                         this.$message.error("用户信息获取异常")
                     }
-                    const user = res.data.user
+                    const user = res.data.sysUser
                     const avatar = user.avatar == "" ? defAva : user.avatar;
 
-                    if (res.data.roleSet && res.data.roleSet.length > 0) { // 验证返回的roles是否是一个非空数组
-                        this.roles = res.data.roleSet;
-                        this.permissions = res.data.permissionSet;
+                    if (res.data.roles && res.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+                        this.roles = res.data.roles;
+                        this.permissions = res.data.permissions;
                     } else {
                         this.roles = ['ROLE_DEFAULT'];
                     }

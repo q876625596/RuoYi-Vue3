@@ -33,7 +33,7 @@ export function register(data) {
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: '/system/user/getCurrentUserInfo',
+    url: '/system/user/getCurrentLoginUser',
     method: 'post'
   })
 }
