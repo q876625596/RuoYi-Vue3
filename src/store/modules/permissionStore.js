@@ -31,12 +31,7 @@ export const    usePermissionStore = defineStore('permissionStore',{
           setRouter(rewriteRoutes)
           this.sidebarRouters = constantRoutes.concat(sidebarRoutes)
           this.defaultRoutes = constantRoutes.concat(sidebarRoutes)
-          // 顶部导航菜单默认添加统计报表栏指向首页
-          const index = [{
-            path: 'index',
-            meta: { title: '统计报表', icon: 'dashboard' }
-          }]
-          this.topbarRouters = defaultRoutes.concat(index);
+          this.topbarRouters = defaultRoutes
           resolve(rewriteRoutes)
         })
       })

@@ -5,13 +5,17 @@ export const useAppStore = defineStore('appStore', {
     state: () => ({
         sidebar: {
             opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
-            withoutAnimation: false
+            withoutAnimation: false,
+            hide: false
         },
         device: 'desktop',
         size: Cookies.get('size') || 'default'
     }),
     actions: {
         toggleSideBar() {
+            if (this.sidebar.hide) {
+                return false;
+            }
             this.sidebar.opened = !this.sidebar.opened
             this.sidebar.withoutAnimation = false
             if (this.sidebar.opened) {
@@ -31,6 +35,9 @@ export const useAppStore = defineStore('appStore', {
         setSize(size) {
             this.size = size
             Cookies.set('size', size)
-        }
+        },
+        toggleSideBarHide(status) {
+            this.sidebar.hide = status;
+        },
     }
 })

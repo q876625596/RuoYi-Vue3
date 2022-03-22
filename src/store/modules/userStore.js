@@ -44,7 +44,8 @@ export const    useUserStore = defineStore('userStore',{
                         this.$message.error("用户信息获取异常")
                     }
                     const user = res.data.sysUser
-                    const avatar = user.avatar == "" ? defAva : user.avatar;
+                    //           const avatar = (user.avatar == "" || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
+                    const avatar = (user.avatar == "" || user.avatar == null) ? defAva : user.avatar;
 
                     if (res.data.roles && res.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
                         this.roles = res.data.roles;

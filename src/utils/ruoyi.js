@@ -85,39 +85,50 @@ export function addDateRange(params, dateRange, propName) {
 
 // 回显数据字典
 export function selectDictLabel(datas, value) {
-  var actions = [];
+  if (value === undefined) {
+    return "";
+  }
+  let actions = [];
   Object.keys(datas).some((key) => {
     if (datas[key].value == ('' + value)) {
       actions.push(datas[key].label);
       return true;
     }
   })
+  if (actions.length === 0) {
+    actions.push(value);
+  }
   return actions.join('');
 }
 
 // 回显数据字典（字符串数组）
 export function selectDictLabels(datas, value, separator) {
-  if(value === undefined) {
+  if (value === undefined) {
     return "";
   }
-  var actions = [];
-  var currentSeparator = undefined === separator ? "," : separator;
-  var temp = value.split(currentSeparator);
+  let actions = [];
+  let currentSeparator = undefined === separator ? "," : separator;
+  let temp = value.split(currentSeparator);
   Object.keys(value.split(currentSeparator)).some((val) => {
+    let match = false;
     Object.keys(datas).some((key) => {
       if (datas[key].value == ('' + temp[val])) {
         actions.push(datas[key].label + currentSeparator);
+        match = true;
       }
     })
+    if (!match) {
+      actions.push(temp[val] + currentSeparator);
+    }
   })
   return actions.join('').substring(0, actions.join('').length - 1);
 }
 
 // 字符串格式化(%s )
 export function sprintf(str) {
-  var args = arguments, flag = true, i = 1;
+  let args = arguments, flag = true, i = 1;
   str = str.replace(/%s/g, function () {
-    var arg = args[i++];
+    let arg = args[i++];
     if (typeof arg === 'undefined') {
       flag = false;
       return '';
@@ -137,7 +148,7 @@ export function parseStrEmpty(str) {
 
 // 数据合并
 export function mergeRecursive(source, target) {
-  for (var p in target) {
+  for (let p in target) {
     try {
       if (target[p].constructor == Object) {
         source[p] = mergeRecursive(source[p], target[p]);
@@ -165,9 +176,9 @@ export function handleTree(data, id, parentId, children) {
     childrenList: children || 'children'
   };
 
-  var childrenListMap = {};
-  var nodeIds = {};
-  var tree = [];
+  let childrenListMap = {};
+  let nodeIds = {};
+  let tree = [];
 
   for (let d of data) {
     let parentId = d[config.parentId];
@@ -210,13 +221,13 @@ export function tansParams(params) {
   let result = ''
   for (const propName of Object.keys(params)) {
     const value = params[propName];
-    var part = encodeURIComponent(propName) + "=";
+    let part = encodeURIComponent(propName) + "=";
     if (value !== null && typeof (value) !== "undefined") {
       if (typeof value === 'object') {
         for (const key of Object.keys(value)) {
           if (value[key] !== null && typeof (value[key]) !== 'undefined') {
             let params = propName + '[' + key + ']';
-            var subPart = encodeURIComponent(params) + "=";
+            let subPart = encodeURIComponent(params) + "=";
             result += subPart + encodeURIComponent(value[key]) + "&";
           }
         }

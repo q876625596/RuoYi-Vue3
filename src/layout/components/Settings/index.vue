@@ -99,6 +99,7 @@ const topNav = computed({
   set: (val) => {
     piniaStore.settingsStore.topNav = val
     if (!val) {
+      piniaStore.appStore.toggleSideBarHide(false);
       piniaStore.permissionStore.sidebarRouters = piniaStore.permissionStore.defaultRoutes;
     }
   }
