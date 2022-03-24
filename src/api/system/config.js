@@ -10,10 +10,10 @@ export function listConfig(query) {
 }
 
 // 查询参数详细
-export function getConfig(configId) {;
-  return request({
+export function getConfig(configId) {
+    return request({
         url: '/system/config/getDetails',
-        method: 'post',
+        method: 'get',
         params: {
             configId: configId
         }
@@ -23,15 +23,18 @@ export function getConfig(configId) {;
 // 根据参数键名查询参数值
 export function getConfigKey(configKey) {
     return request({
-        url: '/system/config/configKey/' + configKey,
-        method: 'get'
+        url: '/system/config/getConfigValueByConfigKey',
+        method: 'get',
+        params: {
+            configKey: configKey
+        }
     })
 }
 
 // 新增参数配置
 export function addConfig(data) {
     return request({
-        url: '/system/config',
+        url: '/system/config/add',
         method: 'post',
         data: data
     })
@@ -40,17 +43,20 @@ export function addConfig(data) {
 // 修改参数配置
 export function updateConfig(data) {
     return request({
-        url: '/system/config',
-        method: 'put',
+        url: '/system/config/edit',
+        method: 'post',
         data: data
     })
 }
 
 // 删除参数配置
-export function delConfig(configId) {
+export function delConfig(ids) {
     return request({
-        url: '/system/config/' + configId,
-        method: 'delete'
+        url: '/system/config/deleteP',
+        method: 'post',
+        params: {
+            ids: ids
+        }
     })
 }
 
@@ -58,6 +64,6 @@ export function delConfig(configId) {
 export function refreshCache() {
     return request({
         url: '/system/config/refreshCache',
-        method: 'delete'
+        method: 'post'
     })
 }

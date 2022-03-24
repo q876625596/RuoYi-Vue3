@@ -29,14 +29,15 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="创建时间" style="width: 308px;">
+         <el-form-item label="创建时间" style="width: 450px;">
             <el-date-picker
                v-model="dateRange"
-               value-format="YYYY-MM-DD"
-               type="daterange"
+               value-format="YYYY-MM-DD HH:mm:ss"
+               type="datetimerange"
                range-separator="-"
                start-placeholder="开始日期"
                end-placeholder="结束日期"
+               :default-time="[new Date(0,0,0,0,0,0),new Date(0,0,0,23,59,59)]"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
@@ -292,9 +293,9 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除参数编号为"' + ids + '"的数据项？').then(function () {
-    return delConfig(ids);
+  const delIds = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除参数编号为"' + delIds + '"的数据项？').then(function () {
+    return delConfig(delIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

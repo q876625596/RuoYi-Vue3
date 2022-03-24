@@ -66,7 +66,7 @@
                 v-model="dateRange"
                 type="datetimerange"
                 value-format="YYYY-MM-DD HH:mm:ss"
-                range-separator="至"
+                range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 :default-time="[new Date(0,0,0,0,0,0),new Date(0,0,0,23,59,59)]"
