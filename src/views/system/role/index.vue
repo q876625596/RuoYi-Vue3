@@ -267,7 +267,7 @@
 
 <script setup name="Role">
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/role";
-import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
+import { roleMenuTreeSelect, treeSelect as menuTreeSelect } from "@/api/system/menu";
 import { treeSelect as deptTreeSelect, roleDeptTreeSelect } from "@/api/system/dept";
 
 const router = useRouter();
@@ -392,8 +392,8 @@ function handleAuthUser(row) {
   router.push("/system/role-auth/user/" + row.roleId);
 }
 /** 查询菜单树结构 */
-function getMenuTreeselect() {
-  menuTreeselect().then(response => {
+function getMenuTreeSelect() {
+  menuTreeSelect().then(response => {
     menuOptions.value = response.data;
   });
 }
@@ -432,7 +432,7 @@ function reset() {
 /** 添加角色 */
 function handleAdd() {
   reset();
-  getMenuTreeselect();
+  getMenuTreeSelect();
   open.value = true;
   title.value = "添加角色";
 }
@@ -460,7 +460,7 @@ function handleUpdate(row) {
 }
 /** 根据角色ID查询菜单树结构 */
 function getRoleMenuTreeSelect(roleId) {
-  return roleMenuTreeselect(roleId).then(response => {
+  return roleMenuTreeSelect(roleId).then(response => {
     if (!response.data) {
       this.$message.error("角色查询菜单获取异常")
     }
