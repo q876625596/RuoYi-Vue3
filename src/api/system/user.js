@@ -5,8 +5,8 @@ import {parseStrEmpty} from "@/utils/ruoyi";
 export function listUser(query) {
     return request({
         url: '/system/user/list',
-        method: 'post',
-        data: query
+        method: 'get',
+        params: query
     })
 }
 
@@ -22,7 +22,7 @@ export function getUser(userId) {
 // 新增用户
 export function addUser(data) {
     return request({
-        url: '/system/user',
+        url: '/system/user/add',
         method: 'post',
         data: data
     })
@@ -31,8 +31,8 @@ export function addUser(data) {
 // 修改用户
 export function updateUser(data) {
     return request({
-        url: '/system/user',
-        method: 'put',
+        url: '/system/user/edit',
+        method: 'post',
         data: data
     })
 }
@@ -40,7 +40,7 @@ export function updateUser(data) {
 // 删除用户
 export function delUser(userIds) {
     return request({
-        url: '/system/user',
+        url: '/system/user/deleteByIdsL',
         method: 'post',
         data: userIds
     })
@@ -54,7 +54,7 @@ export function resetUserPwd(userId, password) {
     }
     return request({
         url: '/system/user/resetPwd',
-        method: 'put',
+        method: 'post',
         data: data
     })
 }
@@ -62,13 +62,13 @@ export function resetUserPwd(userId, password) {
 // 用户状态修改
 export function changeUserStatus(userId, status) {
     const data = {
-        userId:userId,
-        status:status
+        userId: userId,
+        status: status
     }
     return request({
         url: '/system/user/changeStatus',
         method: 'post',
-        data: data
+        params: data
     })
 }
 
@@ -97,7 +97,7 @@ export function updateUserPwd(oldPassword, newPassword) {
     }
     return request({
         url: '/system/user/profile/updatePwd',
-        method: 'put',
+        method: 'post',
         params: data
     })
 }
@@ -115,9 +115,9 @@ export function uploadAvatar(data) {
 export function getAuthRole(userId) {
     return request({
         url: '/system/user/getAuthRole',
-        method: 'post',
+        method: 'get',
         params: {
-            userId
+            userId: userId
         }
     })
 }
@@ -125,8 +125,8 @@ export function getAuthRole(userId) {
 // 保存授权角色
 export function updateAuthRole(data) {
     return request({
-        url: '/system/user/authRole',
-        method: 'put',
+        url: '/system/user/setAuthRole',
+        method: 'post',
         params: data
     })
 }

@@ -369,7 +369,7 @@
 
 <script setup name="User">
 import {getToken} from "@/utils/auth";
-import {treeselect} from "@/api/system/dept";
+import {treeSelect} from "@/api/system/dept";
 import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/user";
 
 const router = useRouter();
@@ -462,7 +462,7 @@ watch(deptName, val => {
 
 /** 查询部门下拉树结构 */
 function getTreeselect() {
-  treeselect().then(response => {
+  treeSelect().then(response => {
     deptOptions.value = response.data;
   });
 };
@@ -602,7 +602,7 @@ function submitFileForm() {
 function initTreeData() {
   // 判断部门的数据是否存在，存在不获取，不存在则获取
   if (deptOptions.value === undefined) {
-    treeselect().then(response => {
+    treeSelect().then(response => {
       deptOptions.value = response.data;
     });
   }

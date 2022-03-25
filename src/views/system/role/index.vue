@@ -268,7 +268,7 @@
 <script setup name="Role">
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/role";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
-import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
+import { treeSelect as deptTreeSelect, roleDeptTreeSelect } from "@/api/system/dept";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -440,7 +440,7 @@ function handleAdd() {
 function handleUpdate(row) {
   reset();
   const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselect(roleId);
+  const roleMenu = getRoleMenuTreeSelect(roleId);
   getRole(roleId).then(response => {
     form.value = response.data;
     form.value.roleSort = Number(form.value.roleSort);
@@ -459,7 +459,7 @@ function handleUpdate(row) {
   });
 }
 /** 根据角色ID查询菜单树结构 */
-function getRoleMenuTreeselect(roleId) {
+function getRoleMenuTreeSelect(roleId) {
   return roleMenuTreeselect(roleId).then(response => {
     if (!response.data) {
       this.$message.error("角色查询菜单获取异常")
@@ -469,8 +469,8 @@ function getRoleMenuTreeselect(roleId) {
   });
 }
 /** 根据角色ID查询部门树结构 */
-function getRoleDeptTreeselect(roleId) {
-  return roleDeptTreeselect(roleId).then(response => {
+function getRoleDeptTreeSelect(roleId) {
+  return roleDeptTreeSelect(roleId).then(response => {
     if (!response.data) {
       this.$message.error("角色查询部门获取异常")
     }
@@ -553,12 +553,12 @@ function dataScopeSelectChange(value) {
 /** 分配数据权限操作 */
 function handleDataScope(row) {
   reset();
-  const roleDeptTreeselect = getRoleDeptTreeselect(row.roleId);
+  const roleDeptTreeSelect = getRoleDeptTreeSelect(row.roleId);
   getRole(row.roleId).then(response => {
     form.value = response.data;
     openDataScope.value = true;
     nextTick(() => {
-      roleDeptTreeselect.then(res => {
+      roleDeptTreeSelect.then(res => {
         nextTick(() => {
           if (deptRef.value) {
             deptRef.value.setCheckedKeys(res.data.checkedKeys);

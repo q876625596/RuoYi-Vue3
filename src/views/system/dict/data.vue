@@ -87,7 +87,7 @@
 
       <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="字典编码" align="center" prop="dictCode" />
+         <el-table-column label="字典编码" align="center" prop="id" />
          <el-table-column label="字典标签" align="center" prop="dictLabel">
             <template #default="scope">
                <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabel }}</span>
@@ -243,15 +243,15 @@ function getTypes(dictId) {
 /** 查询字典类型列表 */
 function getTypeList() {
   listType().then(response => {
-    typeOptions.value = response.records;
+    typeOptions.value = response.data.list;
   });
 }
 /** 查询字典数据列表 */
 function getList() {
   loading.value = true;
   listData(queryParams.value).then(response => {
-    dataList.value = response.records;
-    total.value = response.total;
+    dataList.value = response.data.list;
+    total.value = response.data.total;
     loading.value = false;
   });
 }
@@ -263,7 +263,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictCode: undefined,
+    id: undefined,
     dictLabel: undefined,
     dictValue: undefined,
     cssClass: undefined,
@@ -299,15 +299,15 @@ function handleAdd() {
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictCode);
+  ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const dictCode = row.dictCode || ids.value;
-  getData(dictCode).then(response => {
+  const id = row.id || ids.value;
+  getData(id).then(response => {
     form.value = response.data;
     open.value = true;
     title.value = "修改字典数据";
@@ -317,7 +317,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate(valid => {
     if (valid) {
-      if (form.value.dictCode != undefined) {
+      if (form.value.id != undefined) {
         updateData(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
@@ -335,9 +335,9 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictCodes = row.dictCode || ids.value;
-  proxy.$modal.confirm('是否确认删除字典编码为"' + dictCodes + '"的数据项？').then(function() {
-    return delData(dictCodes);
+  const dictDataIds = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除字典编码为"' + dictDataIds + '"的数据项？').then(function() {
+    return delData(dictDataIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

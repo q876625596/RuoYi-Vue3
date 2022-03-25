@@ -37,11 +37,12 @@
          <el-form-item label="登录时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               value-format="YYYY-MM-DD"
-               type="daterange"
+               value-format="YYYY-MM-DD HH:mm:ss"
+               type="datetimerange"
                range-separator="-"
                start-placeholder="开始日期"
                end-placeholder="结束日期"
+               :default-time="[new Date(0,0,0,0,0,0),new Date(0,0,0,23,59,59)]"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
@@ -58,7 +59,7 @@
                icon="Delete"
                :disabled="multiple"
                @click="handleDelete"
-               v-hasPermi="['system:logininfor:remove']"
+               v-hasPermi="['system:loginInfo:remove']"
             >删除</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -67,7 +68,7 @@
                plain
                icon="Delete"
                @click="handleClean"
-               v-hasPermi="['system:logininfor:remove']"
+               v-hasPermi="['system:loginInfo:remove']"
             >清空</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -76,15 +77,15 @@
                plain
                icon="Download"
                @click="handleExport"
-               v-hasPermi="['system:logininfor:export']"
+               v-hasPermi="['system:loginInfo:export']"
             >导出</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table ref="logininforRef" v-loading="loading" :data="logininforList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
+      <el-table ref="loginInfoRef" v-loading="loading" :data="loginInfoList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="访问编号" align="center" prop="infoId" />
+         <el-table-column label="访问编号" align="center" prop="id" />
          <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
          <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
          <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
@@ -113,13 +114,13 @@
    </div>
 </template>
 
-<script setup name="Logininfor">
-import { list, delLogininfor, cleanLogininfor } from "@/api/system/logininfor";
+<script setup name="LoginInfo">
+import { list, delLoginInfo, cleanLoginInfo } from "@/api/system/loginInfo";
 
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
 
-const logininforList = ref([]);
+const loginInfoList = ref([]);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -143,8 +144,8 @@ const queryParams = ref({
 function getList() {
   loading.value = true;
   list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    logininforList.value = response.records;
-    total.value = response.total;
+    loginInfoList.value = response.data.list;
+    total.value = response.data.total;
     loading.value = false;
   });
 }
@@ -157,12 +158,12 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
-  proxy.$refs["logininforRef"].sort(defaultSort.value.prop, defaultSort.value.order);
+  proxy.$refs["loginInfoRef"].sort(defaultSort.value.prop, defaultSort.value.order);
   handleQuery();
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.infoId);
+  ids.value = selection.map(item => item.id);
   multiple.value = !selection.length;
 }
 /** 排序触发事件 */
@@ -173,9 +174,9 @@ function handleSortChange(column, prop, order) {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const infoIds = row.infoId || ids.value;
+  const infoIds = row.id || ids.value;
   proxy.$modal.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?').then(function () {
-    return delLogininfor(infoIds);
+    return delLoginInfo(infoIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -184,7 +185,7 @@ function handleDelete(row) {
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有登录日志数据项?").then(function () {
-    return cleanLogininfor();
+    return cleanLoginInfo();
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("清空成功");
@@ -192,7 +193,7 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/logininfor/export", {
+  proxy.download("system/loginInfo/export", {
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }

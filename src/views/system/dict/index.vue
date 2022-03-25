@@ -37,11 +37,12 @@
          <el-form-item label="创建时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               value-format="YYYY-MM-DD"
-               type="daterange"
+               value-format="YYYY-MM-DD HH:mm:ss"
+               type="datetimerange"
                range-separator="-"
                start-placeholder="开始日期"
                end-placeholder="结束日期"
+               :default-time="[new Date(0,0,0,0,0,0),new Date(0,0,0,23,59,59)]"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
@@ -103,11 +104,11 @@
 
       <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="字典编号" align="center" prop="dictId" />
+         <el-table-column label="字典编号" align="center" prop="id" />
          <el-table-column label="字典名称" align="center" prop="dictName" :show-overflow-tooltip="true"/>
          <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
             <template #default="scope">
-               <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
+               <router-link :to="'/system/dict-data/index/' + scope.row.id" class="link-type">
                   <span>{{ scope.row.dictType }}</span>
                </router-link>
             </template>
@@ -219,8 +220,8 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    typeList.value = response.records;
-    total.value = response.total;
+    typeList.value = response.data.list;
+    total.value = response.data.total;
     loading.value = false;
   });
 }
@@ -232,7 +233,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictId: undefined,
+    id: undefined,
     dictName: undefined,
     dictType: undefined,
     status: "0",
@@ -259,15 +260,15 @@ function handleAdd() {
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictId);
+  ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const dictId = row.dictId || ids.value;
-  getType(dictId).then(response => {
+  const id = row.id || ids.value;
+  getType(id).then(response => {
     form.value = response.data;
     open.value = true;
     title.value = "修改字典类型";
@@ -277,7 +278,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dictRef"].validate(valid => {
     if (valid) {
-      if (form.value.dictId != undefined) {
+      if (form.value.id != undefined) {
         updateType(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
@@ -295,7 +296,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictIds = row.dictId || ids.value;
+  const dictIds = row.id || ids.value;
   proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
     return delType(dictIds);
   }).then(() => {
