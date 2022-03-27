@@ -75,7 +75,7 @@ export function changeUserStatus(userId, status) {
 // 查询用户个人信息
 export function getUserProfile() {
     return request({
-        url: '/system/user/profile',
+        url: '/system/user/profile/getProfile',
         method: 'get'
     })
 }
@@ -83,7 +83,7 @@ export function getUserProfile() {
 // 修改用户个人信息
 export function updateUserProfile(data) {
     return request({
-        url: '/system/user/profile',
+        url: '/system/user/profile/editProfile',
         method: 'put',
         data: data
     })

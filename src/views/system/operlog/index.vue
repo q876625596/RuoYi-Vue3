@@ -186,7 +186,7 @@
 </template>
 
 <script setup name="Operlog">
-import { list, delOperlog, cleanOperlog } from "@/api/system/operlog";
+import { list, delOperLog, clean } from "@/api/system/operlog";
 
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
@@ -262,7 +262,7 @@ function handleView(row) {
 function handleDelete(row) {
   const operIds = row.operId || ids.value;
   proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
-    return delOperlog(operIds);
+    return delOperLog(operIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -271,7 +271,7 @@ function handleDelete(row) {
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
-    return cleanOperlog();
+    return clean();
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("清空成功");
