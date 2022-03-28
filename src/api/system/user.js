@@ -15,7 +15,9 @@ export function getUser(userId) {
     return request({
         url: '/system/user/getUserInfoById',
         method: 'post',
-        data: parseStrEmpty(userId)
+        params: {
+            userId: userId
+        }
     })
 }
 
@@ -84,7 +86,7 @@ export function getUserProfile() {
 export function updateUserProfile(data) {
     return request({
         url: '/system/user/profile/editProfile',
-        method: 'put',
+        method: 'post',
         data: data
     })
 }

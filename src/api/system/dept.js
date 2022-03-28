@@ -69,6 +69,6 @@ export function updateDept(data) {
 export function delDept(deptId) {
     return request({
         url: '/system/dept/' + deptId,
-        method: 'delete'
+        method: 'post'
     })
 }

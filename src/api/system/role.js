@@ -55,7 +55,7 @@ export function changeRoleStatus(roleId, status) {
   }
   return request({
     url: '/system/role/changeStatus',
-    method: 'put',
+    method: 'post',
     data: data
   })
 }
@@ -64,7 +64,7 @@ export function changeRoleStatus(roleId, status) {
 export function delRole(roleId) {
   return request({
     url: '/system/role/' + roleId,
-    method: 'delete'
+    method: 'post'
   })
 }
 
@@ -90,7 +90,7 @@ export function unallocatedUserList(query) {
 export function authUserCancel(data) {
   return request({
     url: '/system/role/authUser/cancel',
-    method: 'put',
+    method: 'post',
     data: data
   })
 }
@@ -99,7 +99,7 @@ export function authUserCancel(data) {
 export function authUserCancelAll(data) {
   return request({
     url: '/system/role/authUser/cancelAll',
-    method: 'put',
+    method: 'post',
     params: data
   })
 }
@@ -108,7 +108,7 @@ export function authUserCancelAll(data) {
 export function authUserSelectAll(data) {
   return request({
     url: '/system/role/authUser/selectAll',
-    method: 'put',
+    method: 'post',
     params: data
   })
 }

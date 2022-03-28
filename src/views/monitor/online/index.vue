@@ -80,8 +80,8 @@ const queryParams = ref({
 function getList() {
   loading.value = true;
   initData(queryParams.value).then(response => {
-    onlineList.value = response.records;
-    total.value = response.total;
+    onlineList.value = response.data.list;
+    total.value = response.data.total;
     loading.value = false;
   });
 }

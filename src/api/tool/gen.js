@@ -33,7 +33,7 @@ export function getGenTable(tableId) {
 export function updateGenTable(data) {
     return request({
         url: '/code/gen/editSave',
-        method: 'put',
+        method: 'post',
         data: data
     })
 }
@@ -62,7 +62,7 @@ export function previewTable(tableId) {
 export function delTable(tableIds) {
     return request({
         url: '/code/gen/physicalDelete',
-        method: 'delete',
+        method: 'post',
         data: tableIds
     })
 }
