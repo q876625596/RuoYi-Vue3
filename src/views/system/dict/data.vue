@@ -19,8 +19,8 @@
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="数据状态" clearable>
+         <el-form-item label="状态" prop="disableFlag">
+            <el-select v-model="queryParams.disableFlag" placeholder="数据状态" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -96,9 +96,9 @@
          </el-table-column>
          <el-table-column label="字典键值" align="center" prop="dictValue" />
          <el-table-column label="字典排序" align="center" prop="dictSort" />
-         <el-table-column label="状态" align="center" prop="status">
+         <el-table-column label="状态" align="center" prop="disableFlag">
             <template #default="scope">
-               <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+               <dict-tag :options="sys_normal_disable" :value="scope.row.disableFlag" />
             </template>
          </el-table-column>
          <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
@@ -161,8 +161,8 @@
                   ></el-option>
                </el-select>
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-               <el-radio-group v-model="form.status">
+            <el-form-item label="状态" prop="disableFlag">
+               <el-radio-group v-model="form.disableFlag">
                   <el-radio
                      v-for="dict in sys_normal_disable"
                      :key="dict.value"
@@ -220,7 +220,7 @@ const data = reactive({
     pageSize: 10,
     dictName: undefined,
     dictType: undefined,
-    status: undefined
+    disableFlag: undefined
   },
   rules: {
     dictLabel: [{ required: true, message: "数据标签不能为空", trigger: "blur" }],
@@ -269,7 +269,7 @@ function reset() {
     cssClass: undefined,
     listClass: "default",
     dictSort: 0,
-    status: "0",
+    disableFlag: "0",
     remark: undefined
   };
   proxy.resetForm("dataRef");

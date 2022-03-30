@@ -9,8 +9,8 @@
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="菜单状态" clearable>
+         <el-form-item label="是否停用" prop="disableFlag">
+            <el-select v-model="queryParams.disableFlag" placeholder="是否停用" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -63,9 +63,9 @@
          <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
          <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
          <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
-         <el-table-column prop="status" label="状态" width="80">
+         <el-table-column prop="disableFlag" label="状态" width="80">
             <template #default="scope">
-               <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+               <dict-tag :options="sys_normal_disable" :value="scope.row.disableFlag" />
             </template>
          </el-table-column>
          <el-table-column label="创建时间" align="center" prop="createTime">
@@ -165,9 +165,9 @@
                            </el-tooltip>是否外链
                         </span>
                      </template>
-                     <el-radio-group v-model="form.isFrame">
-                        <el-radio label="0">是</el-radio>
-                        <el-radio label="1">否</el-radio>
+                     <el-radio-group v-model="form.frameFlag">
+                        <el-radio label="0">否</el-radio>
+                        <el-radio label="1">是</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
@@ -233,9 +233,9 @@
                            是否缓存
                         </span>
                      </template>
-                     <el-radio-group v-model="form.isCache">
-                        <el-radio label="0">缓存</el-radio>
-                        <el-radio label="1">不缓存</el-radio>
+                     <el-radio-group v-model="form.cacheFlag">
+                        <el-radio label="0">不缓存</el-radio>
+                        <el-radio label="1">缓存</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
@@ -249,7 +249,7 @@
                            显示状态
                         </span>
                      </template>
-                     <el-radio-group v-model="form.visible">
+                     <el-radio-group v-model="form.hiddenFlag">
                         <el-radio
                            v-for="dict in sys_show_hide"
                            :key="dict.value"
@@ -265,10 +265,10 @@
                            <el-tooltip content="选择停用则路由将不会出现在侧边栏，也不能被访问" placement="top">
                               <i class="el-icon-question"></i>
                            </el-tooltip>
-                           菜单状态
+                           是否停用
                         </span>
                      </template>
-                     <el-radio-group v-model="form.status">
+                     <el-radio-group v-model="form.disableFlag">
                         <el-radio
                            v-for="dict in sys_normal_disable"
                            :key="dict.value"
@@ -327,7 +327,7 @@ const data = reactive({
   form: {},
   queryParams: {
     menuName: undefined,
-    visible: undefined
+    hiddenFlag: undefined
   },
   rules: {
     menuName: [{ required: true, message: "菜单名称不能为空", trigger: "blur" }],
@@ -377,10 +377,10 @@ function reset() {
     icon: undefined,
     menuType: "M",
     orderNum: undefined,
-    isFrame: "1",
-    isCache: "0",
-    visible: "0",
-    status: "0"
+    frameFlag: "0",
+    cacheFlag: "1",
+    hiddenFlag: "0",
+    disableFlag: "0"
   };
   proxy.resetForm("menuRef");
 }

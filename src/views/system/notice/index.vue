@@ -80,9 +80,9 @@
                <dict-tag :options="sys_notice_type" :value="scope.row.noticeType" />
             </template>
          </el-table-column>
-         <el-table-column label="状态" align="center" prop="status" width="100">
+         <el-table-column label="是否停用" align="center" prop="disableFlag" width="100">
             <template #default="scope">
-               <dict-tag :options="sys_notice_status" :value="scope.row.status" />
+               <dict-tag :options="sys_notice_status" :value="scope.row.disableFlag" />
             </template>
          </el-table-column>
          <el-table-column label="创建者" align="center" prop="createBy" width="100" />
@@ -139,8 +139,8 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="状态">
-                     <el-radio-group v-model="form.status">
+                  <el-form-item label="是否停用">
+                     <el-radio-group v-model="form.disableFlag">
                         <el-radio
                            v-for="dict in sys_notice_status"
                            :key="dict.value"
@@ -194,7 +194,7 @@ const data = reactive({
     pageSize: 10,
     noticeTitle: undefined,
     createBy: undefined,
-    status: undefined
+    disableFlag: undefined
   },
   rules: {
     noticeTitle: [{ required: true, message: "公告标题不能为空", trigger: "blur" }],
@@ -225,7 +225,7 @@ function reset() {
     noticeTitle: undefined,
     noticeType: undefined,
     noticeContent: undefined,
-    status: "0"
+    disableFlag: "0"
   };
   proxy.resetForm("noticeRef");
 }

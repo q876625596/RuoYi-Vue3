@@ -9,8 +9,8 @@
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="部门状态" clearable>
+         <el-form-item label="状态" prop="disableFlag">
+            <el-select v-model="queryParams.disableFlag" placeholder="部门状态" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -56,9 +56,9 @@
       >
          <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
          <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
-         <el-table-column prop="status" label="状态" width="100">
+         <el-table-column prop="disableFlag" label="状态" width="100">
             <template #default="scope">
-               <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+               <dict-tag :options="sys_normal_disable" :value="scope.row.disableFlag" />
             </template>
          </el-table-column>
          <el-table-column label="创建时间" align="center" prop="createTime" width="200">
@@ -132,7 +132,7 @@
                </el-col>
                <el-col :span="12">
                   <el-form-item label="部门状态">
-                     <el-radio-group v-model="form.status">
+                     <el-radio-group v-model="form.disableFlag">
                         <el-radio
                            v-for="dict in sys_normal_disable"
                            :key="dict.value"
@@ -172,7 +172,7 @@ const data = reactive({
   form: {},
   queryParams: {
     deptName: undefined,
-    status: undefined
+    disableFlag: undefined
   },
   rules: {
     parentId: [{ required: true, message: "上级部门不能为空", trigger: "blur" }],
@@ -208,7 +208,7 @@ function reset() {
     leader: undefined,
     phone: undefined,
     email: undefined,
-    status: "0"
+    disableFlag: "0"
   };
   proxy.resetForm("deptRef");
 }

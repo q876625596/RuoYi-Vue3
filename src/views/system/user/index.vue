@@ -36,18 +36,18 @@
                 @keyup.enter="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="手机号码" prop="phonenumber">
+          <el-form-item label="手机号码" prop="phoneNumber">
             <el-input
-                v-model="queryParams.phonenumber"
+                v-model="queryParams.phoneNumber"
                 placeholder="请输入手机号码"
                 clearable
                 style="width: 240px"
                 @keyup.enter="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="状态" prop="status">
+          <el-form-item label="状态" prop="disableFlag">
             <el-select
-                v-model="queryParams.status"
+                v-model="queryParams.disableFlag"
                 placeholder="用户状态"
                 clearable
                 style="width: 240px"
@@ -144,12 +144,12 @@
                            :show-overflow-tooltip="true"/>
           <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
                            :show-overflow-tooltip="true"/>
-          <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
+          <el-table-column label="手机号码" align="center" key="phoneNumber" prop="phoneNumber" v-if="columns[4].visible"
                            width="120"/>
-          <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
+          <el-table-column label="状态" align="center" key="disableFlag" v-if="columns[5].visible">
             <template #default="scope">
               <el-switch
-                  v-model="scope.row.status"
+                  v-model="scope.row.disableFlag"
                   active-value="0"
                   inactive-value="1"
                   @change="handleStatusChange(scope.row)"
@@ -234,8 +234,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="手机号码" prop="phonenumber">
-              <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11"/>
+            <el-form-item label="手机号码" prop="phoneNumber">
+              <el-input v-model="form.phoneNumber" placeholder="请输入手机号码" maxlength="11"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -271,7 +271,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
+              <el-radio-group v-model="form.disableFlag">
                 <el-radio
                     v-for="dict in sys_normal_disable"
                     :key="dict.value"
@@ -291,7 +291,7 @@
                     :key="item.postId"
                     :label="item.postName"
                     :value="item.postId"
-                    :disabled="item.status == 1"
+                    :disabled="item.disableFlag == 1"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -304,7 +304,7 @@
                     :key="item.roleId"
                     :label="item.roleName"
                     :value="item.roleId"
-                    :disabled="item.status == 1"
+                    :disabled="item.disableFlag == 1"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -423,8 +423,8 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     userName: undefined,
-    phonenumber: undefined,
-    status: undefined,
+    phoneNumber: undefined,
+    disableFlag: undefined,
     deptId: undefined,
     beginTime: undefined,
     endTime: undefined
@@ -444,7 +444,7 @@ const data = reactive({
       trigger: "blur"
     }],
     email: [{type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"]}],
-    phonenumber: [{pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur"}]
+    phoneNumber: [{pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur"}]
   }
 });
 
@@ -472,8 +472,8 @@ function getList() {
   loading.value = true;
   listUser(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
     loading.value = false;
-    userList.value = res.records;
-    total.value = res.total;
+    userList.value = res.data.list;
+    total.value = res.data.total;
   });
 };
 
@@ -517,13 +517,13 @@ function handleExport() {
 
 /** 用户状态修改  */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用";
+  let text = row.disableFlag == "0" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.userName + '"用户吗?').then(function () {
-    return changeUserStatus(row.userId, row.status);
+    return changeUserStatus(row.userId, row.disableFlag);
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功");
   }).catch(function () {
-    row.status = row.status === "0" ? "1" : "0";
+    row.disableFlag = row.disableFlag == "0" ? "1" : "0";
   });
 };
 
@@ -616,10 +616,10 @@ function reset() {
     userName: undefined,
     nickName: undefined,
     password: undefined,
-    phonenumber: undefined,
+    phoneNumber: undefined,
     email: undefined,
     sex: undefined,
-    status: "0",
+    disableFlag: "0",
     remark: undefined,
     postIds: [],
     roleIds: []
