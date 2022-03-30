@@ -335,7 +335,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictDataIds = row.id || ids.value;
+  const dictDataIds = row.id ? [row.id] : ids.value;
   proxy.$modal.confirm('是否确认删除字典编码为"' + dictDataIds + '"的数据项？').then(function() {
     return delData(dictDataIds);
   }).then(() => {

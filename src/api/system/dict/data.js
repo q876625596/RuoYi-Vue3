@@ -50,12 +50,12 @@ export function updateData(data) {
 }
 
 // 删除字典数据
-export function delData(dictCodes) {
+export function delData(ids) {
     return request({
-        url: '/system/dict/data/deleteByDictCodeP',
+        url: '/system/dict/data/deleteByIdsP',
         method: 'post',
         params: {
-            dictCodes: dictCodes
+            ids: ids
         }
     })
 }

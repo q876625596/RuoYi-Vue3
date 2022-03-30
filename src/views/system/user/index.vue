@@ -369,7 +369,7 @@
 
 <script setup name="User">
 import {getToken} from "@/utils/auth";
-import {treeSelect} from "@/api/system/dept";
+import {deptTreeSelect} from "@/api/system/dept";
 import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/user";
 
 const router = useRouter();
@@ -462,7 +462,7 @@ watch(deptName, val => {
 
 /** 查询部门下拉树结构 */
 function getTreeselect() {
-  treeSelect().then(response => {
+  deptTreeSelect().then(response => {
     deptOptions.value = response.data;
   });
 };
@@ -498,7 +498,7 @@ function resetQuery() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const userIds = row.userId || ids.value;
+  const userIds = row.userId ? [row.userId] : ids.value;
   proxy.$modal.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function () {
     return delUser(userIds);
   }).then(() => {
@@ -602,7 +602,7 @@ function submitFileForm() {
 function initTreeData() {
   // 判断部门的数据是否存在，存在不获取，不存在则获取
   if (deptOptions.value === undefined) {
-    treeSelect().then(response => {
+    deptTreeSelect().then(response => {
       deptOptions.value = response.data;
     });
   }
@@ -645,7 +645,7 @@ function handleAdd() {
     roleOptions.value = response.data.roleList;
     open.value = true;
     title.value = "添加用户";
-    form.password.value = initPassword.value;
+    form.value.password = initPassword.value;
   });
 };
 
@@ -665,7 +665,7 @@ function handleUpdate(row) {
     form.value.roleIds = response.data.roleIdList;
     open.value = true;
     title.value = "修改用户";
-    form.password = "";
+    form.value.password = "";
   });
 };
 

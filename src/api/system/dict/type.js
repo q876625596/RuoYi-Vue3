@@ -39,12 +39,12 @@ export function updateType(data) {
 }
 
 // 删除字典类型
-export function delType(id) {
+export function delType(ids) {
     return request({
-        url: '/system/dict/type',
+        url: '/system/dict/type/deleteByIdsP',
         method: 'post',
         params: {
-            id: id
+            ids: ids
         }
     })
 }

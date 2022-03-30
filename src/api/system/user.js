@@ -44,7 +44,9 @@ export function delUser(userIds) {
     return request({
         url: '/system/user/deleteByIdsL',
         method: 'post',
-        data: userIds
+        params: {
+            ids:userIds
+        }
     })
 }
 

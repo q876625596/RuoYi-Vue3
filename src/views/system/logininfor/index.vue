@@ -174,7 +174,7 @@ function handleSortChange(column, prop, order) {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const infoIds = row.id || ids.value;
+  const infoIds = row.id ? [row.id] : ids.value;
   proxy.$modal.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?').then(function () {
     return delLoginInfo(infoIds);
   }).then(() => {

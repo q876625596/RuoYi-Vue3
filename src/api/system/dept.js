@@ -21,15 +21,18 @@ export function listDeptExcludeChild(id) {
 }
 
 // 查询部门详细
-export function getDept(deptId) {
+export function getDept(id) {
     return request({
-        url: '/system/dept/' + deptId,
-        method: 'get'
+        url: '/system/dept/getDetails',
+        method: 'get',
+        params: {
+            id: id
+        }
     })
 }
 
 // 查询部门下拉树结构
-export function treeSelect() {
+export function deptTreeSelect() {
     return request({
         url: '/system/dept/treeSelect',
         method: 'get'
@@ -66,9 +69,12 @@ export function updateDept(data) {
 }
 
 // 删除部门
-export function delDept(deptId) {
+export function delDept(id) {
     return request({
-        url: '/system/dept/' + deptId,
-        method: 'post'
+        url: '/system/dept/deleteL',
+        method: 'post',
+        params: {
+            id: id
+        }
     })
 }

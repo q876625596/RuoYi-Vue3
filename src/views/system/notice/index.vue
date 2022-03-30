@@ -283,7 +283,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const noticeIds = row.id || ids.value
+  const noticeIds = row.id ? [row.id] : ids.value
   proxy.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function() {
     return delNotice(noticeIds);
   }).then(() => {
