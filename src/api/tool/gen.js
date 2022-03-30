@@ -59,11 +59,13 @@ export function previewTable(tableId) {
 }
 
 // 删除表数据
-export function delTable(tableIds) {
+export function delTable(ids) {
     return request({
-        url: '/code/gen/physicalDelete',
+        url: '/code/gen/deleteByIdsP',
         method: 'post',
-        data: tableIds
+        params: {
+            ids: ids
+        }
     })
 }
 
@@ -72,8 +74,8 @@ export function genCode(tableId) {
     return request({
         url: '/code/gen/genCode',
         method: 'get',
-        params:{
-            tableId : tableId
+        params: {
+            tableId: tableId
         }
     })
 }

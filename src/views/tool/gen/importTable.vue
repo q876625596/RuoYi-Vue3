@@ -79,6 +79,9 @@ const emit = defineEmits(["ok"]);
 /** 查询参数列表 */
 function show() {
   visible.value = true;
+  if (queryParams.databaseName){
+    getList();
+  }
 }
 /** 单击选择行 */
 function clickRow(row) {
@@ -91,8 +94,8 @@ function handleSelectionChange(selection) {
 /** 查询表数据 */
 function getList() {
   listDbTable(queryParams).then(res => {
-    dbTableList.value = res.records;
-    total.value = res.total;
+    dbTableList.value = res.data.list;
+    total.value = res.data.total;
   });
 }
 /** 搜索按钮操作 */

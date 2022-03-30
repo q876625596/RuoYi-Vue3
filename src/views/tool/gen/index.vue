@@ -186,9 +186,8 @@
 </template>
 
 <script setup name="Gen">
-import { listTable, previewTable, delTable, genCode, syncDb } from "@/api/tool/gen";
+import {delTable, genCode, listTable, previewTable, syncDb} from "@/api/tool/gen";
 import router from "@/router";
-import importTable from "./importTable";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -250,7 +249,7 @@ function handleQuery() {
 /** 生成代码操作 */
 function handleGenTable(row) {
   const tbIds = row.tableId || tableIds.value;
-  if (!tbIds) {
+  if (!tbIds && tbIds.length == 0) {
     proxy.$modal.msgError("请选择要生成的数据");
     return;
   }
@@ -303,7 +302,7 @@ function handleEditTable(row) {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const tableIds = row.tableId || ids.value;
+  const tableIds = row.tableId ? [row.tableId] : ids.value;
   proxy.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
     return delTable(tableIds);
   }).then(() => {
