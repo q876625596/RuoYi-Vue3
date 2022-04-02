@@ -16,8 +16,6 @@
 
 <script setup>
 import { scrollTo } from '@/utils/scroll-to'
-import {nextTick} from "@vue/runtime-core";
-import {ref} from "@vue/reactivity";
 
 const props = defineProps({
   total: {
@@ -61,7 +59,6 @@ const props = defineProps({
   }
 })
 
-const pageShow = ref(true)
 const emit = defineEmits();
 const currentPage = computed({
   get() {

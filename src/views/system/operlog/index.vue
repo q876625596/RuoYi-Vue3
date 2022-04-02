@@ -42,7 +42,7 @@
                style="width: 240px"
             >
                <el-option
-                  v-for="dict in sys_common_status"
+                  v-for="dict in sys_common_error"
                   :key="dict.value"
                   :label="dict.label"
                   :value="dict.value"
@@ -111,12 +111,12 @@
          <el-table-column label="主机" align="center" prop="operIp" width="130" :show-overflow-tooltip="true" />
          <el-table-column label="操作状态" align="center" prop="errorFlag">
             <template #default="scope">
-               <dict-tag :options="sys_common_status" :value="scope.row.errorFlag" />
+               <dict-tag :options="sys_common_error" :value="scope.row.errorFlag" />
             </template>
          </el-table-column>
-         <el-table-column label="操作日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+         <el-table-column label="操作日期" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.operTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -169,7 +169,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="操作时间：">{{ parseTime(form.operTime) }}</el-form-item>
+                  <el-form-item label="操作时间：">{{ parseTime(form.createTime) }}</el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="异常信息：" v-if="form.errorFlag === 1">{{ form.errorMsg }}</el-form-item>
@@ -189,7 +189,7 @@
 import { list, delOperLog, clean } from "@/api/system/operlog";
 
 const { proxy } = getCurrentInstance();
-const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
+const { sys_oper_type, sys_common_error } = proxy.useDict("sys_oper_type","sys_common_error");
 
 const operlogList = ref([]);
 const open = ref(false);
@@ -201,7 +201,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const defaultSort = ref({ prop: "operTime", order: "descending" });
+const defaultSort = ref({ prop: "createTime", order: "descending" });
 
 const data = reactive({
   form: {},

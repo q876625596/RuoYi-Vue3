@@ -129,8 +129,8 @@
 <script setup name="GenEdit">
 import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionSelect as getDictOptionSelect } from "@/api/system/dict/type";
-import basicInfoForm from "./basicInfoForm";
-import genInfoForm from "./genInfoForm";
+import BasicInfoForm from "./basicInfoForm";
+import GenInfoForm from "./genInfoForm";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

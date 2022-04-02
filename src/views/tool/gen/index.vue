@@ -188,6 +188,7 @@
 <script setup name="Gen">
 import {delTable, genCode, listTable, previewTable, syncDb} from "@/api/tool/gen";
 import router from "@/router";
+import ImportTable from "./importTable";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

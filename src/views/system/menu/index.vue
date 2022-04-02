@@ -289,26 +289,11 @@
    </div>
 </template>
 
-<script>
-import SvgIcon from "@/components/SvgIcon";
-import IconSelect from "@/components/IconSelect";
-export default {
-  name:"Menu",
-  components: {
-    SvgIcon,
-    IconSelect
-  }
-}
-</script>
 <script setup>
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
 import {reactive, ref} from "@vue/reactivity";
-// import SvgIcon from "@/components/SvgIcon/index";
-// import IconSelect from "@/components/IconSelect/index";
-// const components = [
-//   SvgIcon,
-//       IconSelect
-// ]
+import SvgIcon from "@/components/SvgIcon/index";
+import IconSelect from "@/components/IconSelect/index";
 const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 

@@ -63,9 +63,9 @@
 </template>
 
 <script setup name="Profile">
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
+import UserAvatar from "./userAvatar";
+import UserInfo from "./userInfo";
+import ResetPwd from "./resetPwd";
 import { getUserProfile } from "@/api/system/user";
 
 const activeTab = ref("userinfo");
