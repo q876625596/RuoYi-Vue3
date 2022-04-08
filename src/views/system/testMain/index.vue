@@ -286,7 +286,7 @@ async function handleEdit(row) {
 }
 
 /** 提交按钮 */
-async function submitForm() {
+function submitForm() {
   proxy.$refs["testMainRef"].validate(async valid => {
     if (valid) {
       form.value.testSubList = testSubList.value;
@@ -308,7 +308,7 @@ async function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const idList = row.id ? [row.id] : ids.value;
-  proxy.$modal.confirm('是否确认删除测试编号为"' + idList + '"的数据项？').then(async function() {
+  proxy.$modal.confirm('是否确认删除测试编号为"' + idList + '"的数据项？').then(async () => {
     await deleteTestMainByIdsRequest(idList);
     await getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -369,12 +369,10 @@ function handleDeleteTestSub(row) {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-    }).then(() => {
-        return deleteTestSubByIdsRequest([id]);
-    }).then(() => {
-        handleExpandTestSubList({id: testMainId}, [{id: testMainId}])
+    }).then(async () => {
+        await deleteTestSubByIdsRequest([id]);
+        handleExpandTestSubList({id: testMainId}, [{id: testMainId}]);
         this.msgSuccess("删除成功");
-    }).catch(() => {
     });
 }
 
