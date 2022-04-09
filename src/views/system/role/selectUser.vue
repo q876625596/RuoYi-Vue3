@@ -59,7 +59,7 @@
 </template>
 
 <script setup name="SelectUser">
-import { authUserSelectAll, unallocatedUserList } from "@/api/system/role";
+import { authUserSelectAll, unallocatedUserList } from "@/api/system/sysRole";
 
 const props = defineProps({
   roleId: {

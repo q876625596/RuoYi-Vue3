@@ -61,7 +61,7 @@
 </template>
 
 <script setup name="Online">
-import { forceLogout, list as initData } from "@/api/system/online";
+import { forceLogout, list as initData } from "@/api/system/sysOnline";
 
 const { proxy } = getCurrentInstance();
 

@@ -20,7 +20,6 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      console.log(piniaStore.userStore.roles);
       if (piniaStore.userStore.roles.length === 0) {
         isRelogin.show = true;
         // 判断当前用户是否已拉取完user_info信息

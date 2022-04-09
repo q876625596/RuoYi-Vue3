@@ -98,7 +98,7 @@
 
 <script setup name="AuthUser">
 import SelectUser from "./selectUser";
-import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/role";
+import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/sysRole";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

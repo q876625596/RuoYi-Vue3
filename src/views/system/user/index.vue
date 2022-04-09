@@ -288,9 +288,9 @@
               <el-select v-model="form.postIds" multiple placeholder="请选择">
                 <el-option
                     v-for="item in postOptions"
-                    :key="item.postId"
+                    :key="item.id"
                     :label="item.postName"
-                    :value="item.postId"
+                    :value="item.id"
                     :disabled="item.disableFlag == 1"
                 ></el-option>
               </el-select>
@@ -369,8 +369,8 @@
 
 <script setup name="User">
 import {getToken} from "@/utils/auth";
-import {deptTreeSelect} from "@/api/system/dept";
-import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/user";
+import {deptTreeSelect} from "@/api/system/sysDept";
+import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/sysUser";
 
 const router = useRouter();
 const {proxy} = getCurrentInstance();
@@ -404,7 +404,7 @@ const upload = reactive({
   // 设置上传的请求头部
   headers: {authorization: "Bearer " + getToken()},
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "system/user/importData"
+  url: import.meta.env.VITE_APP_BASE_API + "system/sysUser/importData"
 });
 // 列显隐信息
 const columns = ref([
@@ -510,7 +510,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/user/export", {
+  proxy.download("system/sysUser/export", {
     ...queryParams.value,
   }, `user_${new Date().getTime()}.xlsx`);
 };
@@ -578,7 +578,7 @@ function handleImport() {
 
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.download("system/user/importTemplate", {}, `user_template_${new Date().getTime()}.xlsx`);
+  proxy.download("system/sysUser/importTemplate", {}, `user_template_${new Date().getTime()}.xlsx`);
 };
 /**文件上传中处理 */
 const handleFileUploadProgress = (event, file, fileList) => {

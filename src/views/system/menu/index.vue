@@ -290,7 +290,7 @@
 </template>
 
 <script setup>
-import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
+import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/sysMenu";
 import {reactive, ref} from "@vue/reactivity";
 import SvgIcon from "@/components/SvgIcon/index";
 import IconSelect from "@/components/IconSelect/index";

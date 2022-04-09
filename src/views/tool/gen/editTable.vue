@@ -128,7 +128,7 @@
 
 <script setup name="GenEdit">
 import { getGenTable, updateGenTable } from "@/api/tool/gen";
-import { optionSelect as getDictOptionSelect } from "@/api/system/dict/type";
+import { optionSelect as getDictOptionSelect } from "@/api/system/sysDictType";
 import BasicInfoForm from "./basicInfoForm";
 import GenInfoForm from "./genInfoForm";
 

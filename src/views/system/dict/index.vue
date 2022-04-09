@@ -183,7 +183,7 @@
 </template>
 
 <script setup name="Dict">
-import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
+import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/sysDictType";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -306,7 +306,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/dict/type/export", {
+  proxy.download("system/sysDictType/export", {
     ...queryParams.value
   }, `dict_${new Date().getTime()}.xlsx`);
 }

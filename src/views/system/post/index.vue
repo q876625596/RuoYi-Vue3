@@ -153,7 +153,7 @@
 </template>
 
 <script setup name="Post">
-import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post";
+import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/sysPost";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -276,7 +276,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/post/export", {
+  proxy.download("system/sysPost/export", {
     ...queryParams.value
   }, `post_${new Date().getTime()}.xlsx`);
 }

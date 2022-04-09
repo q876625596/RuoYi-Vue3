@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import { login, logout, getInfo } from '@/api/login'
+import { sysLogin, logout, getInfo } from '@/api/system/sysLogin'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
 export const    useUserStore = defineStore('userStore',{
@@ -25,7 +25,7 @@ export const    useUserStore = defineStore('userStore',{
             const captchaVerification = userInfo.captchaVerification
             const tenantId = userInfo.tenantId;
             return new Promise((resolve, reject) => {
-                login(username, password, captchaVerification, tenantId).then(res => {
+                sysLogin(username, password, captchaVerification, tenantId).then(res => {
                     console.log(res);
                     setToken(res.data.tokenValue)
                     this.token = res.data.tokenValue

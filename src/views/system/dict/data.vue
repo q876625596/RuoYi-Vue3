@@ -185,8 +185,8 @@
 </template>
 
 <script setup name="Data">
-import { listType, getType } from "@/api/system/dict/type";
-import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
+import { listType, getType } from "@/api/system/sysDictType";
+import { listData, getData, delData, addData, updateData } from "@/api/system/sysDictData";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -345,7 +345,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/dict/data/export", {
+  proxy.download("system/sysDictData/export", {
     ...queryParams.value
   }, `dict_data_${new Date().getTime()}.xlsx`);
 }

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询登录日志列表
 export function list(query) {
   return request({
-    url: '/system/loginInfo/list',
+    url: '/system/sysLoginInfo/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function list(query) {
 // 删除登录日志
 export function delLoginInfo(ids) {
   return request({
-    url: '/system/loginInfo/deleteByIdsP',
+    url: '/system/sysLoginInfo/deleteByIdsP',
     method: 'post',
     params:{
       ids:ids
@@ -23,7 +23,7 @@ export function delLoginInfo(ids) {
 // 清空登录日志
 export function cleanLoginInfo() {
   return request({
-    url: '/system/loginInfo/clean',
+    url: '/system/sysLoginInfo/clean',
     method: 'post'
   })
 }

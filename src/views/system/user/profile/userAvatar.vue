@@ -53,7 +53,7 @@
 <script setup>
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
-import { uploadAvatar } from "@/api/system/user";
+import { uploadAvatar } from "@/api/system/sysUser";
 import {piniaStore} from "@/store/indexStore";
 
 const { proxy } = getCurrentInstance();

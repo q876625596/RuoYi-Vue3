@@ -66,7 +66,7 @@
 import UserAvatar from "./userAvatar";
 import UserInfo from "./userInfo";
 import ResetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+import { getUserProfile } from "@/api/system/sysUser";
 
 const activeTab = ref("userinfo");
 const state = reactive({

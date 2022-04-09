@@ -115,7 +115,7 @@
 </template>
 
 <script setup name="LoginInfo">
-import { list, delLoginInfo, cleanLoginInfo } from "@/api/system/loginInfo";
+import { list, delLoginInfo, cleanLoginInfo } from "@/api/system/sysLoginInfo";
 
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
@@ -193,7 +193,7 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/loginInfo/export", {
+  proxy.download("system/sysLoginInfo/export", {
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }

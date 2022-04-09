@@ -176,7 +176,7 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config";
+import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/sysConfig";
 
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
@@ -303,7 +303,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/config/export", {
+  proxy.download("system/sysConfig/export", {
     ...queryParams.value
   }, `config_${new Date().getTime()}.xlsx`);
 }

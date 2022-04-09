@@ -186,7 +186,7 @@
 </template>
 
 <script setup name="Operlog">
-import { list, delOperLog, clean } from "@/api/system/operlog";
+import { list, delOperLog, clean } from "@/api/system/sysOperLog";
 
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_error } = proxy.useDict("sys_oper_type","sys_common_error");
@@ -279,7 +279,7 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/operlog/export",{
+  proxy.download("monitor/sysOperLog/export",{
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }

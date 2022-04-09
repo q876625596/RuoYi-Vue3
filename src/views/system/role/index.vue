@@ -266,9 +266,9 @@
 </template>
 
 <script setup name="Role">
-import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/role";
-import { roleMenuTreeSelect, menuTreeSelect as menuTreeSelect } from "@/api/system/menu";
-import { deptTreeSelect as deptTreeSelect, roleDeptTreeSelect } from "@/api/system/dept";
+import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/sysRole";
+import { roleMenuTreeSelect, menuTreeSelect as menuTreeSelect } from "@/api/system/sysMenu";
+import { deptTreeSelect as deptTreeSelect, roleDeptTreeSelect } from "@/api/system/sysDept";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -353,7 +353,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/role/export", {
+  proxy.download("system/sysRole/export", {
     ...queryParams.value,
   }, `role_${new Date().getTime()}.xlsx`);
 }
