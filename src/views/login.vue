@@ -2,6 +2,19 @@
   <div class="login">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">若依后台管理系统</h3>
+      <el-form-item prop="tenantId">
+        <el-input
+            v-model="loginForm.tenantId"
+            type="text"
+            size="large"
+            auto-complete="off"
+            placeholder="租户标识"
+        >
+          <template #prefix>
+            <svg-icon icon-class="tenant" class="el-input__icon input-icon"/>
+          </template>
+        </el-input>
+      </el-form-item>
       <el-form-item prop="username">
         <el-input
             v-model="loginForm.username"
@@ -75,11 +88,12 @@ const loginForm = ref({
   username: "admin",
   password: "admin123",
   rememberMe: false,
-  tenantId: "",
+  tenantId: "1",
   captchaVerification:""
 });
 
 const loginRules = {
+  tenantId: [{required: true, trigger: "blur", message: "请输入您的租户编号"}],
   username: [{required: true, trigger: "blur", message: "请输入您的账号"}],
   password: [{required: true, trigger: "blur", message: "请输入您的密码"}],
 };
@@ -104,17 +118,17 @@ function handleLogin() {
       loading.value = true;
       // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
       if (loginForm.value.rememberMe) {
+        Cookies.set("tenantId", loginForm.value.tenantId, {expires: 30});
         Cookies.set("username", loginForm.value.username, {expires: 30});
         Cookies.set("password", encrypt(loginForm.value.password), {expires: 30});
         Cookies.set("rememberMe", loginForm.value.rememberMe, {expires: 30});
       } else {
         // 否则移除
+        Cookies.remove("tenantId");
         Cookies.remove("username");
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
-      loginForm.value.tenantId = piniaStore.userStore.getTenantId;
-      console.log(loginForm.value);
       // 调用action的登录方法
       piniaStore.userStore.login(loginForm.value).then(() => {
         router.push({path: redirect.value || "/"});
@@ -126,18 +140,18 @@ function handleLogin() {
 }
 
 function getCookie() {
+  const tenantId = Cookies.get("tenantId");
   const username = Cookies.get("username");
   const password = Cookies.get("password");
   const rememberMe = Cookies.get("rememberMe");
   loginForm.value = {
+    tenantId: tenantId === undefined ? loginForm.value.tenantId : tenantId,
     username: username === undefined ? loginForm.value.username : username,
     password: password === undefined ? loginForm.value.password : decrypt(password),
     rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
   };
 }
 getCookie();
-let urlTenantId = proxy.$route.query.tenantId ?? 1;
-piniaStore.userStore.saveTenantIdForUrl(urlTenantId)
 </script>
 
 <style lang='scss' scoped>

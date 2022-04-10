@@ -5,19 +5,12 @@ import defAva from '@/assets/images/profile.jpg'
 export const    useUserStore = defineStore('userStore',{
     state: ()=>({
         token: getToken(),
-        tenantId: '',
         name: '',
         avatar: '',
         roles: [],
         permissions: []
     }),
-    getters:{
-        getTenantId: (state) => state.tenantId ?? 1,
-    },
     actions:{
-        saveTenantIdForUrl(tenantId){
-            this.tenantId = tenantId;
-        },
         // 登录
         login(userInfo) {
             const username = userInfo.username.trim()
