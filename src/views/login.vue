@@ -79,17 +79,18 @@ import Cookies from "js-cookie";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
 import Verify from "../components/verifition/Verify";
 import {piniaStore} from '@/store/indexStore'
+
 const VerifyWidget = Verify
 const router = useRouter();
 const {proxy} = getCurrentInstance();
 const verify = ref(null);
 
-const loginForm = ref({
+const loginForm = reactive({
   username: "admin",
   password: "admin123",
   rememberMe: false,
-  tenantId: "1",
-  captchaVerification:""
+  tenantId: "",
+  captchaVerification: ""
 });
 
 const loginRules = {
@@ -103,12 +104,16 @@ const loading = ref(false);
 const register = ref(false);
 const redirect = ref(undefined);
 
+watch(() => loginForm.tenantId, (newValue, oldValue) => {
+  piniaStore.userStore.saveTenantId(newValue);
+});
+
 function useVerify() {
   verify.value.show()
 }
 
 function success(params) {
-  loginForm.value.captchaVerification = params.captchaVerification;
+  loginForm.captchaVerification = params.captchaVerification;
   handleLogin()
 }
 
@@ -117,11 +122,11 @@ function handleLogin() {
     if (valid) {
       loading.value = true;
       // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
-      if (loginForm.value.rememberMe) {
-        Cookies.set("tenantId", loginForm.value.tenantId, {expires: 30});
-        Cookies.set("username", loginForm.value.username, {expires: 30});
-        Cookies.set("password", encrypt(loginForm.value.password), {expires: 30});
-        Cookies.set("rememberMe", loginForm.value.rememberMe, {expires: 30});
+      if (loginForm.rememberMe) {
+        Cookies.set("tenantId", loginForm.tenantId, {expires: 30});
+        Cookies.set("username", loginForm.username, {expires: 30});
+        Cookies.set("password", encrypt(loginForm.password), {expires: 30});
+        Cookies.set("rememberMe", loginForm.rememberMe, {expires: 30});
       } else {
         // 否则移除
         Cookies.remove("tenantId");
@@ -130,7 +135,7 @@ function handleLogin() {
         Cookies.remove("rememberMe");
       }
       // 调用action的登录方法
-      piniaStore.userStore.login(loginForm.value).then(() => {
+      piniaStore.userStore.login(loginForm).then(() => {
         router.push({path: redirect.value || "/"});
       }).catch(() => {
         loading.value = false;
@@ -144,14 +149,15 @@ function getCookie() {
   const username = Cookies.get("username");
   const password = Cookies.get("password");
   const rememberMe = Cookies.get("rememberMe");
-  loginForm.value = {
-    tenantId: tenantId === undefined ? loginForm.value.tenantId : tenantId,
-    username: username === undefined ? loginForm.value.username : username,
-    password: password === undefined ? loginForm.value.password : decrypt(password),
-    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
-  };
+  const piniaTenantId = piniaStore.userStore.getTenantId;
+  loginForm.tenantId = tenantId === undefined ? (piniaTenantId ? piniaTenantId :  '1') : tenantId
+  loginForm.username = username === undefined ? loginForm.username : username;
+  loginForm.password = password === undefined ? loginForm.password : decrypt(password);
+  loginForm.rememberMe = rememberMe === undefined ? false : Boolean(rememberMe);
 }
+
 getCookie();
+
 </script>
 
 <style lang='scss' scoped>

@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import {piniaStore} from "@/store/indexStore";
 
 // 登录方法
 export function sysLogin(username, password, captchaVerification, tenantId) {
@@ -11,7 +12,7 @@ export function sysLogin(username, password, captchaVerification, tenantId) {
     url: '/auth/login',
     headers: {
       isToken: false,
-      tenantid: tenantId
+      tenantid: piniaStore.userStore.getTenantId,
     },
     method: 'post',
     data: data

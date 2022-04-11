@@ -7,7 +7,6 @@ import {useTagsViewStore} from "@/store/modules/tagsViewStore";
 import {createPinia, defineStore} from "pinia";
 import pinia from '@/store.js'
 
-console.log("aa");
 export const piniaStore = {
     userStore: useUserStore(pinia),
     settingsStore: useSettingsStore(pinia),

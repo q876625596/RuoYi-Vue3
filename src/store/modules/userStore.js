@@ -1,24 +1,31 @@
 import {defineStore} from "pinia";
-import { sysLogin, logout, getInfo } from '@/api/system/sysLogin'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import {getInfo, logout, sysLogin} from '@/api/system/sysLogin'
+import {getToken, removeToken, setToken} from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
-export const    useUserStore = defineStore('userStore',{
-    state: ()=>({
+
+export const useUserStore = defineStore('userStore', {
+    state: () => ({
         token: getToken(),
+        tenantId: '',
         name: '',
         avatar: '',
         roles: [],
         permissions: []
     }),
-    actions:{
+    getters: {
+        getTenantId: (state) => state.tenantId ?? '1',
+    },
+    actions: {
+        saveTenantId(tenantId) {
+            this.tenantId = tenantId;
+        },
         // 登录
         login(userInfo) {
             const username = userInfo.username.trim()
             const password = userInfo.password
             const captchaVerification = userInfo.captchaVerification
-            const tenantId = userInfo.tenantId;
             return new Promise((resolve, reject) => {
-                sysLogin(username, password, captchaVerification, tenantId).then(res => {
+                sysLogin(username, password, captchaVerification).then(res => {
                     console.log(res);
                     setToken(res.data.tokenValue)
                     this.token = res.data.tokenValue

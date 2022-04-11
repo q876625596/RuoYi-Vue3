@@ -10,7 +10,7 @@ export function reqGet(data) {
     return request({
         url: '/auth/captcha/get',
         headers: {
-            tenantid: Cookies.get("tenantId")
+            tenantid: piniaStore.userStore.getTenantId,
         },
         method: 'post',
         data
@@ -22,7 +22,7 @@ export function reqCheck(data) {
     return request({
         url: '/auth/captcha/check',
         headers: {
-            tenantid: Cookies.get("tenantId")
+            tenantid: piniaStore.userStore.getTenantId,
         },
         method: 'post',
         data
