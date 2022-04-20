@@ -90,12 +90,7 @@ service.interceptors.response.use(res => {
         piniaStore.userStore.logOut().then(() => {
           // 如果是登录页面不需要重新加载
           if (window.location.hash.indexOf("#/login") != 0) {
-            let tenantId = piniaStore.userStore.getTenantId;
-            if (tenantId){
-              location.href = '/index&tenantId=' + piniaStore.userStore.getTenantId;
-            } else {
-              location.href = '/index';
-            }
+            location.href = '/index';
           }
         })
       }).catch(() => {

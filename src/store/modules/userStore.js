@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
-import {getInfo, logout, sysLogin} from '@/api/system/sysLogin'
+import {checkTenantTag, getInfo, logout, sysLogin} from '@/api/system/sysLogin'
 import {getToken, removeToken, setToken} from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
+import {piniaStore} from "@/store/indexStore";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -24,15 +25,18 @@ export const useUserStore = defineStore('userStore', {
             const username = userInfo.username.trim()
             const password = userInfo.password
             const captchaVerification = userInfo.captchaVerification
-            return new Promise((resolve, reject) => {
-                sysLogin(username, password, captchaVerification).then(res => {
-                    console.log(res);
-                    setToken(res.data.tokenValue)
-                    this.token = res.data.tokenValue
-                    resolve()
-                }).catch(error => {
+            return new Promise(async (resolve, reject) => {
+                let checkTenantTagRes = await checkTenantTag(userInfo.tenantTag).catch(error => {
                     reject(error)
                 })
+                piniaStore.userStore.saveTenantId(checkTenantTagRes.data);
+                let sysLoginRes = await sysLogin(username, password, captchaVerification).catch(error => {
+                    reject(error)
+                })
+                console.log(sysLoginRes);
+                setToken(sysLoginRes.data.tokenValue)
+                this.token = sysLoginRes.data.tokenValue
+                resolve()
             })
         },
 

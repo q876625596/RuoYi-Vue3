@@ -93,12 +93,7 @@ function logout() {
     type: 'warning'
   }).then(() => {
     piniaStore.userStore.logOut().then(() => {
-      let tenantId = piniaStore.userStore.getTenantId;
-      if (tenantId){
-        location.href = '/index&tenantId='+ piniaStore.userStore.getTenantId;
-      }else {
-        location.href = '/index';
-      }
+      location.href = '/index';
     })
   }).catch(() => { });
 }

@@ -116,6 +116,17 @@
         <el-form-item label="租户标识" prop="tenantTag">
           <el-input v-model="form.tenantTag" placeholder="请输入租户标识"/>
         </el-form-item>
+        <el-form-item label="有效时间" style="width: 450px" prop="dateRange">
+          <el-date-picker
+              v-model="form.dateRange"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              type="datetimerange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-time="[new Date(0,0,0,0,0,0),new Date(0,0,0,23,59,59)]"
+          ></el-date-picker>
+        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -165,6 +176,11 @@ const data = reactive({
     tenantTag: [
       {required: true, message: "租户标识不能为空", trigger: "blur"}
     ],
+    dateRange: [
+      {
+        required: true, type: "array", message: "有效时间不能为空", trigger: "blur"
+      }
+    ],
   },
 });
 const {queryParams, form, rules} = toRefs(data);
@@ -190,10 +206,9 @@ function reset() {
     tenantId: null,
     tenantName: null,
     tenantTag: null,
-    createUserId: null,
-    updateUserId: null,
-    createTime: null,
-    updateTime: null
+    startValidTime: null,
+    endValidTime: null,
+    dateRange: []
   };
   proxy.resetForm("sysTenantRef");
 }
@@ -230,6 +245,7 @@ async function handleEdit(row) {
   const tenantId = row.tenantId || ids.value[0]
   let response = await getSysTenantDetailsRequest(tenantId);
   form.value = response.data;
+  form.value.dateRange = [form.value.startValidTime, form.value.endValidTime]
   open.value = true;
   title.value = "修改系统租户";
 }
@@ -238,6 +254,8 @@ async function handleEdit(row) {
 function submitForm() {
   proxy.$refs["sysTenantRef"].validate(async valid => {
     if (valid) {
+      form.value.startValidTime = form.value.dateRange[0];
+      form.value.endValidTime = form.value.dateRange[1];
       if (form.value.tenantId != null) {
         await editSysTenantRequest(form.value);
         proxy.$modal.msgSuccess("修改成功");

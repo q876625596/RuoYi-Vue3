@@ -2,19 +2,6 @@
   <div class="login">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">若依后台管理系统</h3>
-      <el-form-item prop="tenantId">
-        <el-input
-            v-model="loginForm.tenantId"
-            type="text"
-            size="large"
-            auto-complete="off"
-            placeholder="租户标识"
-        >
-          <template #prefix>
-            <svg-icon icon-class="tenant" class="el-input__icon input-icon"/>
-          </template>
-        </el-input>
-      </el-form-item>
       <el-form-item prop="username">
         <el-input
             v-model="loginForm.username"
@@ -39,6 +26,20 @@
         >
           <template #prefix>
             <svg-icon icon-class="password" class="el-input__icon input-icon"/>
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="tenantTag">
+        <el-input
+            v-model="loginForm.tenantTag"
+            type="text"
+            size="large"
+            auto-complete="off"
+            placeholder="租户标识"
+            @keyup.enter="useVerify"
+        >
+          <template #prefix>
+            <svg-icon icon-class="tenant" class="el-input__icon input-icon"/>
           </template>
         </el-input>
       </el-form-item>
@@ -89,12 +90,12 @@ const loginForm = reactive({
   username: "admin",
   password: "admin123",
   rememberMe: false,
-  tenantId: "",
+  tenantTag: "system",
   captchaVerification: ""
 });
 
 const loginRules = {
-  tenantId: [{required: true, trigger: "blur", message: "请输入您的租户编号"}],
+  tenantTag: [{required: true, trigger: "blur", message: "请输入您的租户标识"}],
   username: [{required: true, trigger: "blur", message: "请输入您的账号"}],
   password: [{required: true, trigger: "blur", message: "请输入您的密码"}],
 };
@@ -103,10 +104,6 @@ const loading = ref(false);
 // 注册开关
 const register = ref(false);
 const redirect = ref(undefined);
-
-watch(() => loginForm.tenantId, (newValue, oldValue) => {
-  piniaStore.userStore.saveTenantId(newValue);
-});
 
 function useVerify() {
   verify.value.show()
@@ -123,13 +120,13 @@ function handleLogin() {
       loading.value = true;
       // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
       if (loginForm.rememberMe) {
-        Cookies.set("tenantId", loginForm.tenantId, {expires: 30});
+        Cookies.set("tenantTag", loginForm.tenantTag, {expires: 30});
         Cookies.set("username", loginForm.username, {expires: 30});
         Cookies.set("password", encrypt(loginForm.password), {expires: 30});
         Cookies.set("rememberMe", loginForm.rememberMe, {expires: 30});
       } else {
         // 否则移除
-        Cookies.remove("tenantId");
+        Cookies.remove("tenantTag");
         Cookies.remove("username");
         Cookies.remove("password");
         Cookies.remove("rememberMe");
@@ -145,12 +142,11 @@ function handleLogin() {
 }
 
 function getCookie() {
-  const tenantId = Cookies.get("tenantId");
+  const tenantTag = Cookies.get("tenantTag");
   const username = Cookies.get("username");
   const password = Cookies.get("password");
   const rememberMe = Cookies.get("rememberMe");
-  const piniaTenantId = piniaStore.userStore.getTenantId;
-  loginForm.tenantId = tenantId === undefined ? (piniaTenantId ? piniaTenantId :  '1') : tenantId
+  loginForm.tenantTag = tenantTag === undefined ? loginForm.tenantTag : tenantTag
   loginForm.username = username === undefined ? loginForm.username : username;
   loginForm.password = password === undefined ? loginForm.password : decrypt(password);
   loginForm.rememberMe = rememberMe === undefined ? false : Boolean(rememberMe);

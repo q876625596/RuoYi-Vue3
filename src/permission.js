@@ -37,12 +37,7 @@ router.beforeEach((to, from, next) => {
         }).catch(err => {
           piniaStore.userStore.logOut().then(() => {
             ElMessage.error(err)
-            let tenantId = piniaStore.userStore.getTenantId;
-            if (tenantId){
-              next({ path: '/index&tenantId='+ piniaStore.userStore.getTenantId })
-            }else {
-              next({ path: '/index' })
-            }
+            next({ path: '/index' })
           })
         })
       } else {
