@@ -59,7 +59,7 @@ export function resetUserPwd(userId, password) {
     return request({
         url: '/system/sysUser/resetPwd',
         method: 'post',
-        data: data
+        params: data
     })
 }
 
