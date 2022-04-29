@@ -83,9 +83,14 @@
           <span>{{ parseTime(scope.row.endValidTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="当前是否生效" align="center" prop="currentValid" width="180">
+      <el-table-column label="状态" align="center" key="disableFlag">
         <template #default="scope">
-          <span>{{ Date.parse(scope.row.startValidTime) <= new Date().getTime() && Date.parse(scope.row.endValidTime) >= new Date().getTime() ? '生效' : '失效' }}</span>
+          <el-switch
+              v-model="scope.row.disableFlag"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -130,6 +135,16 @@
         <el-form-item label="租户标识" prop="tenantTag">
           <el-input v-model="form.tenantTag" placeholder="请输入租户标识"/>
         </el-form-item>
+        <el-form-item label="状态" v-if="!form.id">
+          <el-radio-group v-model="form.disableFlag">
+            <el-radio
+                v-for="dict in sys_normal_disable"
+                :key="dict.value"
+                :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="有效时间" style="width: 450px" prop="dateRange">
           <el-date-picker
               v-model="form.dateRange"
@@ -157,12 +172,14 @@
 import {
   addSysTenantRequest,
   deleteSysTenantByIdsRequest,
+  disableSysTenantRequest,
   editSysTenantRequest,
   getSysTenantDetailsRequest,
   getSysTenantListRequest
 } from "@/api/system/sysTenant";
 
 const {proxy} = getCurrentInstance();
+const {sys_normal_disable} = proxy.useDict("sys_normal_disable");
 
 const sysTenantList = ref([]);
 const open = ref(false);
@@ -218,6 +235,7 @@ function cancel() {
 function reset() {
   form.value = {
     id: null,
+    disableFlag: '0',
     tenantName: null,
     tenantTag: null,
     startValidTime: null,
@@ -301,6 +319,21 @@ function handleExport() {
   proxy.download('system/sysTenant/export', {
     ...queryParams.value
   }, `sysTenant_${new Date().getTime()}.xlsx`)
+}
+
+/** 用户状态修改  */
+function handleStatusChange(row) {
+  let text = row.disableFlag == "0" ? "启用" : "停用";
+  proxy.$modal.confirm('确认要"' + text + '""' + row.tenantName + '"租户吗?').then(function () {
+    return disableSysTenantRequest({
+      id: row.id,
+      disableFlag: row.disableFlag,
+    });
+  }).then(() => {
+    proxy.$modal.msgSuccess(text + "成功");
+  }).catch(function () {
+    row.disableFlag = row.disableFlag == "0" ? "1" : "0";
+  });
 }
 
 getList();
