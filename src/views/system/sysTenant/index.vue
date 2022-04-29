@@ -71,9 +71,23 @@
 
     <el-table ref="mainTable" v-loading="loading" :data="sysTenantList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="租户ID" align="center" prop="tenantId" show-overflow-tooltip/>
+      <el-table-column label="租户ID" align="center" prop="id" show-overflow-tooltip/>
       <el-table-column label="租户名称" align="center" prop="tenantName"/>
       <el-table-column label="租户标识" align="center" prop="tenantTag"/>
+      <el-table-column label="有效时间" align="center" prop="startValidTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.startValidTime) }}</span>
+          <br>
+          <span>至</span>
+          <br>
+          <span>{{ parseTime(scope.row.endValidTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="当前是否生效" align="center" prop="currentValid" width="180">
+        <template #default="scope">
+          <span>{{ Date.parse(scope.row.startValidTime) <= new Date().getTime() && Date.parse(scope.row.endValidTime) >= new Date().getTime() ? '生效' : '失效' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -142,7 +156,7 @@
 <script setup name="SysTenant">
 import {
   addSysTenantRequest,
-  deleteSysTenantByTenantIdsRequest,
+  deleteSysTenantByIdsRequest,
   editSysTenantRequest,
   getSysTenantDetailsRequest,
   getSysTenantListRequest
@@ -203,7 +217,7 @@ function cancel() {
 // 表单重置
 function reset() {
   form.value = {
-    tenantId: null,
+    id: null,
     tenantName: null,
     tenantTag: null,
     startValidTime: null,
@@ -227,7 +241,7 @@ function resetQuery() {
 
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.tenantId);
+  ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -242,8 +256,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 async function handleEdit(row) {
   reset();
-  const tenantId = row.tenantId || ids.value[0]
-  let response = await getSysTenantDetailsRequest(tenantId);
+  const id = row.id || ids.value[0]
+  let response = await getSysTenantDetailsRequest(id);
   form.value = response.data;
   form.value.dateRange = [form.value.startValidTime, form.value.endValidTime]
   open.value = true;
@@ -256,7 +270,7 @@ function submitForm() {
     if (valid) {
       form.value.startValidTime = form.value.dateRange[0];
       form.value.endValidTime = form.value.dateRange[1];
-      if (form.value.tenantId != null) {
+      if (form.value.id != null) {
         await editSysTenantRequest(form.value);
         proxy.$modal.msgSuccess("修改成功");
         open.value = false;
@@ -273,9 +287,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const tenantIdList = row.tenantId ? [row.tenantId] : ids.value;
-  proxy.$modal.confirm('是否确认删除系统租户编号为"' + tenantIdList + '"的数据项？').then(async () => {
-    await deleteSysTenantByTenantIdsRequest(tenantIdList);
+  const idList = row.id ? [row.id] : ids.value;
+  proxy.$modal.confirm('是否确认删除系统租户编号为"' + idList + '"的数据项？').then(async () => {
+    await deleteSysTenantByIdsRequest(idList);
     await getList();
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {
