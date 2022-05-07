@@ -32,9 +32,11 @@
                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
             </template>
          </el-table-column>
+         <el-table-column label="所属终端" align="center" prop="clientName" :show-overflow-tooltip="true" />
          <el-table-column label="会话编号" align="center" prop="tokenId" :show-overflow-tooltip="true" />
          <el-table-column label="登录名称" align="center" prop="userName" :show-overflow-tooltip="true" />
          <el-table-column label="所属部门" align="center" prop="deptName" :show-overflow-tooltip="true" />
+         <el-table-column label="所属租户" align="center" prop="tenantName" :show-overflow-tooltip="true" />
          <el-table-column label="主机" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
          <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
          <el-table-column label="操作系统" align="center" prop="os" :show-overflow-tooltip="true" />
