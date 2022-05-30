@@ -34,10 +34,10 @@ import {piniaStore} from "@/store/indexStore";
 
 // 顶部栏初始数
 const visibleNumber = ref(null);
-// 是否为首次加载
-const isFrist = ref(null);
 // 当前激活菜单的 index
 const currentIndex = ref(null);
+// 隐藏侧边栏路由
+const hideList = ['/index', '/user/profile'];
 
 const route = useRoute();
 const router = useRouter();
@@ -88,17 +88,10 @@ const childrenMenus = computed(() => {
 const activeMenu = computed(() => {
   const path = route.path;
   let activePath = path;
-  if (path !== undefined && path.lastIndexOf("/") > 0) {
+  if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
     const tmpPath = path.substring(1, path.length);
     activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"));
     piniaStore.appStore.toggleSideBarHide(false)
-  } else if ("/index" == path || "" == path) {
-    if (!isFrist.value) {
-      isFrist.value = true;
-    } else {
-      activePath = "index";
-    }
-    piniaStore.appStore.toggleSideBarHide(true)
   } else if(!route.children) {
     activePath = path;
     piniaStore.appStore.toggleSideBarHide(true)

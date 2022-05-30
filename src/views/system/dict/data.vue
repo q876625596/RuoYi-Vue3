@@ -185,7 +185,7 @@
 </template>
 
 <script setup name="Data">
-import { listType, getType } from "@/api/system/sysDictType";
+import {optionSelect as getDictOptionSelect, getType} from "@/api/system/sysDictType";
 import { listData, getData, delData, addData, updateData } from "@/api/system/sysDictData";
 
 const { proxy } = getCurrentInstance();
@@ -242,8 +242,8 @@ function getTypes(dictId) {
 
 /** 查询字典类型列表 */
 function getTypeList() {
-  listType().then(response => {
-    typeOptions.value = response.data.list;
+  getDictOptionSelect().then(response => {
+    typeOptions.value = response.data;
   });
 }
 /** 查询字典数据列表 */
