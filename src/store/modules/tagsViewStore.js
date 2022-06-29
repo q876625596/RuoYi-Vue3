@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 
-export const useTagsViewStore = defineStore('tagsViewStore', {
+export  const useTagsViewStore = defineStore('tagsViewStore', {
     state: () => ({
         visitedViews: [],
         cachedViews: []

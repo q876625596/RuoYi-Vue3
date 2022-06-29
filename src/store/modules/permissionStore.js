@@ -1,4 +1,5 @@
-import { constantRoutes } from '@/router'
+import auth from '@/plugins/auth'
+import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/system/sysMenu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
@@ -28,6 +29,8 @@ export const    usePermissionStore = defineStore('permissionStore',{
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
           const defaultRoutes = filterAsyncRouter(defaultData)
+          const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
+          asyncRoutes.forEach(route => { router.addRoute(route) })
           setRouter(rewriteRoutes)
           this.sidebarRouters = constantRoutes.concat(sidebarRoutes)
           this.defaultRoutes = constantRoutes.concat(sidebarRoutes)
@@ -94,6 +97,23 @@ function filterChildren(childrenMap, lastRouter = false) {
     children = children.concat(el)
   })
   return children
+}
+
+// 动态路由遍历，验证是否具备权限
+export function filterDynamicRoutes(routes) {
+  const res = []
+  routes.forEach(route => {
+    if (route.permissions) {
+      if (auth.hasPermiOr(route.permissions)) {
+        res.push(route)
+      }
+    } else if (route.roles) {
+      if (auth.hasRoleOr(route.roles)) {
+        res.push(route)
+      }
+    }
+  })
+  return res
 }
 
 export const loadView = (view) => {
