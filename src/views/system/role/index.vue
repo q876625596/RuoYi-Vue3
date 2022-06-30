@@ -363,7 +363,7 @@ function handleSelectionChange(selection) {
 function handleStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗?').then(function () {
-    return changeRoleStatus(row.roleId, row.disableFlag);
+    return changeRoleStatus(row.roleId, row.roleKey, row.disableFlag);
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功");
   }).catch(function () {

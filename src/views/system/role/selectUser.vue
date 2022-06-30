@@ -100,8 +100,8 @@ function handleSelectionChange(selection) {
 // 查询表数据
 function getList() {
   unallocatedUserList(queryParams).then(res => {
-    userList.value = res.records;
-    total.value = res.total;
+    userList.value = res.data.list;
+    total.value = res.data.total;
   });
 }
 /** 搜索按钮操作 */
