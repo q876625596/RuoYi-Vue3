@@ -31,7 +31,7 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://ruoyi-gateway:8080',
+          target: 'http://ruoyi-gateway:10086',
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
         }
