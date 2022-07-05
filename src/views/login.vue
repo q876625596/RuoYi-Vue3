@@ -153,7 +153,10 @@ function getCookie() {
 }
 
 getCookie();
-
+let tenantTagByPath = proxy.$route.query.tenantTag;
+if (tenantTagByPath) {
+  loginForm.tenantTag = tenantTagByPath;
+}
 </script>
 
 <style lang='scss' scoped>

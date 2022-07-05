@@ -10,12 +10,12 @@ export function getSysTenantListRequest(query) {
 }
 
 // 查询系统租户详细
-export function getSysTenantDetailsRequest(id) {
+export function getSysTenantDetailsRequest(tenantId) {
   return request({
     url: '/system/sysTenant/getSysTenantDetails',
     method: 'get',
     params: {
-        id: id
+      tenantId: tenantId
     }
   })
 }
@@ -48,12 +48,12 @@ export function disableSysTenantRequest(data) {
 }
 
 // 删除系统租户
-export function deleteSysTenantByIdsRequest(ids) {
+export function deleteSysTenantByIdsRequest(tenantIds) {
   return request({
     url: '/system/sysTenant/deleteSysTenantByIdsP',
     method: 'post',
     params: {
-        ids: ids
+        tenantIds: tenantIds
     }
   })
 }

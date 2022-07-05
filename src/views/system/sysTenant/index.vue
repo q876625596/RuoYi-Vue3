@@ -36,28 +36,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-            type="success"
-            plain
-            icon="Edit"
-            :disabled="single"
-            @click="handleEdit"
-            v-hasPermi="['system:sysTenant:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:sysTenant:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
             type="warning"
             plain
             icon="Download"
@@ -69,11 +47,24 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="mainTable" v-loading="loading" :data="sysTenantList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="租户ID" align="center" prop="id" show-overflow-tooltip/>
+    <el-table ref="mainTable" v-loading="loading" :data="sysTenantList"
+              @expand-change="getTenantDetails" :row-key="getRowKeys" :expand-row-keys="expands">
+      <el-table-column type="expand" align="center">
+        <template  #default="props">
+          <div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="租户ID" align="center" prop="tenantId" show-overflow-tooltip/>
       <el-table-column label="租户名称" align="center" prop="tenantName"/>
       <el-table-column label="租户标识" align="center" prop="tenantTag"/>
+      <el-table-column label="租户后管地址" align="center" prop="tenantManageDomain"  show-overflow-tooltip>
+        <template #default="scope">
+          <span style="cursor: pointer" v-copyText="scope.row.tenantManageDomain">
+            {{scope.row.tenantManageDomain}}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="有效时间" align="center" prop="startValidTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.startValidTime) }}</span>
@@ -135,7 +126,7 @@
         <el-form-item label="租户标识" prop="tenantTag">
           <el-input v-model="form.tenantTag" placeholder="请输入租户标识"/>
         </el-form-item>
-        <el-form-item label="状态" v-if="!form.id">
+        <el-form-item label="状态" v-if="!form.tenantId">
           <el-radio-group v-model="form.disableFlag">
             <el-radio
                 v-for="dict in sys_normal_disable"
@@ -193,6 +184,10 @@ const title = ref("");
 
 
 const data = reactive({
+  expands: [],
+  getRowKeys: (expandedRows) => {
+    return expandedRows.tenantId
+  },
   form: {},
   queryParams: {
     pageNum: 1,
@@ -214,7 +209,11 @@ const data = reactive({
     ],
   },
 });
-const {queryParams, form, rules} = toRefs(data);
+const {expands, getRowKeys, queryParams, form, rules} = toRefs(data);
+
+function  getTenantDetails(expandedRows, rowList) {
+
+}
 
 /** 查询系统租户列表 */
 async function getList() {
@@ -234,7 +233,7 @@ function cancel() {
 // 表单重置
 function reset() {
   form.value = {
-    id: null,
+    tenantId: null,
     disableFlag: '0',
     tenantName: null,
     tenantTag: null,
@@ -257,13 +256,6 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
@@ -274,8 +266,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 async function handleEdit(row) {
   reset();
-  const id = row.id || ids.value[0]
-  let response = await getSysTenantDetailsRequest(id);
+  const tenantId = row.tenantId || ids.value[0]
+  let response = await getSysTenantDetailsRequest(tenantId);
   form.value = response.data;
   form.value.dateRange = [form.value.startValidTime, form.value.endValidTime]
   open.value = true;
@@ -288,7 +280,7 @@ function submitForm() {
     if (valid) {
       form.value.startValidTime = form.value.dateRange[0];
       form.value.endValidTime = form.value.dateRange[1];
-      if (form.value.id != null) {
+      if (form.value.tenantId != null) {
         await editSysTenantRequest(form.value);
         proxy.$modal.msgSuccess("修改成功");
         open.value = false;
@@ -305,9 +297,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const idList = row.id ? [row.id] : ids.value;
-  proxy.$modal.confirm('是否确认删除系统租户编号为"' + idList + '"的数据项？').then(async () => {
-    await deleteSysTenantByIdsRequest(idList);
+  const tenantIdList = row.tenantId ? [row.tenantId] : ids.value;
+  proxy.$modal.confirm('是否确认删除系统租户编号为"' + tenantIdList + '"的数据项？').then(async () => {
+    await deleteSysTenantByIdsRequest(tenantIdList);
     await getList();
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {
@@ -326,7 +318,7 @@ function handleStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.tenantName + '"租户吗?').then(function () {
     return disableSysTenantRequest({
-      id: row.id,
+      tenantId: row.tenantId,
       disableFlag: row.disableFlag,
     });
   }).then(() => {

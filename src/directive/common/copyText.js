@@ -2,6 +2,7 @@
  * v-copyText 复制文本内容
  * Copyright (c) 2022 ruoyi
  */
+import {ElMessage} from 'element-plus'
 
 export default {
     beforeMount(el, { value, arg }) {
@@ -11,6 +12,7 @@ export default {
             el.$copyValue = value;
             const handler = () => {
                 copyTextToClipboard(el.$copyValue);
+                ElMessage.success("复制成功");
                 if (el.$copyCallback) {
                     el.$copyCallback(el.$copyValue);
                 }
