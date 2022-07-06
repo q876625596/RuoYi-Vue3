@@ -126,6 +126,9 @@
         <el-form-item label="租户标识" prop="tenantTag">
           <el-input v-model="form.tenantTag" placeholder="请输入租户标识"/>
         </el-form-item>
+        <el-form-item label="租户Logo" prop="tenantManageLogo">
+          <userAvatar :title="'修改头像'" default-image=""/>
+        </el-form-item>
         <el-form-item label="状态" v-if="!form.tenantId">
           <el-radio-group v-model="form.disableFlag">
             <el-radio
@@ -168,6 +171,7 @@ import {
   getSysTenantDetailsRequest,
   getSysTenantListRequest
 } from "@/api/system/sysTenant";
+import UserAvatar from "../../../components/ImageCropUpload";
 
 const {proxy} = getCurrentInstance();
 const {sys_normal_disable} = proxy.useDict("sys_normal_disable");
