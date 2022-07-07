@@ -10,7 +10,7 @@
           </template>
           <div>
             <div class="text-center">
-              <userAvatar :title="'修改头像'" :uploadImage="uploadAvatarFun" :old-image="piniaStore.userStore.avatar"/>
+              <userAvatar :title="'修改头像'" :fixed-number="[200, 200]" :uploadImage="uploadAvatarFun" :old-image="piniaStore.userStore.avatar"/>
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">

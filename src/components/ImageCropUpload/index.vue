@@ -17,8 +17,8 @@
             :fixedBox="true"
             :fixed="true"
             :full="true"
-            :output-size="0.6"
-            output-type="png"
+            :output-size="outputSize"
+            :output-type="outputType"
             :fixed-number="options.fixedNumber"
             @realTime="realTime"
             v-if="visible"
@@ -83,6 +83,14 @@ const props = defineProps({
   title: {
     type: String,
     default: "上传图片"
+  },
+  outputSize: {
+    type: Number,
+    default: 0.6
+  },
+  outputType: {
+    type: String,
+    default: 'png'
   },
   displayImageCircle: {
     type: Boolean,
