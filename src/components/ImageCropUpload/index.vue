@@ -27,7 +27,7 @@
       <el-col :xs="24" :md="12" :style="{height: '350px'}">
         <div class="image-upload-preview">
           <div :style="{'width': options.previews.w + 'px', 'height': options.previews.h + 'px',   'box-shadow': '0 0 4px #ccc', 'overflow' : 'hidden',
-          'border-radius': displayImageCircle ? '50%' : '100%'}">
+          'border-radius': displayImageCircle ? '50%' : '0'}">
             <img :src="options.previews.url" :style="options.previews.img"/>
           </div>
         </div>
@@ -246,7 +246,7 @@ function closeDialog() {
   -moz-osx-font-smoothing: grayscale;
   cursor: pointer;
   height: v-bind(displayImageHeight);
-  border-radius: v-bind("displayImageCircle ? '50%' : '100%'");
+  border-radius: v-bind("displayImageCircle ? '50%' : '0'");
 }
 
 .image-upload-preview-circle {
