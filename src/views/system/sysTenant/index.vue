@@ -50,7 +50,7 @@
     <el-table ref="mainTable" v-loading="loading" :data="sysTenantList"
               @expand-change="getTenantDetails" :row-key="getRowKeys" :expand-row-keys="expands">
       <el-table-column type="expand" align="center">
-        <template  #default="props">
+        <template #default="props">
           <div>
           </div>
         </template>
@@ -58,10 +58,10 @@
       <el-table-column label="租户ID" align="center" prop="tenantId" show-overflow-tooltip/>
       <el-table-column label="租户名称" align="center" prop="tenantName"/>
       <el-table-column label="租户标识" align="center" prop="tenantTag"/>
-      <el-table-column label="租户后管地址" align="center" prop="tenantManageDomain"  show-overflow-tooltip>
+      <el-table-column label="租户后管地址" align="center" prop="tenantManageDomain" show-overflow-tooltip>
         <template #default="scope">
           <span style="cursor: pointer" v-copyText="scope.row.tenantManageDomain">
-            {{scope.row.tenantManageDomain}}
+            {{ scope.row.tenantManageDomain }}
           </span>
         </template>
       </el-table-column>
@@ -126,9 +126,31 @@
         <el-form-item label="租户标识" prop="tenantTag">
           <el-input v-model="form.tenantTag" placeholder="请输入租户标识"/>
         </el-form-item>
-        <el-form-item label="租户Logo" prop="tenantManageLogo">
-          <userAvatar :title="'修改头像'" default-image=""/>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="租户后管Logo" prop="tenantManageLogo">
+              <keep-alive>
+                <userAvatar v-if="open" :title="'设置租户后管Logo'" :old-image="form.tenantManageLogo??logo"
+                            :upload-image="uploadTenantManageLogo"
+                            :fixed-number="[64, 64]"
+                            display-image-width="100px"
+                            display-image-height="100px"
+                            :display-image-circle="false"/>
+              </keep-alive>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="租户后管登录页背景图" prop="tenantManageLoginBackground">
+              <keep-alive>
+                <userAvatar v-if="open" :title="'设置租租户后管登录页背景图'"
+                            :old-image="form.tenantManageLoginBackground??loginBackground"
+                            :upload-image="uploadTenantManageLoginBackground"
+                            :fixed-number="[1000, 564]"
+                            display-image-height="68px" :display-image-circle="false"/>
+              </keep-alive>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="状态" v-if="!form.tenantId">
           <el-radio-group v-model="form.disableFlag">
             <el-radio
@@ -172,7 +194,17 @@ import {
   getSysTenantListRequest
 } from "@/api/system/sysTenant";
 import UserAvatar from "../../../components/ImageCropUpload";
+import {uploadImage} from "@/api/system/sysFile";
+import {onActivated, onDeactivated} from "vue";
+import logo from '@/assets/logo/logo.png'
+import loginBackground from '@/assets/images/login-background.jpg'
 
+onActivated(() => {
+  console.log("aaa");
+})
+onDeactivated(() => {
+  console.log("cc");
+})
 const {proxy} = getCurrentInstance();
 const {sys_normal_disable} = proxy.useDict("sys_normal_disable");
 
@@ -215,9 +247,26 @@ const data = reactive({
 });
 const {expands, getRowKeys, queryParams, form, rules} = toRefs(data);
 
-function  getTenantDetails(expandedRows, rowList) {
+function getTenantDetails(expandedRows, rowList) {
 
 }
+
+async function uploadTenantManageLogo(data) {
+  let formData = new FormData();
+  formData.append("file", data);
+  let response = await uploadImage(formData);
+  form.value.tenantManageLogo = response.data.url
+  return response.data.url;
+}
+
+async function uploadTenantManageLoginBackground(data) {
+  let formData = new FormData();
+  formData.append("file", data);
+  let response = await uploadImage(formData);
+  form.value.tenantManageLoginBackground = response.data.url
+  return response.data.url;
+}
+
 
 /** 查询系统租户列表 */
 async function getList() {
@@ -241,6 +290,8 @@ function reset() {
     disableFlag: '0',
     tenantName: null,
     tenantTag: null,
+    tenantManageLogo: null,
+    tenantManageLoginBackground: null,
     startValidTime: null,
     endValidTime: null,
     dateRange: []

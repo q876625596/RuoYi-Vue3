@@ -10,7 +10,7 @@
           </template>
           <div>
             <div class="text-center">
-              <userAvatar :title="'修改头像'" :uploadImage="uploadAvatarFun" :default-image="piniaStore.userStore.avatar"/>
+              <userAvatar :title="'修改头像'" :uploadImage="uploadAvatarFun" :old-image="piniaStore.userStore.avatar"/>
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
@@ -72,6 +72,7 @@
 </template>
 
 <script setup name="Profile">
+let { proxy } = getCurrentInstance();
 import UserAvatar from "../../../../components/ImageCropUpload";
 import UserInfo from "./userInfo";
 import ResetPwd from "./resetPwd";
@@ -101,6 +102,7 @@ async function uploadAvatarFun(data) {
   formData.append("avatarfile", data);
   let response = await uploadAvatar(formData);
   piniaStore.userStore.avatar = response.data.imgUrl
+  proxy.$modal.msgSuccess("修改头像成功");
   return response.data.imgUrl;
 }
 
