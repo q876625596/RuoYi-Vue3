@@ -50,9 +50,29 @@
     <el-table ref="mainTable" v-loading="loading" :data="sysTenantList"
               @expand-change="getTenantDetails" :row-key="getRowKeys" :expand-row-keys="expands">
       <el-table-column type="expand" align="center">
-        <template #default="props">
-          <div>
-          </div>
+        <template #default="props" v-loading="loadingAdmin">
+          <el-descriptions :title="'【' + props.row.tenantName + '】' + '租户配置信息'" :border="true" :column="3">
+            <template #extra>
+              <el-button type="success" v-if="props.row.adminInfo" @click="handleEditAdmin(props.row)">修改租户配置
+              </el-button>
+              <el-button type="primary" v-else @click="handleInitAdmin(props.row)">初始化租户配置</el-button>
+            </template>
+            <div v-if="props.row.adminInfo">
+              <el-descriptions-item label="超管账号" span="1">{{
+                  props.row.adminInfo.managerUsername
+                }}
+              </el-descriptions-item>
+              <el-descriptions-item label="超管昵称" span="1">{{
+                  props.row.adminInfo.managerNickName
+                }}
+              </el-descriptions-item>
+              <el-descriptions-item label="顶级部门" span="1">{{
+                  props.row.adminInfo.managerDeptName
+                }}
+              </el-descriptions-item>
+              <el-descriptions-item label="密码">{{ props.row.adminInfo.managerPassword }}</el-descriptions-item>
+            </div>
+          </el-descriptions>
         </template>
       </el-table-column>
       <el-table-column label="租户ID" align="center" prop="tenantId" show-overflow-tooltip/>
@@ -181,6 +201,32 @@
       </template>
     </el-dialog>
 
+    <el-dialog :title="titleAdmin" v-model="openAdmin" width="500px" append-to-body>
+      <el-form ref="adminUserRef" :model="adminForm" :rules="rulesAdmin" label-width="80px">
+        <el-form-item label="超管账号" prop="username">
+          <el-input v-model="adminForm.managerUsername" placeholder="请输入超管账号"/>
+        </el-form-item>
+        <el-form-item label="超管昵称" prop="nickName">
+          <el-input v-model="adminForm.managerNickName" placeholder="请输入超管昵称"/>
+        </el-form-item>
+        <el-form-item label="超管密码" prop="newPassword">
+          <el-input v-model="adminForm.managerPassword" placeholder="请输入超管密码"
+                    type="password"
+                    auto-complete="off"
+          />
+        </el-form-item>
+        <el-form-item label="部门名称" prop="reNewPassword">
+          <el-input v-model="adminForm.managerDeptName" placeholder="请输入顶级部门名称"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitAdmin">确 定</el-button>
+          <el-button @click="cancelAdmin">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -189,22 +235,19 @@ import {
   addSysTenantRequest,
   deleteSysTenantByIdsRequest,
   disableSysTenantRequest,
+  editSysTenantConfigRequest,
   editSysTenantRequest,
+  getSysTenantConfigRequest,
   getSysTenantDetailsRequest,
-  getSysTenantListRequest
+  getSysTenantListRequest,
+  initSysTenantConfigRequest,
 } from "@/api/system/sysTenant";
 import UserAvatar from "../../../components/ImageCropUpload";
 import {uploadImage} from "@/api/system/sysFile";
-import {onActivated, onDeactivated} from "vue";
 import logo from '@/assets/logo/logo.png'
 import loginBackground from '@/assets/images/login-background.jpg'
+import {reactive} from "vue";
 
-onActivated(() => {
-  console.log("aaa");
-})
-onDeactivated(() => {
-  console.log("cc");
-})
 const {proxy} = getCurrentInstance();
 const {sys_normal_disable} = proxy.useDict("sys_normal_disable");
 
@@ -217,6 +260,10 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+
+const titleAdmin = ref("");
+const openAdmin = ref(false);
+const loadingAdmin = ref(false);
 
 
 const data = reactive({
@@ -244,11 +291,94 @@ const data = reactive({
       }
     ],
   },
+  adminForm: {
+    tenantId: null,
+    userId: null,
+    deptId: null,
+    managerUsername: null,
+    managerNickName: null,
+    managerPassword: null,
+    managerDeptName: null,
+  },
+  rulesAdmin: {
+    managerUsername: [
+      {required: true, message: "超管账号不能为空", trigger: "blur"}
+    ],
+    managerNickName: [
+      {required: true, message: "超管昵称不能为空", trigger: "blur"}
+    ],
+    managerPassword: [
+      {
+        required: true, message: "超管密码不能为空", trigger: "blur"
+      }
+    ],
+    managerDeptName: [
+      {
+        required: true, message: "顶级部门名称不能为空", trigger: "blur"
+      }
+    ],
+  },
 });
-const {expands, getRowKeys, queryParams, form, rules} = toRefs(data);
+const {expands, getRowKeys, queryParams, form, adminForm, rules, rulesAdmin} = toRefs(data);
 
 function getTenantDetails(expandedRows, rowList) {
+  //展开
+  if (rowList.indexOf(expandedRows) != -1) {
+    getTenantAdmin(expandedRows);
+  }
+}
 
+function handleEditAdmin(row) {
+  adminForm.value = row.adminInfo;
+  openAdmin.value = true;
+  titleAdmin.value = "修改超管用户";
+}
+
+/** 初始化超管用户按钮操作 */
+function handleInitAdmin(row) {
+  resetAdmin();
+  adminForm.value.tenantId = row.tenantId
+  openAdmin.value = true;
+  titleAdmin.value = "初始化超管用户";
+}
+
+// 取消按钮
+function cancelAdmin() {
+  openAdmin.value = false;
+  resetAdmin();
+}
+
+async function submitAdmin() {
+  if (adminForm.value.userId && adminForm.value.deptId) {
+    await editSysTenantConfigRequest(adminForm.value);
+    proxy.$modal.msgSuccess("修改租户配置成功");
+  } else {
+    await initSysTenantConfigRequest(adminForm.value);
+    proxy.$modal.msgSuccess("初始化租户配置成功");
+  }
+  resetAdmin();
+  openAdmin.value = false;
+}
+
+async function getTenantAdmin(row) {
+  loadingAdmin.value = true;
+  let response = await getSysTenantConfigRequest(row.tenantId);
+  row.adminInfo = response.data;
+  console.log(row.adminInfo);
+  loadingAdmin.value = false;
+}
+
+// 表单重置
+function resetAdmin() {
+  adminForm.value = {
+    userId: null,
+    deptId: null,
+    managerUsername: null,
+    managerNickName: null,
+    managerPassword: null,
+    managerDeptName: null,
+  };
+  proxy.resetForm("sysTenantRef");
 }
 
 async function uploadTenantManageLogo(data) {

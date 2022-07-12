@@ -20,6 +20,35 @@ export function getSysTenantDetailsRequest(tenantId) {
   })
 }
 
+// 查询租户配置
+export function getSysTenantConfigRequest(tenantId) {
+  return request({
+    url: '/system/sysTenant/getSysTenantConfig',
+    method: 'get',
+    params: {
+      tenantId: tenantId
+    }
+  })
+}
+
+// 初始化租户配置
+export function initSysTenantConfigRequest(data) {
+  return request({
+    url: '/system/sysTenant/initSysTenantConfig',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改租户配置
+export function editSysTenantConfigRequest(data) {
+  return request({
+    url: '/system/sysTenant/editSysTenantConfig',
+    method: 'post',
+    data: data
+  })
+}
+
 // 新增系统租户
 export function addSysTenantRequest(data) {
   return request({
