@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+// 查询全部系统租户列表
+export function getAllSysTenantForSelectRequest() {
+  return request({
+    url: '/system/sysTenant/getAllSysTenantForSelect',
+    method: 'get',
+  })
+}
+
 // 查询系统租户列表
 export function getSysTenantListRequest(query) {
   return request({
