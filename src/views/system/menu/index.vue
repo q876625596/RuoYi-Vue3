@@ -412,8 +412,12 @@ function selected(name) {
 }
 
 /** 图标外层点击隐藏下拉列表 */
-function hideSelectIcon() {
-  showChooseIcon.value = false;
+function hideSelectIcon(event) {
+  let elem = event.relatedTarget || event.srcElement || event.target || event.currentTarget;
+  let className = elem.className;
+  if (className !== "el-input__inner") {
+    showChooseIcon.value = false;
+  }
 }
 
 /** 搜索按钮操作 */

@@ -85,6 +85,7 @@ import axios from 'axios'
 import { ElLoading, ElMessage } from 'element-plus'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
 import {piniaStore} from "@/store/indexStore";
+import {handleThemeStyle} from "@/utils/theme";
 
 const { proxy } = getCurrentInstance();
 const showSettings = ref(false);
@@ -138,6 +139,7 @@ const dynamicTitle = computed({
 function themeChange(val) {
   piniaStore.settingsStore.theme = val;
   theme.value = val;
+  handleThemeStyle(val);
 }
 function handleTheme(val) {
   piniaStore.settingsStore.sideTheme = val;

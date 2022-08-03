@@ -187,6 +187,7 @@
 <script setup name="Data">
 import {optionSelect as getDictOptionSelect, getType} from "@/api/system/sysDictType";
 import { listData, getData, delData, addData, updateData } from "@/api/system/sysDictData";
+import {piniaStore} from "@/store/indexStore";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -319,12 +320,14 @@ function submitForm() {
     if (valid) {
       if (form.value.id != undefined) {
         updateData(form.value).then(response => {
+          piniaStore.dictStore.removeDict(queryParams.value.dictType);
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
         addData(form.value).then(response => {
+          piniaStore.dictStore.removeDict(queryParams.value.dictType);
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
@@ -341,6 +344,7 @@ function handleDelete(row) {
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
+    piniaStore.dictStore.removeDict(queryParams.value.dictType);
   }).catch(() => {});
 }
 /** 导出按钮操作 */

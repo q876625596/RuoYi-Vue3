@@ -184,6 +184,7 @@
 
 <script setup name="Dict">
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/sysDictType";
+import {piniaStore} from "@/store/indexStore";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -314,6 +315,7 @@ function handleExport() {
 function handleRefreshCache() {
   refreshCache().then(() => {
     proxy.$modal.msgSuccess("刷新成功");
+    piniaStore.dictStore.cleanDict();
   });
 }
 

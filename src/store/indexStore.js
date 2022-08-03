@@ -6,6 +6,7 @@ import {useAppStore} from "@/store/modules/appStore";
 import {useTagsViewStore} from "@/store/modules/tagsViewStore";
 import {createPinia, defineStore} from "pinia";
 import pinia from '@/store.js'
+import useDictStore from "@/store/modules/dictStore";
 
 export const piniaStore = {
     userStore: useUserStore(pinia),
@@ -13,4 +14,5 @@ export const piniaStore = {
     permissionStore: usePermissionStore(pinia),
     appStore: useAppStore(pinia),
     tagsViewStore: useTagsViewStore(pinia),
+    dictStore: useDictStore(pinia),
 }
