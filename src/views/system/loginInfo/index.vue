@@ -97,11 +97,7 @@
             </template>
          </el-table-column>
          <el-table-column label="描述" align="center" prop="msg" />
-         <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
-            <template #default="scope">
-               <span>{{ parseTime(scope.row.loginTime) }}</span>
-            </template>
-         </el-table-column>
+         <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180"/>
       </el-table>
 
       <pagination
