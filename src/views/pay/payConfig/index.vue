@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="支付配置名称" prop="payConfigName">
+      <el-form-item label="配置名称" prop="payConfigName">
         <el-input
           v-model="queryParams.payConfigName"
           placeholder="请输入支付配置名称"
@@ -60,15 +60,16 @@
         <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="支付配置主键" align="center" prop="id" show-overflow-tooltip />
       <el-table-column label="支付配置名称" align="center" prop="payConfigName" />
-      <el-table-column label="所属支付商户id" align="center" prop="payMerchantId">
-        <template #default="scope">
-          <dict-tag :options="pay_channel" :value="scope.row.payMerchantId"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="所属支付商户id" align="center" prop="payMerchantId"/>
       <el-table-column label="支付配置参数（json字符串）" align="center" prop="payConfigParams" />
-      <el-table-column label="是否禁用" align="center" prop="disableFlag">
+      <el-table-column label="状态" align="center" key="disableFlag">
         <template #default="scope">
-          <dict-tag :options="sys_yes_no" :value="scope.row.disableFlag"/>
+          <el-switch
+              v-model="scope.row.disableFlag"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -107,30 +108,21 @@
     <!-- 添加或修改支付配置对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="payConfigRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="支付配置名称" prop="payConfigName">
+        <el-form-item label="配置名称" prop="payConfigName">
           <el-input v-model="form.payConfigName" placeholder="请输入支付配置名称" />
         </el-form-item>
-        <el-form-item label="所属支付商户id" prop="payMerchantId">
-          <el-select v-model="form.payMerchantId" placeholder="请选择所属支付商户id">
+        <el-form-item label="所属商户" prop="payMerchantId">
+          <el-select v-model="form.payMerchantId" filterable placeholder="请选择所属支付商户id">
             <el-option
-              v-for="dict in pay_channel"
-              :key="dict.value"
-              :label="dict.label"
-:value="parseInt(dict.value)"
+              v-for="merchant in payMerchantList"
+              :key="merchant.id"
+              :label="merchant.merchantName"
+:value="merchant.id"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="支付配置参数（json字符串）" prop="payConfigParams">
           <el-input v-model="form.payConfigParams" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="是否禁用">
-          <el-radio-group v-model="form.disableFlag">
-            <el-radio
-              v-for="dict in sys_yes_no"
-              :key="dict.value"
-:label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -148,11 +140,19 @@
 </template>
 
 <script setup name="PayConfig">
-    import {getPayConfigListRequest, getPayConfigDetailsRequest, addPayConfigRequest, editPayConfigRequest, deletePayConfigByIdsRequest} from "@/api/pay/payConfig";
+import {
+  getPayConfigListRequest,
+  getPayConfigDetailsRequest,
+  addPayConfigRequest,
+  editPayConfigRequest,
+  deletePayConfigByIdsRequest,
+  disablePayConfigRequest
+} from "@/api/pay/payConfig";
+import {getPayMerchantListForSelectRequest} from "@/api/pay/payMerchant";
 
     const { proxy } = getCurrentInstance();
-const { pay_channel, sys_yes_no } = proxy.useDict('pay_channel', 'sys_yes_no');
 
+const payMerchantList = ref([]);
 const payConfigList = ref([]);
 const open = ref(false);
 const loading = ref(true);
@@ -201,13 +201,36 @@ const data = reactive({
 });
 const { queryParams, form, rules } = toRefs(data);
 
+
+
+    /** 状态修改  */
+    function handleStatusChange(row) {
+      let text = row.disableFlag == "0" ? "启用" : "停用";
+      proxy.$modal.confirm('确认要"' + text + '""' + row.payConfigName + '"配置吗?').then(function () {
+        return disablePayConfigRequest({
+          id: row.id,
+          disableFlag: row.disableFlag,
+        });
+      }).then(() => {
+        proxy.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.disableFlag = row.disableFlag == "0" ? "1" : "0";
+      });
+    }
+
 /** 查询支付配置列表 */
 async function getList() {
   loading.value = true;
   let response = await getPayConfigListRequest(queryParams.value)
-  payConfigList.value = response.data.list;
+  payConfigList.value = response.data;
   total.value = response.data.total;
   loading.value = false;
+}
+
+/** 查询支付商户列表 */
+async function getMerchantList() {
+  let response = await getPayMerchantListForSelectRequest()
+  payMerchantList.value = response.data;
 }
 
 // 取消按钮
@@ -254,8 +277,9 @@ function handleSelectionChange(selection) {
 }
 
 /** 新增按钮操作 */
-function handleAdd() {
+async function handleAdd() {
   reset();
+  await getMerchantList();
   open.value = true;
   title.value = "添加支付配置";
 }
@@ -264,6 +288,7 @@ function handleAdd() {
 async function handleEdit(row) {
   reset();
   const id = row.id || ids.value[0]
+  await getMerchantList();
   let response = await getPayConfigDetailsRequest(id);
   form.value = response.data;
   open.value = true;

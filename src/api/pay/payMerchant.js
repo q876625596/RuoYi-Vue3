@@ -8,6 +8,13 @@ export function getPayMerchantListRequest(query) {
     params: query
   })
 }
+// 查询全部支付商户列表
+export function getPayMerchantListForSelectRequest() {
+  return request({
+    url: '/pay/payMerchant/getPayMerchantListForSelect',
+    method: 'get'
+  })
+}
 
 // 查询支付商户详细
 export function getPayMerchantDetailsRequest(id) {
