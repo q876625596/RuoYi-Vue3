@@ -61,7 +61,7 @@
       <el-table-column label="支付配置主键" align="center" prop="id" show-overflow-tooltip />
       <el-table-column label="支付配置名称" align="center" prop="payConfigName" />
       <el-table-column label="所属支付商户id" align="center" prop="payMerchantId"/>
-      <el-table-column label="支付配置参数（json字符串）" align="center" prop="payConfigParams" />
+      <el-table-column label="支付配置参数（json字符串）" align="center" prop="payConfigParams" show-tooltip-when-overflow />
       <el-table-column label="状态" align="center" key="disableFlag">
         <template #default="scope">
           <el-switch

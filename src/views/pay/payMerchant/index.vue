@@ -39,11 +39,12 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table ref="mainTable" v-loading="loading" :data="payMerchantList"
-              @expand-change="getConfigList" :row-key="getRowKeys" :expand-row-keys="expands">
+              @expand-change="expandMerchant" :row-key="getRowKeys" :expand-row-keys="expands">
       <el-table-column type="expand" align="center">
         <template #default="props" v-loading="loadingConfig">
           <el-card style="margin-top: 10px" shadow="hover" v-for="item in props.row.payConfigList">
-            <el-descriptions :title="'【' + item.payConfigName + '】' + '支付配置信息'" :border="true" :column="3">
+            <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'" :border="true"
+                             :column="1">
               <template #extra>
                 <el-switch
                     style="margin-right: 20px"
@@ -57,9 +58,10 @@
                 <el-button type="danger" @click="handleDeleteConfig(item)">删除支付配置
                 </el-button>
               </template>
-              <el-descriptions-item label="支付参数" span="1">{{
-                  item.payConfigParams
-                }}
+              <el-descriptions-item class-name="descriptionContent" align="center" :label="key" span="1"
+                                    v-for="(param,key) in getParams(item)">
+                {{ param }}
+
               </el-descriptions-item>
             </el-descriptions>
           </el-card>
@@ -135,13 +137,6 @@
           <el-button
               type="text"
               icon="Edit"
-              @click="handleAddConfig(scope.row)"
-              v-hasPermi="['pay:payConfig:edit']"
-          >新增支付配置
-          </el-button>
-          <el-button
-              type="text"
-              icon="Edit"
               @click="handleEdit(scope.row)"
               v-hasPermi="['pay:payMerchant:edit']"
           >修改
@@ -152,6 +147,13 @@
               @click="handleDelete(scope.row)"
               v-hasPermi="['pay:payMerchant:remove']"
           >删除
+          </el-button>
+          <el-button
+              type="text"
+              icon="Plus"
+              @click="handleAddConfig(scope.row)"
+              v-hasPermi="['pay:payConfig:edit']"
+          >新增支付配置
           </el-button>
         </template>
       </el-table-column>
@@ -200,26 +202,26 @@
     </el-dialog>
 
     <!-- 添加或修改支付配置对话框 -->
-    <el-dialog :title="titleConfig" v-model="openConfig" width="500px" append-to-body>
+    <el-dialog :title="titleConfig" v-model="openConfig" width="800px" append-to-body>
       <el-form ref="payConfigRef" :model="formConfig" :rules="rulesConfig" label-width="80px">
         <el-form-item label="配置名称" prop="payConfigName">
-          <el-input v-model="formConfig.payConfigName" placeholder="请输入支付配置名称" />
+          <el-input v-model="formConfig.payConfigName" placeholder="请输入支付配置名称"/>
         </el-form-item>
         <el-form-item label="所属商户" prop="payMerchantId">
-          <el-select v-model="formConfig.payMerchantId" filterable placeholder="请选择所属支付商户id">
-            <el-option
-                v-for="merchant in payMerchantList"
-                :key="merchant.id"
-                :label="merchant.merchantName"
-                :value="merchant.id"
+          <el-select disabled v-model="formConfig.payMerchantId" filterable placeholder="请选择所属支付商户id">
+            <el-option disabled
+                       v-for="merchant in payMerchantList"
+                       :key="merchant.id"
+                       :label="merchant.merchantName"
+                       :value="merchant.id"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="支付配置参数（json字符串）" prop="payConfigParams">
-          <el-input v-model="formConfig.payConfigParams" type="textarea" placeholder="请输入内容" />
+          <el-input :autosize="true" v-model="formConfig.payConfigParams" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="formConfig.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="formConfig.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -243,7 +245,8 @@ import {
   getPayMerchantListRequest
 } from "@/api/pay/payMerchant";
 import {
-  addPayConfigRequest, deletePayConfigByIdsRequest,
+  addPayConfigRequest,
+  deletePayConfigByIdsRequest,
   disablePayConfigRequest,
   editPayConfigRequest,
   getPayConfigDetailsRequest,
@@ -267,7 +270,27 @@ const tempMerchantId = ref(null);
 const openConfig = ref(false);
 const loadingConfig = ref(true);
 const titleConfig = ref("");
-
+//微信支付参数模板
+const tempWxParams = `
+{
+    "appId" : "填写微信AppId",
+    "merchantId" : "填写微信商户号",
+    "merchantSerialNumber" : "填写微信商户证书序列号",
+    "apiV3Key" : "填写微信apiV3Key",
+    "privateKey" : "填写微信privateKey"
+}
+`
+//银联支付参数模板
+const tempUnionParams = `
+{
+    "appId" : "填写银联AppId",
+    "appKey" : "填写银联AppKey",
+    "appSecret" : "填写银联appSecret",
+    "merchantId" : "填写银联商户号",
+    "tid" : "填写银联终端号",
+    "merchantPrefix" : "填写银联商户前缀"
+}
+`
 
 const data = reactive({
   form: {},
@@ -313,28 +336,28 @@ const data = reactive({
   },
   rulesConfig: {
     payConfigName: [
-      { required: true, message: "支付配置名称不能为空", trigger: "blur" }
+      {required: true, message: "支付配置名称不能为空", trigger: "blur"}
     ],
     payMerchantId: [
-      { required: true, message: "所属支付商户id不能为空", trigger: "change" }
+      {required: true, message: "所属支付商户id不能为空", trigger: "blur"}
     ],
     payConfigParams: [
-      { required: true, message: "支付配置参数（json字符串）不能为空", trigger: "blur" }
+      {required: true, message: "支付配置参数（json字符串）不能为空", trigger: "blur"}
     ],
     disableFlag: [
-      { required: true, message: "是否禁用不能为空", trigger: "blur" }
+      {required: true, message: "是否禁用不能为空", trigger: "blur"}
     ],
     createUserId: [
-      { required: true, message: "创建者id不能为空", trigger: "blur" }
+      {required: true, message: "创建者id不能为空", trigger: "blur"}
     ],
     createTime: [
-      { required: true, message: "创建时间不能为空", trigger: "blur" }
+      {required: true, message: "创建时间不能为空", trigger: "blur"}
     ],
     updateUserId: [
-      { required: true, message: "更新者id不能为空", trigger: "blur" }
+      {required: true, message: "更新者id不能为空", trigger: "blur"}
     ],
     updateTime: [
-      { required: true, message: "更新时间不能为空", trigger: "blur" }
+      {required: true, message: "更新时间不能为空", trigger: "blur"}
     ],
   },
 });
@@ -343,7 +366,7 @@ const {expands, getRowKeys, queryParams, form, formConfig, rules, rulesConfig} =
 /** 状态修改  */
 function handleConfigStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
-  proxy.$modal.confirm('确认要"' + text + '""' + row.payConfigName + '"配置吗?').then(function () {
+  proxy.$modal.confirm('确认要"' + text + '""' + row.payConfigName + '"支付配置吗?').then(function () {
     return disablePayConfigRequest({
       id: row.id,
       disableFlag: row.disableFlag,
@@ -353,6 +376,21 @@ function handleConfigStatusChange(row) {
   }).catch(function () {
     row.disableFlag = row.disableFlag == "0" ? "1" : "0";
   });
+}
+
+function getParams(item) {
+  try {
+    return JSON.parse(item.payConfigParams);
+  } catch (e) {
+    return {"params": item.payConfigParams};
+  }
+}
+
+function expandMerchant(expandedRows, rowList) {
+  //展开
+  if (rowList.indexOf(expandedRows) != -1) {
+    getConfigList(expandedRows);
+  }
 }
 
 /** 查询支付配置列表 */
@@ -401,7 +439,18 @@ async function handleAddConfig(row) {
   await getSelectMerchantList();
   openConfig.value = true;
   titleConfig.value = "添加支付配置";
+  switch (row.merchantPayChannel) {
+    case "1":
+      formConfig.value.payConfigParams = tempWxParams;
+      break
+    case "2":
+      break
+    case "3":
+      formConfig.value.payConfigParams = tempUnionParams;
+      break
+  }
   tempMerchantId.value = row.id;
+  formConfig.value.payMerchantId = tempMerchantId.value;
 }
 
 /** 修改按钮操作 */
@@ -420,20 +469,20 @@ async function handleEditConfig(row) {
 /** 删除按钮操作 */
 function handleDeleteConfig(row) {
   const idList = [row.id];
-  let payMerchant = payMerchantList.value.find(item=>item.id = row.payMerchantId);
+  let payMerchant = payMerchantList.value.find(item => item.id == row.payMerchantId);
   proxy.$modal.confirm('是否确认删除支付配置编号为"' + idList + '"的数据项？').then(async () => {
     await deletePayConfigByIdsRequest(idList);
     await getConfigList(payMerchant);
     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+  }).catch(() => {
+  });
 }
 
 /** 提交按钮 */
 function submitFormConfig() {
   proxy.$refs["payConfigRef"].validate(async valid => {
     if (valid) {
-      let payMerchant = payMerchantList.value.find(item=>item.id = tempMerchantId.value);
-      console.log(payMerchant);
+      let payMerchant = payMerchantList.value.find(item => item.id == tempMerchantId.value);
       if (formConfig.value.id != null) {
         await editPayConfigRequest(formConfig.value);
         proxy.$modal.msgSuccess("修改成功");
@@ -569,3 +618,9 @@ function handleExport() {
 
 getList();
 </script>
+<style scoped>
+/deep/ .descriptionContent {
+  overflow: hidden;
+  max-width: 400px;
+}
+</style>
