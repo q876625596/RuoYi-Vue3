@@ -277,7 +277,9 @@ const tempWxParams = `
     "merchantId" : "填写微信商户号",
     "merchantSerialNumber" : "填写微信商户证书序列号",
     "apiV3Key" : "填写微信apiV3Key",
-    "privateKey" : "填写微信privateKey"
+    "privateKey" : "填写微信privateKey",
+    "payNotifyUrl" : "填写微信支付回调地址",
+    "refundNotifyUrl" : "填写微信退款回调地址"
 }
 `
 //银联支付参数模板
@@ -288,7 +290,8 @@ const tempUnionParams = `
     "appSecret" : "填写银联appSecret",
     "merchantId" : "填写银联商户号",
     "tid" : "填写银联终端号",
-    "merchantPrefix" : "填写银联商户前缀"
+    "merchantPrefix" : "填写银联商户前缀",
+    "payNotifyUrl" : "填写银联支付回调地址",
 }
 `
 
