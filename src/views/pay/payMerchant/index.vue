@@ -55,6 +55,8 @@
                 ></el-switch>
                 <el-button type="success" @click="handleEditConfig(item)">修改支付配置
                 </el-button>
+                <el-button type="primary" @click="handleBindScope(item)">绑定适用范围
+                </el-button>
                 <el-button type="danger" @click="handleDeleteConfig(item)">删除支付配置
                 </el-button>
               </template>
@@ -298,6 +300,7 @@ const tempUnionParams = `
 const data = reactive({
   form: {},
   formConfig: {},
+  formScope: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -364,7 +367,7 @@ const data = reactive({
     ],
   },
 });
-const {expands, getRowKeys, queryParams, form, formConfig, rules, rulesConfig} = toRefs(data);
+const {expands, getRowKeys, queryParams, form, formConfig, formScope, rules, rulesConfig} = toRefs(data);
 
 /** 状态修改  */
 function handleConfigStatusChange(row) {
@@ -429,6 +432,15 @@ function resetConfig() {
   proxy.resetForm("payConfigRef");
 }
 
+// 表单重置
+function resetScope() {
+  formScope.value = {
+    payConfigId: null,
+    scopeItemList: null
+  };
+  proxy.resetForm("payScopeRef");
+}
+
 // 取消按钮
 function cancelConfig() {
   openConfig.value = false;
@@ -458,6 +470,18 @@ async function handleAddConfig(row) {
 
 /** 修改按钮操作 */
 async function handleEditConfig(row) {
+  resetConfig();
+  const id = row.id
+  await getSelectMerchantList();
+  let response = await getPayConfigDetailsRequest(id);
+  formConfig.value = response.data;
+  openConfig.value = true;
+  titleConfig.value = "修改支付配置";
+  tempMerchantId.value = row.payMerchantId;
+}
+
+/** 绑定适用范围操作 */
+async function handleBindScope(row) {
   resetConfig();
   const id = row.id
   await getSelectMerchantList();
