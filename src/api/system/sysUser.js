@@ -1,12 +1,11 @@
 import request from '@/utils/request'
-import {parseStrEmpty} from "@/utils/ruoyi";
 
 // 查询用户列表
-export function listUser(query) {
+export function listUser(data) {
     return request({
         url: '/system/sysUser/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -15,8 +14,8 @@ export function getUser(userId) {
     return request({
         url: '/system/sysUser/getUserInfoById',
         method: 'post',
-        params: {
-            userId: userId
+        data: {
+            id: userId
         }
     })
 }
@@ -40,12 +39,12 @@ export function updateUser(data) {
 }
 
 // 删除用户
-export function delUser(userIds) {
+export function delUser(userIdList) {
     return request({
-        url: '/system/sysUser/deleteByIdsL',
+        url: '/system/sysUser/deleteByIdListL',
         method: 'post',
-        params: {
-            ids:userIds
+        data: {
+            idList: userIdList
         }
     })
 }
@@ -59,20 +58,20 @@ export function resetUserPwd(userId, password) {
     return request({
         url: '/system/sysUser/resetPwd',
         method: 'post',
-        params: data
+        data: data
     })
 }
 
 // 用户状态修改
-export function changeUserStatus(userId, status) {
+export function changeUserStatus(userId, disableFlag) {
     const data = {
         userId: userId,
-        status: status
+        status: disableFlag
     }
     return request({
         url: '/system/sysUser/changeStatus',
         method: 'post',
-        params: data
+        data: data
     })
 }
 
@@ -80,7 +79,7 @@ export function changeUserStatus(userId, status) {
 export function getUserProfile() {
     return request({
         url: '/system/sysUserProfile/getProfile',
-        method: 'get'
+        method: 'post'
     })
 }
 
@@ -102,7 +101,7 @@ export function updateUserPwd(oldPassword, newPassword) {
     return request({
         url: '/system/sysUserProfile/updatePwd',
         method: 'post',
-        params: data
+        data: data
     })
 }
 
@@ -118,10 +117,10 @@ export function uploadAvatar(data) {
 // 查询授权角色
 export function getAuthRole(userId) {
     return request({
-        url: '/system/sysUser/getAuthRole',
-        method: 'get',
-        params: {
-            userId: userId
+        url: '/system/sysUser/getAuthRoleByUserId',
+        method: 'post',
+        data: {
+            id: userId
         }
     })
 }
@@ -131,6 +130,6 @@ export function updateAuthRole(data) {
     return request({
         url: '/system/sysUser/setAuthRole',
         method: 'post',
-        params: data
+        data: data
     })
 }

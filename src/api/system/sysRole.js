@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询角色列表
-export function listRole(query) {
+export function listRole(data) {
     return request({
         url: '/system/sysRole/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listRole(query) {
 export function getRole(id) {
     return request({
         url: '/system/sysRole/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -62,31 +62,31 @@ export function changeRoleStatus(roleId, roleKey, status) {
 }
 
 // 删除角色
-export function delRole(ids) {
+export function delRole(idList) {
     return request({
-        url: '/system/sysRole/deleteByIdsL',
+        url: '/system/sysRole/deleteByIdListL',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }
 
 // 查询角色已授权用户列表
-export function allocatedUserList(query) {
+export function allocatedUserList(data) {
     return request({
         url: '/system/sysRole/authUser/allocatedList',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
 // 查询角色未授权用户列表
-export function unallocatedUserList(query) {
+export function unallocatedUserList(data) {
     return request({
         url: '/system/sysRole/authUser/unallocatedList',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -104,7 +104,7 @@ export function authUserCancelAll(data) {
     return request({
         url: '/system/sysRole/authUser/cancelAll',
         method: 'post',
-        params: data
+        data: data
     })
 }
 
@@ -113,6 +113,6 @@ export function authUserSelectAll(data) {
     return request({
         url: '/system/sysRole/authUser/selectAll',
         method: 'post',
-        params: data
+        data: data
     })
 }
