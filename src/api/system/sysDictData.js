@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询字典数据列表
-export function listData(query) {
+export function listData(data) {
     return request({
         url: '/system/sysDictData/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listData(query) {
 export function getData(id) {
     return request({
         url: '/system/sysDictData/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -24,9 +24,9 @@ export function getData(id) {
 export function getDicts(dictType) {
     return request({
         url: '/system/sysDictData/listByDictType',
-        method: 'get',
-        params: {
-            dictType: dictType
+        method: 'post',
+        data: {
+            type: dictType
         }
     })
 }
@@ -50,12 +50,12 @@ export function updateData(data) {
 }
 
 // 删除字典数据
-export function delData(ids) {
+export function delData(idList) {
     return request({
-        url: '/system/sysDictData/deleteByIdsP',
+        url: '/system/sysDictData/deleteByIdListP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }

@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询部门列表
-export function listDept(query) {
+export function listDept(data) {
     return request({
         url: '/system/sysDept/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listDept(query) {
 export function listDeptExcludeChild(id) {
     return request({
         url: '/system/sysDept/listExcludeId',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -24,8 +24,8 @@ export function listDeptExcludeChild(id) {
 export function getDept(id) {
     return request({
         url: '/system/sysDept/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -34,18 +34,18 @@ export function getDept(id) {
 // 查询部门下拉树结构
 export function deptTreeSelect() {
     return request({
-        url: '/system/sysDept/treeSelect',
-        method: 'get'
+        url: '/system/sysDept/deptTreeSelect',
+        method: 'post'
     })
 }
 
 // 根据角色ID查询部门树结构
-export function roleDeptTreeSelect(roleId) {
+export function deptTreeSelectByRoleId(roleId) {
     return request({
-        url: '/system/sysDept/roleDeptTreeSelect',
-        method: 'get',
-        params: {
-            roleId: roleId
+        url: '/system/sysDept/deptTreeSelectByRoleId',
+        method: 'post',
+        data: {
+            id: roleId
         }
     })
 }
@@ -71,9 +71,9 @@ export function updateDept(data) {
 // 删除部门
 export function delDept(id) {
     return request({
-        url: '/system/sysDept/deleteL',
+        url: '/system/sysDept/deleteByIdL',
         method: 'post',
-        params: {
+        data: {
             id: id
         }
     })

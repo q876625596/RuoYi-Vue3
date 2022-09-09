@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询参数列表
-export function listConfig(query) {
+export function listConfig(data) {
     return request({
         url: '/system/sysConfig/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,20 +13,9 @@ export function listConfig(query) {
 export function getConfig(configId) {
     return request({
         url: '/system/sysConfig/getDetails',
-        method: 'get',
-        params: {
-            configId: configId
-        }
-    })
-}
-
-// 根据参数键名查询参数值
-export function getConfigKey(configKey) {
-    return request({
-        url: '/system/sysConfig/getConfigValueByConfigKey',
-        method: 'get',
-        params: {
-            configKey: configKey
+        method: 'post',
+        data: {
+            id: configId
         }
     })
 }
@@ -50,12 +39,12 @@ export function updateConfig(data) {
 }
 
 // 删除参数配置
-export function delConfig(ids) {
+export function delConfig(idList) {
     return request({
-        url: '/system/sysConfig/deleteByIdsP',
+        url: '/system/sysConfig/deleteByIdListP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }

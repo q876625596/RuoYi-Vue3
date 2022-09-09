@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询菜单列表
-export function listMenu(query) {
+export function listMenu(data) {
     return request({
         url: '/system/sysMenu/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listMenu(query) {
 export function getMenu(id) {
     return request({
         url: '/system/sysMenu/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -23,18 +23,18 @@ export function getMenu(id) {
 // 查询菜单下拉树结构
 export function menuTreeSelect() {
     return request({
-        url: '/system/sysMenu/treeSelect',
-        method: 'get'
+        url: '/system/sysMenu/menuTreeSelect',
+        method: 'post'
     })
 }
 
 // 根据角色ID查询菜单下拉树结构
 export function roleMenuTreeSelect(roleId) {
     return request({
-        url: '/system/sysMenu/roleMenuTreeSelect',
-        method: 'get',
-        params: {
-            roleId: roleId
+        url: '/system/sysMenu/menuTreeSelectByRoleId',
+        method: 'post',
+        data: {
+            id: roleId
         }
     })
 }
@@ -60,9 +60,9 @@ export function updateMenu(data) {
 // 删除菜单
 export function delMenu(id) {
     return request({
-        url: '/system/sysMenu/deleteP',
+        url: '/system/sysMenu/deleteByIdP',
         method: 'post',
-        params: {
+        data: {
             id: id
         }
     })
@@ -72,7 +72,7 @@ export function delMenu(id) {
 export const getRouters = () => {
     return request({
         url: '/system/sysMenu/getRouters',
-        method: 'get'
+        method: 'post'
     })
 }
 

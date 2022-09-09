@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询支付配置列表
-export function getPayConfigListRequest(query) {
+export function getPayConfigListRequest(data) {
     return request({
         url: '/pay/payConfig/getPayConfigList',
-        method: 'get',
-        params: query
+        method: 'poast',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function getPayConfigListRequest(query) {
 export function getPayConfigDetailsRequest(id) {
     return request({
         url: '/pay/payConfig/getPayConfigDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -39,12 +39,12 @@ export function editPayConfigRequest(data) {
 }
 
 // 删除支付配置
-export function deletePayConfigByIdsRequest(ids) {
+export function deletePayConfigByIdsRequest(idList) {
     return request({
         url: '/pay/payConfig/deletePayConfigByIdsP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }
@@ -54,6 +54,6 @@ export function disablePayConfigRequest(data) {
     return request({
         url: '/pay/payConfig/disablePayConfig',
         method: 'post',
-        params: data
+        data: data
     })
 }

@@ -1,21 +1,21 @@
 import request from '@/utils/request'
 
 // 查询操作日志列表
-export function list(query) {
+export function list(data) {
   return request({
     url: '/system/sysOperLog/list',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: data
   })
 }
 
 // 删除操作日志
-export function delOperLog(ids) {
+export function delOperLog(idList) {
   return request({
-    url: '/system/sysOperLog/deleteByIdsP',
+    url: '/system/sysOperLog/deleteByIdListP',
     method: 'post',
-    params:{
-      ids:ids
+    data:{
+      idList:idList
     }
   })
 }

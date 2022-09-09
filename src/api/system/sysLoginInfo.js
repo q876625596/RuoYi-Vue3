@@ -1,21 +1,21 @@
 import request from '@/utils/request'
 
 // 查询登录日志列表
-export function list(query) {
+export function list(data) {
   return request({
     url: '/system/sysLoginInfo/list',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: data
   })
 }
 
 // 删除登录日志
-export function delLoginInfo(ids) {
+export function delLoginInfo(idList) {
   return request({
     url: '/system/sysLoginInfo/deleteByIdsP',
     method: 'post',
-    params:{
-      ids:ids
+    data:{
+      idList:idList
     }
   })
 }

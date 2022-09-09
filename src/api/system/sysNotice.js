@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询公告列表
-export function listNotice(query) {
+export function listNotice(data) {
     return request({
         url: '/system/sysNotice/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listNotice(query) {
 export function getNotice(id) {
     return request({
         url: '/system/sysNotice/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -39,12 +39,12 @@ export function updateNotice(data) {
 }
 
 // 删除公告
-export function delNotice(ids) {
+export function delNotice(idList) {
     return request({
-        url: '/system/sysNotice/deleteByIdsP',
+        url: '/system/sysNotice/deleteByIdListP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }

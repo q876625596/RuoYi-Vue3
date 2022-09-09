@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询字典类型列表
-export function listType(query) {
+export function listType(data) {
     return request({
         url: '/system/sysDictType/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listType(query) {
 export function getType(id) {
     return request({
         url: '/system/sysDictType/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -39,12 +39,12 @@ export function updateType(data) {
 }
 
 // 删除字典类型
-export function delType(ids) {
+export function delType(idList) {
     return request({
-        url: '/system/sysDictType/deleteByIdsP',
+        url: '/system/sysDictType/deleteByIdListP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }
@@ -61,6 +61,6 @@ export function refreshCache() {
 export function optionSelect() {
     return request({
         url: '/system/sysDictType/optionSelect',
-        method: 'get'
+        method: 'post'
     })
 }

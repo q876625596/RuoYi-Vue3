@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询岗位列表
-export function listPost(query) {
+export function listPost(data) {
     return request({
         url: '/system/sysPost/list',
-        method: 'get',
-        params: query
+        method: 'post',
+        data: data
     })
 }
 
@@ -13,8 +13,8 @@ export function listPost(query) {
 export function getPost(id) {
     return request({
         url: '/system/sysPost/getDetails',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             id: id
         }
     })
@@ -39,12 +39,12 @@ export function updatePost(data) {
 }
 
 // 删除岗位
-export function delPost(ids) {
+export function delPost(idList) {
     return request({
-        url: '/system/sysPost/deleteByIdsP',
+        url: '/system/sysPost/deleteByIdListP',
         method: 'post',
-        params: {
-            ids: ids
+        data: {
+            idList: idList
         }
     })
 }

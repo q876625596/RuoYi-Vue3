@@ -264,7 +264,7 @@
 <script setup name="Role">
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/sysRole";
 import { roleMenuTreeSelect, menuTreeSelect as menuTreeSelect } from "@/api/system/sysMenu";
-import { deptTreeSelect as deptTreeSelect, roleDeptTreeSelect } from "@/api/system/sysDept";
+import { deptTreeSelect as deptTreeSelect, deptTreeSelectByRoleId } from "@/api/system/sysDept";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -465,8 +465,8 @@ function getRoleMenuTreeSelect(roleId) {
   });
 }
 /** 根据角色ID查询部门树结构 */
-function getRoleDeptTreeSelect(roleId) {
-  return roleDeptTreeSelect(roleId).then(response => {
+function getDeptTreeSelectByRoleId(roleId) {
+  return deptTreeSelectByRoleId(roleId).then(response => {
     if (!response.data) {
       this.$message.error("角色查询部门获取异常")
     }
@@ -549,7 +549,7 @@ function dataScopeSelectChange(value) {
 /** 分配数据权限操作 */
 function handleDataScope(row) {
   reset();
-  const roleDeptTreeSelect = getRoleDeptTreeSelect(row.roleId);
+  const roleDeptTreeSelect = getDeptTreeSelectByRoleId(row.roleId);
   getRole(row.roleId).then(response => {
     form.value = response.data;
     openDataScope.value = true;
