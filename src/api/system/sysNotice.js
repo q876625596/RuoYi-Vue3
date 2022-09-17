@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询公告列表
-export function listNotice(data) {
+export function listNotice(query) {
     return request({
         url: '/system/sysNotice/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listNotice(data) {
 export function getNotice(id) {
     return request({
         url: '/system/sysNotice/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })

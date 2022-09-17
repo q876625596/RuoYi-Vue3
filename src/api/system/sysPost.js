@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询岗位列表
-export function listPost(data) {
+export function listPost(query) {
     return request({
         url: '/system/sysPost/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listPost(data) {
 export function getPost(id) {
     return request({
         url: '/system/sysPost/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })

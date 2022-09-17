@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询字典类型列表
-export function listType(data) {
+export function listType(query) {
     return request({
         url: '/system/sysDictType/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listType(data) {
 export function getType(id) {
     return request({
         url: '/system/sysDictType/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -61,6 +61,6 @@ export function refreshCache() {
 export function optionSelect() {
     return request({
         url: '/system/sysDictType/optionSelect',
-        method: 'post'
+        method: 'get'
     })
 }

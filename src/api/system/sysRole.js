@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询角色列表
-export function listRole(data) {
+export function listRole(query) {
     return request({
         url: '/system/sysRole/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listRole(data) {
 export function getRole(id) {
     return request({
         url: '/system/sysRole/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -73,20 +73,20 @@ export function delRole(idList) {
 }
 
 // 查询角色已授权用户列表
-export function allocatedUserList(data) {
+export function allocatedUserList(query) {
     return request({
         url: '/system/sysRole/authUser/allocatedList',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
 // 查询角色未授权用户列表
-export function unallocatedUserList(data) {
+export function unallocatedUserList(query) {
     return request({
         url: '/system/sysRole/authUser/unallocatedList',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 

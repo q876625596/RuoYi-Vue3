@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询菜单列表
-export function listMenu(data) {
+export function listMenu(query) {
     return request({
         url: '/system/sysMenu/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listMenu(data) {
 export function getMenu(id) {
     return request({
         url: '/system/sysMenu/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -24,7 +24,7 @@ export function getMenu(id) {
 export function menuTreeSelect() {
     return request({
         url: '/system/sysMenu/menuTreeSelect',
-        method: 'post'
+        method: 'get'
     })
 }
 
@@ -32,8 +32,8 @@ export function menuTreeSelect() {
 export function roleMenuTreeSelect(roleId) {
     return request({
         url: '/system/sysMenu/menuTreeSelectByRoleId',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: roleId
         }
     })
@@ -72,7 +72,7 @@ export function delMenu(id) {
 export const getRouters = () => {
     return request({
         url: '/system/sysMenu/getRouters',
-        method: 'post'
+        method: 'get'
     })
 }
 

@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询支付配置列表
-export function getPayConfigListRequest(data) {
+export function getPayConfigListRequest(query) {
     return request({
         url: '/pay/payConfig/getPayConfigList',
-        method: 'poast',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function getPayConfigListRequest(data) {
 export function getPayConfigDetailsRequest(id) {
     return request({
         url: '/pay/payConfig/getPayConfigDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })

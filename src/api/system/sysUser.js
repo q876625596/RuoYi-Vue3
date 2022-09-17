@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询用户列表
-export function listUser(data) {
+export function listUser(query) {
     return request({
         url: '/system/sysUser/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listUser(data) {
 export function getUser(userId) {
     return request({
         url: '/system/sysUser/getUserInfoById',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: userId
         }
     })
@@ -65,8 +65,8 @@ export function resetUserPwd(userId, password) {
 // 用户状态修改
 export function changeUserStatus(userId, disableFlag) {
     const data = {
-        userId: userId,
-        status: disableFlag
+        id: userId,
+        disableFlag: disableFlag
     }
     return request({
         url: '/system/sysUser/changeStatus',
@@ -79,7 +79,7 @@ export function changeUserStatus(userId, disableFlag) {
 export function getUserProfile() {
     return request({
         url: '/system/sysUserProfile/getProfile',
-        method: 'post'
+        method: 'get'
     })
 }
 

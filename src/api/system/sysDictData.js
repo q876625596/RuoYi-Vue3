@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询字典数据列表
-export function listData(data) {
+export function listData(query) {
     return request({
         url: '/system/sysDictData/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listData(data) {
 export function getData(id) {
     return request({
         url: '/system/sysDictData/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -24,8 +24,8 @@ export function getData(id) {
 export function getDicts(dictType) {
     return request({
         url: '/system/sysDictData/listByDictType',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             type: dictType
         }
     })

@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询参数列表
-export function listConfig(data) {
+export function listConfig(query) {
     return request({
         url: '/system/sysConfig/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listConfig(data) {
 export function getConfig(configId) {
     return request({
         url: '/system/sysConfig/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: configId
         }
     })

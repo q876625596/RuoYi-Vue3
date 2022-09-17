@@ -88,6 +88,7 @@
               type="text"
               icon="Plus"
               @click="handleAdd(scope.row)"
+              v-if="scope.row.tenantId == piniaStore.userStore.tenantId"
               v-hasPermi="['system:menu:add']"
           >新增
           </el-button>
@@ -315,6 +316,7 @@
 </template>
 
 <script setup>
+import {piniaStore} from "@/store/indexStore";
 import {addMenu, delMenu, getMenu, listMenu, updateMenu} from "@/api/system/sysMenu";
 import {reactive, ref} from "@vue/reactivity";
 import SvgIcon from "@/components/SvgIcon/index";

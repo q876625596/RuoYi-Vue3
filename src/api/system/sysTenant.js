@@ -4,16 +4,16 @@ import request from '@/utils/request'
 export function getAllSysTenantForSelectRequest() {
     return request({
         url: '/system/sysTenant/getAllSysTenantForSelect',
-        method: 'post',
+        method: 'get',
     })
 }
 
 // 查询系统租户列表
-export function getSysTenantListRequest(data) {
+export function getSysTenantListRequest(query) {
     return request({
         url: '/system/sysTenant/getSysTenantList',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -21,8 +21,8 @@ export function getSysTenantListRequest(data) {
 export function getSysTenantDetailsRequest(tenantId) {
     return request({
         url: '/system/sysTenant/getSysTenantDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: tenantId
         }
     })
@@ -32,8 +32,8 @@ export function getSysTenantDetailsRequest(tenantId) {
 export function getSysTenantConfigRequest(tenantId) {
     return request({
         url: '/system/sysTenant/getSysTenantConfig',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: tenantId
         }
     })

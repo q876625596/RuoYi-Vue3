@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询部门列表
-export function listDept(data) {
+export function listDept(query) {
     return request({
         url: '/system/sysDept/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,8 +13,8 @@ export function listDept(data) {
 export function listDeptExcludeChild(id) {
     return request({
         url: '/system/sysDept/listExcludeId',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -24,8 +24,8 @@ export function listDeptExcludeChild(id) {
 export function getDept(id) {
     return request({
         url: '/system/sysDept/getDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })
@@ -35,7 +35,7 @@ export function getDept(id) {
 export function deptTreeSelect() {
     return request({
         url: '/system/sysDept/deptTreeSelect',
-        method: 'post'
+        method: 'get'
     })
 }
 
@@ -43,8 +43,8 @@ export function deptTreeSelect() {
 export function deptTreeSelectByRoleId(roleId) {
     return request({
         url: '/system/sysDept/deptTreeSelectByRoleId',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: roleId
         }
     })

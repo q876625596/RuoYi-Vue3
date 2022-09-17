@@ -503,7 +503,7 @@ function handleStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.tenantName + '"租户吗?').then(function () {
     return disableSysTenantRequest({
-      tenantId: row.tenantId,
+      id: row.tenantId,
       disableFlag: row.disableFlag,
     });
   }).then(() => {

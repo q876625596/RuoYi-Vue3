@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询支付商户列表
-export function getPayMerchantListRequest(data) {
+export function getPayMerchantListRequest(query) {
     return request({
         url: '/pay/payMerchant/getPayMerchantList',
-        method: 'post',
-        data: data
+        method: 'get',
+        params: query
     })
 }
 
@@ -13,7 +13,7 @@ export function getPayMerchantListRequest(data) {
 export function getPayMerchantListForSelectRequest() {
     return request({
         url: '/pay/payMerchant/getPayMerchantListForSelect',
-        method: 'post'
+        method: 'get'
     })
 }
 
@@ -21,8 +21,8 @@ export function getPayMerchantListForSelectRequest() {
 export function getPayMerchantDetailsRequest(id) {
     return request({
         url: '/pay/payMerchant/getPayMerchantDetails',
-        method: 'post',
-        data: {
+        method: 'get',
+        params: {
             id: id
         }
     })

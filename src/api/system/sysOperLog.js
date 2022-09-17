@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 // 查询操作日志列表
-export function list(data) {
+export function list(query) {
   return request({
     url: '/system/sysOperLog/list',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: query
   })
 }
 

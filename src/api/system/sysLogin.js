@@ -47,7 +47,7 @@ export function register(data) {
 export function getInfo() {
     return request({
         url: '/system/sysUser/getCurrentLoginUser',
-        method: 'post'
+        method: 'get'
     })
 }
 

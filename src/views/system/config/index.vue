@@ -108,6 +108,11 @@
                <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
             </template>
          </el-table-column>
+        <el-table-column label="全局租户通用" align="center" prop="globalTenantFlag">
+          <template #default="scope">
+            <dict-tag :options="sys_yes_no" :value="scope.row.globalTenantFlag" />
+          </template>
+        </el-table-column>
          <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
             <template #default="scope">
@@ -180,7 +185,6 @@ import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache
 
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
-
 const configList = ref([]);
 const open = ref(false);
 const loading = ref(true);
@@ -315,4 +319,5 @@ function handleRefreshCache() {
 }
 
 getList();
+console.log(sys_yes_no)
 </script>
