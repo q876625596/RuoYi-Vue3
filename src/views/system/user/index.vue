@@ -548,11 +548,20 @@ function handleResetPwd(row) {
     closeOnClickModal: false,
     inputPattern: /^.{5,20}$/,
     inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
-  }).then(({value}) => {
-    resetUserPwd(row.userId, value).then(response => {
-      proxy.$modal.msgSuccess("修改成功，新密码是：" + value);
-    });
-  }).catch(() => {
+    beforeClose: async (action, instance, done) => {
+      if (action != 'confirm') {
+        done();
+        return;
+      }
+      if (instance.confirmButtonLoading == true) {
+        return;
+      }
+      instance.cancelButtonLoading = true;
+      instance.confirmButtonLoading = true;
+      await resetUserPwd(row.userId, instance.inputValue);
+      proxy.$modal.msgSuccess("修改成功，新密码是：" + instance.inputValue);
+      done();
+    },
   });
 }
 

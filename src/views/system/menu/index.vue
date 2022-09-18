@@ -88,7 +88,6 @@
               type="text"
               icon="Plus"
               @click="handleAdd(scope.row)"
-              v-if="scope.row.tenantId == piniaStore.userStore.tenantId"
               v-hasPermi="['system:menu:add']"
           >新增
           </el-button>

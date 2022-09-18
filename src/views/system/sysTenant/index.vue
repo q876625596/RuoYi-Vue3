@@ -55,6 +55,8 @@
             <template #extra>
               <el-button type="success" v-if="props.row.adminInfo" @click="handleEditAdmin(props.row)">修改租户配置
               </el-button>
+              <el-button type="warning" v-if="props.row.adminInfo" @click="handleResetAdminPwd(props.row)">重置超管密码
+              </el-button>
               <el-button type="primary" v-else @click="handleInitAdmin(props.row)">初始化租户配置</el-button>
             </template>
             <div v-if="props.row.adminInfo">
@@ -70,7 +72,7 @@
                   props.row.adminInfo.managerDeptName
                 }}
               </el-descriptions-item>
-              <el-descriptions-item label="密码">{{ props.row.adminInfo.managerPassword }}</el-descriptions-item>
+              <!--              <el-descriptions-item label="密码">{{ props.row.adminInfo.managerPassword }}</el-descriptions-item>-->
             </div>
           </el-descriptions>
         </template>
@@ -209,7 +211,8 @@
         <el-form-item label="超管昵称" prop="nickName">
           <el-input v-model="adminForm.managerNickName" placeholder="请输入超管昵称"/>
         </el-form-item>
-        <el-form-item label="超管密码" prop="newPassword">
+        <el-form-item label="超管密码" prop="newPassword"
+                      v-if="adminForm.userId == null || adminForm.userId == undefined">
           <el-input v-model="adminForm.managerPassword" placeholder="请输入超管密码"
                     type="password"
                     auto-complete="off"
@@ -241,6 +244,7 @@ import {
   getSysTenantDetailsRequest,
   getSysTenantListRequest,
   initSysTenantConfigRequest,
+  resetAdminPwd,
 } from "@/api/system/sysTenant";
 import UserAvatar from "../../../components/ImageCropUpload";
 import {uploadImage} from "@/api/system/sysFile";
@@ -329,7 +333,7 @@ function getTenantDetails(expandedRows, rowList) {
 }
 
 function handleEditAdmin(row) {
-  adminForm.value = row.adminInfo;
+  adminForm.value = Object.assign({}, row.adminInfo);
   openAdmin.value = true;
   titleAdmin.value = "修改超管用户";
 }
@@ -350,6 +354,7 @@ function cancelAdmin() {
 
 async function submitAdmin() {
   if (adminForm.value.userId && adminForm.value.deptId) {
+    adminForm.value.managerPassword = null;
     await editSysTenantConfigRequest(adminForm.value);
     proxy.$modal.msgSuccess("修改租户配置成功");
   } else {
@@ -360,11 +365,36 @@ async function submitAdmin() {
   openAdmin.value = false;
 }
 
+/** 重置超管密码按钮操作 */
+function handleResetAdminPwd(row) {
+  proxy.$prompt('请输入"' + row.adminInfo.managerUsername + '"的新密码', "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    closeOnClickModal: false,
+    inputPattern: /^.{5,20}$/,
+    inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
+    beforeClose: async (action, instance, done) => {
+      if (action != 'confirm') {
+        done();
+        return;
+      }
+      if (instance.confirmButtonLoading == true) {
+        return;
+      }
+      instance.cancelButtonLoading = true;
+      instance.confirmButtonLoading = true;
+      await resetAdminPwd(row.tenantId, row.adminInfo.userId, instance.inputValue);
+      proxy.$modal.msgSuccess("修改成功，新密码是：" + instance.inputValue);
+      done();
+    },
+  });
+}
+
+
 async function getTenantAdmin(row) {
   loadingAdmin.value = true;
   let response = await getSysTenantConfigRequest(row.tenantId);
   row.adminInfo = response.data;
-  console.log(row.adminInfo);
   loadingAdmin.value = false;
 }
 

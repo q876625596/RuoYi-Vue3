@@ -57,6 +57,20 @@ export function editSysTenantConfigRequest(data) {
     })
 }
 
+// 重置超管用户密码
+export function resetAdminPwd(tenantId, userId, password) {
+    const data = {
+        tenantId,
+        userId,
+        password
+    }
+    return request({
+        url: '/system/sysTenant/resetAdminPwd',
+        method: 'post',
+        data: data
+    })
+}
+
 // 新增系统租户
 export function addSysTenantRequest(data) {
     return request({
