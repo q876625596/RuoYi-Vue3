@@ -3,12 +3,21 @@ import {defineStore} from "pinia";
 export  const useTagsViewStore = defineStore('tagsViewStore', {
     state: () => ({
         visitedViews: [],
-        cachedViews: []
+        cachedViews: [],
+        iframeViews: []
     }),
     actions: {
         addView(view) {
             this.addVisitedView(view);
             this.addCachedView(view);
+        },
+        addIframeView(view) {
+            if (this.iframeViews.some(v => v.path === view.path)) return
+            this.iframeViews.push(
+                Object.assign({}, view, {
+                    title: view.meta.title || 'no-name'
+                })
+            )
         },
         addVisitedView(view) {
             if (this.visitedViews.some(v => v.path === view.path)) return
@@ -43,7 +52,14 @@ export  const useTagsViewStore = defineStore('tagsViewStore', {
                         break
                     }
                 }
+                this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
                 resolve([...this.visitedViews])
+            })
+        },
+        delIframeView(view) {
+            return new Promise(resolve => {
+                this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
+                resolve([...this.iframeViews])
             })
         },
         delCachedView(view) {
@@ -69,6 +85,7 @@ export  const useTagsViewStore = defineStore('tagsViewStore', {
                 this.visitedViews = this.visitedViews.filter(v => {
                     return v.meta.affix || v.path === view.path
                 })
+                this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
                 resolve([...this.visitedViews])
             })
         },
@@ -98,6 +115,7 @@ export  const useTagsViewStore = defineStore('tagsViewStore', {
             return new Promise(resolve => {
                 // keep affix tags
                 this.visitedViews = this.visitedViews.filter(tag => tag.meta.affix)
+                this.iframeViews = []
                 resolve([...this.visitedViews])
             })
         },
@@ -131,6 +149,10 @@ export  const useTagsViewStore = defineStore('tagsViewStore', {
                     if (i > -1) {
                         this.cachedViews.splice(i, 1)
                     }
+                    if(item.meta.link) {
+                        const fi = this.iframeViews.findIndex(v => v.path === item.path)
+                        this.iframeViews.splice(fi, 1)
+                    }
                     return false
                 })
                 resolve([...this.visitedViews])
@@ -150,6 +172,10 @@ export  const useTagsViewStore = defineStore('tagsViewStore', {
                     const i = this.cachedViews.indexOf(item.name)
                     if (i > -1) {
                         this.cachedViews.splice(i, 1)
+                    }
+                    if(item.meta.link) {
+                        const fi = this.iframeViews.findIndex(v => v.path === item.path)
+                        this.iframeViews.splice(fi, 1)
                     }
                     return false
                 })

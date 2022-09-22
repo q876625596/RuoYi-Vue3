@@ -139,6 +139,9 @@ function addTags() {
   const { name } = route
   if (name) {
     piniaStore.tagsViewStore.addView(route);
+    if (route.meta.link) {
+      piniaStore.tagsViewStore.addIframeView(route);
+    }
   }
   return false
 }
@@ -157,6 +160,9 @@ function moveToCurrentTag() {
 }
 function refreshSelectedTag(view) {
   proxy.$tab.refreshPage(view);
+  if (route.meta.link) {
+    piniaStore.tagsViewStore.delIframeView(route);
+  }
 }
 function closeSelectedTag(view) {
   proxy.$tab.closePage(view).then(({ visitedViews }) => {

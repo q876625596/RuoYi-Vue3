@@ -111,7 +111,7 @@
 </template>
 
 <script setup name="LoginInfo">
-import { list, delLoginInfo, cleanLoginInfo } from "@/api/system/sysLoginInfo";
+import {list, delLoginInfo, cleanLoginInfo, unlockLoginInfo} from "@/api/system/sysLoginInfo";
 
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
@@ -120,7 +120,9 @@ const loginInfoList = ref([]);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
+const single = ref(true);
 const multiple = ref(true);
+const selectName = ref("");
 const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "loginTime", order: "descending" });
@@ -154,6 +156,7 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
+  queryParams.value.pageNum = 1;
   proxy.$refs["loginInfoRef"].sort(defaultSort.value.prop, defaultSort.value.order);
   handleQuery();
 }
@@ -161,6 +164,8 @@ function resetQuery() {
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.id);
   multiple.value = !selection.length;
+  single.value = selection.length != 1;
+  selectName.value = selection.map(item => item.userName);
 }
 /** 排序触发事件 */
 function handleSortChange(column, prop, order) {
@@ -185,6 +190,15 @@ function handleClean() {
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("清空成功");
+  }).catch(() => {});
+}
+/** 解锁按钮操作 */
+function handleUnlock() {
+  const username = selectName.value;
+  proxy.$modal.confirm('是否确认解锁用户"' + username + '"数据项?').then(function () {
+    return unlockLoginInfo(username);
+  }).then(() => {
+    proxy.$modal.msgSuccess("用户" + username + "解锁成功");
   }).catch(() => {});
 }
 /** 导出按钮操作 */
