@@ -12,7 +12,7 @@ export function list(data) {
 // 强退用户
 export function forceLogout(tokenId) {
     return request({
-        url: '/system/sysOnline',
+        url: '/system/sysOnline/forceLogout',
         method: 'post',
         data: {
             token: tokenId
