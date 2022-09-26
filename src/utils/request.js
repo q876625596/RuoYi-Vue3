@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {ElLoading, ElMessage, ElMessageBox, ElNotification} from 'element-plus'
-import {getToken} from '@/utils/auth'
+import {getToken, refreshToken} from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import {blobValidate, tansParams} from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
@@ -27,6 +27,7 @@ service.interceptors.request.use(config => {
     // 是否需要防止数据重复提交
     const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
     if (getToken() && !isToken) {
+        refreshToken();
         config.headers['authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     // get请求映射params参数

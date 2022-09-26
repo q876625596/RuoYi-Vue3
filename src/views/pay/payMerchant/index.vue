@@ -43,7 +43,8 @@
       <el-table-column type="expand" align="center">
         <template #default="props" v-loading="loadingConfig">
           <el-card style="margin-top: 10px" shadow="hover" v-for="item in props.row.payConfigList">
-            <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'" :border="true"
+            <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'"
+                             :border="true"
                              :column="1">
               <template #extra>
                 <el-switch
@@ -60,7 +61,8 @@
                 <el-button type="danger" @click="handleDeleteConfig(item)">删除支付配置
                 </el-button>
               </template>
-              <el-descriptions-item class-name="descriptionContent" align="center" :label="key" span="1"
+              <el-descriptions-item  align="center" :label="key" span="1"
+                                    show-overflow-tooltip
                                     v-for="(param,key) in getParams(item)">
                 {{ param }}
 
@@ -645,9 +647,4 @@ function handleExport() {
 
 getList();
 </script>
-<style scoped>
-/deep/ .descriptionContent {
-  overflow: hidden;
-  max-width: 400px;
-}
-</style>
+
