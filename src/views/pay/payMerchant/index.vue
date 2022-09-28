@@ -42,33 +42,33 @@
               @expand-change="expandMerchant" :row-key="getRowKeys" :expand-row-keys="expands">
       <el-table-column type="expand" align="center">
         <template #default="props" v-loading="loadingConfig">
-          <el-card style="margin-top: 10px" shadow="hover" v-for="item in props.row.payConfigList">
-            <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'"
-                             :border="true"
-                             :column="1">
-              <template #extra>
-                <el-switch
-                    style="margin-right: 20px"
-                    v-model="item.disableFlag"
-                    active-value="0"
-                    inactive-value="1"
-                    @change="handleConfigStatusChange(item)"
-                ></el-switch>
-                <el-button type="success" @click="handleEditConfig(item)">修改支付配置
-                </el-button>
-                <el-button type="primary" @click="handleBindScope(item)">绑定适用范围
-                </el-button>
-                <el-button type="danger" @click="handleDeleteConfig(item)">删除支付配置
-                </el-button>
-              </template>
-              <el-descriptions-item  align="center" :label="key" span="1"
-                                    show-overflow-tooltip
-                                    v-for="(param,key) in getParams(item)">
-                {{ param }}
+          <div class="configOuter">
+            <el-card class="configItem" shadow="hover" v-for="item in props.row.payConfigList">
+              <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'"
+                               :border="true"
+                               :column="1">
+                <template #extra>
+                  <el-switch
+                      style="margin-right: 20px"
+                      v-model="item.disableFlag"
+                      active-value="0"
+                      inactive-value="1"
+                      @change="handleConfigStatusChange(item)"
+                  ></el-switch>
+                  <el-button type="success" @click="handleEditConfig(item)">修改
+                  </el-button>
+                  <el-button type="danger" @click="handleDeleteConfig(item)">删除
+                  </el-button>
+                </template>
+                <el-descriptions-item align="center" :label="key" span="1"
+                                      show-overflow-tooltip
+                                      v-for="(param,key) in getParams(item)">
+                  {{ param }}
 
-              </el-descriptions-item>
-            </el-descriptions>
-          </el-card>
+                </el-descriptions-item>
+              </el-descriptions>
+            </el-card>
+          </div>
         </template>
 
 
@@ -159,6 +159,13 @@
               v-hasPermi="['pay:payConfig:edit']"
           >新增支付配置
           </el-button>
+          <el-button
+              type="text"
+              icon="Plus"
+              @click="handleBindScope(scope.row)"
+              v-hasPermi="['pay:payMerchant:add']"
+          >绑定适用范围
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -235,12 +242,42 @@
         </div>
       </template>
     </el-dialog>
+
+    <!-- 添加或修改支付商户适用范围绑定对话框 -->
+    <el-dialog :title="titleBind" v-model="openBind" width="500px" append-to-body>
+      <el-form ref="payBindRef" :model="formBind" :rules="rulesBind" label-width="80px">
+        <el-form-item label="支付商户" prop="merchantName">
+          <el-input disabled v-model="formBind.merchantName"/>
+        </el-form-item>
+        <el-form-item label="归属部门" prop="scopeId">
+          <el-tree-select
+              v-model="scopeTempSelect"
+              :data="scopeOptions"
+              :props="{ value: 'id', label: 'label', children: 'children'}"
+              value-key="id"
+              placeholder="请选择归属部门"
+              :objMap="{ value: 'id', label: 'label', children: 'children' }"
+              show-checkbox
+              check-strictly
+              check-on-click-node
+              multiple
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitFormBind">确 定</el-button>
+          <el-button @click="cancelBind">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="PayMerchant">
 import {
   addPayMerchantRequest,
+  bindPayMerchantScopeRequest,
   deletePayMerchantByIdsRequest,
   disablePayMerchantRequest,
   editPayMerchantRequest,
@@ -256,6 +293,8 @@ import {
   getPayConfigDetailsRequest,
   getPayConfigListRequest
 } from "@/api/pay/payConfig";
+import {ref} from "vue";
+import {deptTreeSelect} from "@/api/system/sysDept";
 
 const {proxy} = getCurrentInstance();
 const {pay_channel} = proxy.useDict('pay_channel');
@@ -270,10 +309,16 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 
-const tempMerchantId = ref(null);
 const openConfig = ref(false);
 const loadingConfig = ref(true);
 const titleConfig = ref("");
+
+const openBind = ref(false);
+const loadingBind = ref(true);
+const titleBind = ref("");
+const scopeOptions = ref(undefined);
+const scopeTempSelect = ref();
+
 //微信支付参数模板
 const tempWxParams = `
 {
@@ -302,7 +347,7 @@ const tempUnionParams = `
 const data = reactive({
   form: {},
   formConfig: {},
-  formScope: {},
+  formBind: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -368,8 +413,16 @@ const data = reactive({
       {required: true, message: "更新时间不能为空", trigger: "blur"}
     ],
   },
+  rulesBind: {}
 });
-const {expands, getRowKeys, queryParams, form, formConfig, formScope, rules, rulesConfig} = toRefs(data);
+const {expands, getRowKeys, queryParams, form, formConfig, formBind, rules, rulesConfig, rulesBind} = toRefs(data);
+
+/** 查询部门下拉树结构 */
+function getScopeTreeSelect() {
+  deptTreeSelect().then(response => {
+    scopeOptions.value = response.data;
+  });
+}
 
 /** 状态修改  */
 function handleConfigStatusChange(row) {
@@ -435,18 +488,18 @@ function resetConfig() {
 }
 
 // 表单重置
-function resetScope() {
-  formScope.value = {
-    payConfigId: null,
+function resetBind() {
+  formBind.value = {
+    payMerchantId: null,
+    merchantName: null,
     scopeItemList: null
   };
-  proxy.resetForm("payScopeRef");
+  proxy.resetForm("payBindRef");
 }
 
 // 取消按钮
 function cancelConfig() {
   openConfig.value = false;
-  tempMerchantId.value = null;
   resetConfig();
 }
 
@@ -466,8 +519,7 @@ async function handleAddConfig(row) {
       formConfig.value.payConfigParams = tempUnionParams;
       break
   }
-  tempMerchantId.value = row.id;
-  formConfig.value.payMerchantId = tempMerchantId.value;
+  formConfig.value.payMerchantId = row.id;
 }
 
 /** 修改按钮操作 */
@@ -479,21 +531,7 @@ async function handleEditConfig(row) {
   formConfig.value = response.data;
   openConfig.value = true;
   titleConfig.value = "修改支付配置";
-  tempMerchantId.value = row.payMerchantId;
 }
-
-/** 绑定适用范围操作 */
-async function handleBindScope(row) {
-  resetConfig();
-  const id = row.id
-  await getSelectMerchantList();
-  let response = await getPayConfigDetailsRequest(id);
-  formConfig.value = response.data;
-  openConfig.value = true;
-  titleConfig.value = "修改支付配置";
-  tempMerchantId.value = row.payMerchantId;
-}
-
 
 /** 删除按钮操作 */
 function handleDeleteConfig(row) {
@@ -511,7 +549,7 @@ function handleDeleteConfig(row) {
 function submitFormConfig() {
   proxy.$refs["payConfigRef"].validate(async valid => {
     if (valid) {
-      let payMerchant = payMerchantList.value.find(item => item.id == tempMerchantId.value);
+      let payMerchant = payMerchantList.value.find(item => item.id == formConfig.value.payMerchantId);
       if (formConfig.value.id != null) {
         await editPayConfigRequest(formConfig.value);
         proxy.$modal.msgSuccess("修改成功");
@@ -523,6 +561,61 @@ function submitFormConfig() {
         openConfig.value = false;
         await getConfigList(payMerchant);
       }
+    }
+  });
+}
+
+// 取消按钮
+function cancelBind() {
+  openBind.value = false;
+  resetBind();
+}
+
+/** 绑定适用范围操作 */
+async function handleBindScope(row) {
+  resetBind();
+  formBind.value.payMerchantId = row.id
+  await getScopeTreeSelect();
+  let response = await getPayMerchantDetailsRequest(row.id);
+  formBind.value.scopeItemList = response.data.scopeItemList;
+  scopeTempSelect.value = [];
+  for (const scopeItem of response.data.scopeItemList) {
+    scopeTempSelect.value.push(scopeItem.scopeId);
+  }
+  formBind.value.merchantName = response.data.merchantName;
+  openBind.value = true;
+  titleBind.value = "绑定支付商户适用范围";
+}
+
+function findScope(scopeOptionsList, scopeList, size) {
+  for (const scopeItem of scopeOptionsList) {
+    let indexOf = scopeTempSelect.value.indexOf(scopeItem.id);
+    if (indexOf != -1) {
+      scopeList.push({scopeId: scopeItem.id, scopeType: 1, scopeName: scopeItem.label});
+      size++;
+      if (scopeTempSelect.value.length == size) {
+        return;
+      }
+    }
+    if (scopeItem.children != null) {
+      findScope(scopeItem.children, scopeList, size)
+    }
+  }
+
+}
+
+/** 提交按钮 */
+function submitFormBind() {
+  proxy.$refs["payBindRef"].validate(async valid => {
+    if (valid) {
+      let scopeList = [];
+      findScope(scopeOptions.value, scopeList, 0);
+      formBind.value.scopeItemList = scopeList;
+      let payMerchant = payMerchantList.value.find(item => item.id == formBind.value.payMerchantId);
+      await bindPayMerchantScopeRequest(formBind.value);
+      proxy.$modal.msgSuccess("绑定成功");
+      openBind.value = false;
+      payMerchant.scopeItemList = formBind.value.scopeItemList;
     }
   });
 }
@@ -647,4 +740,15 @@ function handleExport() {
 
 getList();
 </script>
+<style lang="scss">
+.configOuter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
+.configItem {
+  width: 49%;
+  margin-top: 10px;
+}
+</style>

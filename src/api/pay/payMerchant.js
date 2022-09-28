@@ -65,3 +65,12 @@ export function disablePayMerchantRequest(data) {
         data: data
     })
 }
+
+// 支付商户适用范围
+export function bindPayMerchantScopeRequest(data) {
+    return request({
+        url: '/pay/payMerchant/bindPayMerchantScope',
+        method: 'post',
+        data: data
+    })
+}
