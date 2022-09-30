@@ -42,6 +42,13 @@
               @expand-change="expandMerchant" :row-key="getRowKeys" :expand-row-keys="expands">
       <el-table-column type="expand" align="center">
         <template #default="props" v-loading="loadingConfig">
+          <el-descriptions border v-if="props.row.scopeItemList.length > 0">
+            <el-descriptions-item label="适用范围" min-width="200px" label-align="center">
+              <el-tag style="margin-right: 5px;margin-bottom: 5px;margin-top: 5px"
+                      v-for="item in props.row.scopeItemList">{{ item.scopeName }}
+              </el-tag>
+            </el-descriptions-item>
+          </el-descriptions>
           <div class="configOuter">
             <el-card class="configItem" shadow="hover" v-for="item in props.row.payConfigList">
               <el-descriptions :title="props.row.merchantName + '【' + item.payConfigName + '】' + '支付配置信息'"
@@ -70,46 +77,6 @@
             </el-card>
           </div>
         </template>
-
-
-        <!--        <el-table width="200px" ref="mainTable" v-loading="loadingConfig" :data="payConfigList">-->
-        <!--          <el-table-column label="支付配置主键" align="center" prop="id" show-overflow-tooltip />-->
-        <!--          <el-table-column label="支付配置名称" align="center" prop="payConfigName" />-->
-        <!--          <el-table-column label="支付配置参数（json字符串）" align="center" prop="payConfigParams" />-->
-        <!--          <el-table-column label="状态" align="center" key="disableFlag">-->
-        <!--            <template #default="scope">-->
-        <!--              <el-switch-->
-        <!--                  v-model="scope.row.disableFlag"-->
-        <!--                  active-value="0"-->
-        <!--                  inactive-value="1"-->
-        <!--                  @change="handleStatusChange(scope.row)"-->
-        <!--              ></el-switch>-->
-        <!--            </template>-->
-        <!--          </el-table-column>-->
-        <!--          <el-table-column label="创建时间" align="center" prop="createTime" width="180">-->
-        <!--            <template #default="scope">-->
-        <!--              <span>{{ parseTime(scope.row.createTime) }}</span>-->
-        <!--            </template>-->
-        <!--          </el-table-column>-->
-        <!--          <el-table-column label="备注" align="center" prop="remark" />-->
-        <!--          <el-table-column label="租户id" align="center" prop="tenantId" show-overflow-tooltip />-->
-        <!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-        <!--            <template #default="scope">-->
-        <!--              <el-button-->
-        <!--                  type="text"-->
-        <!--                  icon="Edit"-->
-        <!--                  @click="handleEdit(scope.row)"-->
-        <!--                  v-hasPermi="['pay:payConfig:edit']"-->
-        <!--              >修改</el-button>-->
-        <!--              <el-button-->
-        <!--                  type="text"-->
-        <!--                  icon="Delete"-->
-        <!--                  @click="handleDelete(scope.row)"-->
-        <!--                  v-hasPermi="['pay:payConfig:remove']"-->
-        <!--              >删除</el-button>-->
-        <!--            </template>-->
-        <!--          </el-table-column>-->
-        <!--        </el-table>-->
       </el-table-column>
       <el-table-column label="主键" align="center" prop="id" show-overflow-tooltip/>
       <el-table-column label="支付渠道" align="center" prop="merchantPayChannel">

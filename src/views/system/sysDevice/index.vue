@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="应用id" prop="appId">
+        <el-input
+            v-model="queryParams.appId"
+            placeholder="请输入应用id"
+            clearable
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="设备名称" prop="deviceName">
         <el-input
             v-model="queryParams.deviceName"
@@ -13,6 +21,16 @@
         <el-select v-model="queryParams.deviceType" placeholder="请选择设备类型" clearable>
           <el-option
               v-for="dict in sys_device_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="账号类型" prop="accountType">
+        <el-select v-model="queryParams.accountType" placeholder="请选择账号类型" clearable>
+          <el-option
+              v-for="dict in sys_account_type"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
@@ -82,11 +100,17 @@
     </el-row>
     <el-table ref="mainTable" v-loading="loading" :data="sysDeviceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="主键，应用id" align="center" prop="appId" show-overflow-tooltip/>
+      <el-table-column label="主键id" align="center" prop="id" show-overflow-tooltip/>
+      <el-table-column label="应用id" align="center" prop="appId"/>
       <el-table-column label="设备名称" align="center" prop="deviceName"/>
       <el-table-column label="设备类型" align="center" prop="deviceType">
         <template #default="scope">
           <dict-tag :options="sys_device_type" :value="scope.row.deviceType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="账号类型" align="center" prop="accountType">
+        <template #default="scope">
+          <dict-tag :options="sys_account_type" :value="scope.row.accountType"/>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" key="disableFlag">
@@ -105,7 +129,6 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark"/>
-      <el-table-column label="租户id" align="center" prop="tenantId" show-overflow-tooltip/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
@@ -137,6 +160,9 @@
     <!-- 添加或修改系统设备对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="sysDeviceRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="应用id" prop="appId">
+          <el-input v-model="form.appId" placeholder="请输入应用id"/>
+        </el-form-item>
         <el-form-item label="设备名称" prop="deviceName">
           <el-input v-model="form.deviceName" placeholder="请输入设备名称"/>
         </el-form-item>
@@ -146,14 +172,14 @@
                 v-for="dict in sys_device_type"
                 :key="dict.value"
                 :label="dict.label"
-                :value="parseInt(dict.value)"
+                :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否禁用" prop="disableFlag">
-          <el-select v-model="form.disableFlag" placeholder="请选择是否禁用">
+        <el-form-item label="设备类型" prop="deviceType">
+          <el-select v-model="form.accountType" placeholder="请选择设备类型">
             <el-option
-                v-for="dict in sys_yes_no"
+                v-for="dict in sys_account_type"
                 :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
@@ -178,7 +204,7 @@
 <script setup name="SysDevice">
 import {
   addSysDeviceRequest,
-  deleteSysDeviceByAppIdsRequest,
+  deleteSysDeviceByIdsRequest,
   disableSysDeviceRequest,
   editSysDeviceRequest,
   getSysDeviceDetailsRequest,
@@ -186,7 +212,7 @@ import {
 } from "@/api/system/sysDevice";
 
 const {proxy} = getCurrentInstance();
-const {sys_device_type, sys_yes_no} = proxy.useDict('sys_device_type', 'sys_yes_no');
+const {sys_device_type, sys_account_type,  sys_yes_no} = proxy.useDict('sys_device_type', 'sys_account_type', 'sys_yes_no');
 
 const sysDeviceList = ref([]);
 const open = ref(false);
@@ -204,16 +230,24 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+    appId: null,
     deviceName: null,
     deviceType: null,
+    accountType: null,
     disableFlag: null,
   },
   rules: {
+    appId: [
+      {required: true, message: "应用id不能为空", trigger: "blur"}
+    ],
     deviceName: [
       {required: true, message: "设备名称不能为空", trigger: "blur"}
     ],
     deviceType: [
       {required: true, message: "设备类型不能为空", trigger: "change"}
+    ],
+    accountType: [
+      {required: true, message: "账号类型不能为空", trigger: "change"}
     ],
   },
 });
@@ -237,10 +271,13 @@ function cancel() {
 // 表单重置
 function reset() {
   form.value = {
+    id: null,
     appId: null,
     deviceName: null,
+    accountType: null,
     deviceType: null,
     disableFlag: null,
+    delFlag: null,
     createUserId: null,
     createTime: null,
     updateUserId: null,
@@ -265,7 +302,7 @@ function resetQuery() {
 
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.appId);
+  ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -280,8 +317,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 async function handleEdit(row) {
   reset();
-  const appId = row.appId || ids.value[0]
-  let response = await getSysDeviceDetailsRequest(appId);
+  const id = row.id || ids.value[0]
+  let response = await getSysDeviceDetailsRequest(id);
   form.value = response.data;
   open.value = true;
   title.value = "修改系统设备";
@@ -291,7 +328,7 @@ async function handleEdit(row) {
 function submitForm() {
   proxy.$refs["sysDeviceRef"].validate(async valid => {
     if (valid) {
-      if (form.value.appId != null) {
+      if (form.value.id != null) {
         await editSysDeviceRequest(form.value);
         proxy.$modal.msgSuccess("修改成功");
         open.value = false;
@@ -308,9 +345,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const appIdList = row.appId ? [row.appId] : ids.value;
-  proxy.$modal.confirm('是否确认删除系统设备编号为"' + appIdList + '"的数据项？').then(async () => {
-    await deleteSysDeviceByAppIdsRequest(appIdList);
+  const idList = row.id ? [row.id] : ids.value;
+  proxy.$modal.confirm('是否确认删除系统设备编号为"' + idList + '"的数据项？').then(async () => {
+    await deleteSysDeviceByIdsRequest(idList);
     await getList();
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {
@@ -320,9 +357,9 @@ function handleDelete(row) {
 /** 状态修改  */
 function handleStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
-  proxy.$modal.confirm('确认要"' + text + '"编号为【' + row.appId + '】的项吗?').then(function () {
+  proxy.$modal.confirm('确认要"' + text + '"编号为【' + row.id + '】的项吗?').then(function () {
     return disableSysDeviceRequest({
-      id: row.appId,
+      id: row.id,
       disableFlag: row.disableFlag,
     })
   }).then(() => {

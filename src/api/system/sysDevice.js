@@ -10,12 +10,12 @@ export function getSysDeviceListRequest(query) {
 }
 
 // 查询系统设备详细
-export function getSysDeviceDetailsRequest(appId) {
+export function getSysDeviceDetailsRequest(id) {
     return request({
         url: '/system/sysDevice/getSysDeviceDetails',
         method: 'get',
         params: {
-            id: appId
+            id: id
         }
     })
 }
@@ -39,12 +39,12 @@ export function editSysDeviceRequest(data) {
 }
 
 // 删除系统设备
-export function deleteSysDeviceByAppIdsRequest(appIdList) {
+export function deleteSysDeviceByIdsRequest(idList) {
     return request({
-            url: '/system/sysDevice/deleteSysDeviceByAppIdListL',
+            url: '/system/sysDevice/deleteSysDeviceByIdListL',
         method: 'post',
         data: {
-            idList: appIdList
+            idList: idList
         }
     })
 }
