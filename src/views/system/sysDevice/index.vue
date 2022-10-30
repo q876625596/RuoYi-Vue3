@@ -176,8 +176,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="设备类型" prop="deviceType">
-          <el-select v-model="form.accountType" placeholder="请选择设备类型">
+        <el-form-item label="账号类型" prop="deviceType">
+          <el-select v-model="form.accountType" placeholder="请选择账号类型">
             <el-option
                 v-for="dict in sys_account_type"
                 :key="dict.value"

@@ -1,9 +1,17 @@
 import request from '@/utils/request'
 
-// 查询支付商户列表
-export function getPayMerchantListRequest(query) {
+// 查询主支付商户列表
+export function getMainPayMerchantListRequest(query) {
     return request({
-        url: '/pay/payMerchant/getPayMerchantList',
+        url: '/pay/payMerchant/getMainPayMerchantList',
+        method: 'get',
+        params: query
+    })
+}
+// 查询子支付商户列表
+export function getSubPayMerchantListRequest(query) {
+    return request({
+        url: '/pay/payMerchant/getSubPayMerchantList',
         method: 'get',
         params: query
     })
