@@ -610,7 +610,7 @@ async function handleEditConfig(row) {
 /** 删除按钮操作 */
 function handleDeleteConfig(row) {
   const idList = [row.id];
-  let payMerchant = findMerchant(row.payMerchantId);
+  let payMerchant = findMerchantById(row.payMerchantId);
   proxy.$modal.confirm('是否确认删除支付配置编号为"' + idList + '"的数据项？').then(async () => {
     await deletePayConfigByIdsRequest(idList);
     await getConfigList(payMerchant);
@@ -623,7 +623,7 @@ function handleDeleteConfig(row) {
 function submitFormConfig() {
   proxy.$refs["payConfigRef"].validate(async valid => {
     if (valid) {
-      let payMerchant = findMerchant(formConfig.value.payMerchantId);
+      let payMerchant = findMerchantById(formConfig.value.payMerchantId);
       console.log(payMerchant);
       if (formConfig.value.id != null) {
         await editPayConfigRequest(formConfig.value);
@@ -679,14 +679,29 @@ function findScope(scopeOptionsList, scopeList, size) {
 
 }
 
-function findMerchant(id) {
+function findMerchantById(id, includeMain) {
   for (let merchant of payMerchantList.value) {
-    // if (merchant.id == id) {
-    //   return merchant;
-    // }
+    if (merchant.id == id && includeMain) {
+      return merchant;
+    }
     if (merchant.subMerchantList) {
       for (let subMerchant of merchant.subMerchantList) {
         if (subMerchant.id == id) {
+          return subMerchant;
+        }
+      }
+    }
+  }
+}
+
+function findMerchantByMerchantNumber(merchantNumber, includeMain) {
+  for (let merchant of payMerchantList.value) {
+    if (merchant.merchantNumber == merchantNumber && includeMain) {
+      return merchant;
+    }
+    if (merchant.subMerchantList) {
+      for (let subMerchant of merchant.subMerchantList) {
+        if (subMerchant.merchantNumber == merchantNumber) {
           return subMerchant;
         }
       }
@@ -701,7 +716,7 @@ function submitFormBind() {
       let scopeList = [];
       findScope(scopeOptions.value, scopeList, 0);
       formBind.value.scopeItemList = scopeList;
-      let payMerchant = findMerchant(formBind.value.payMerchantId);
+      let payMerchant = findMerchantById(formBind.value.payMerchantId);
       await bindPayMerchantScopeRequest(formBind.value);
       proxy.$modal.msgSuccess("绑定成功");
       openBind.value = false;
@@ -832,12 +847,22 @@ function submitForm() {
         await editPayMerchantRequest(form.value);
         proxy.$modal.msgSuccess("修改成功");
         open.value = false;
-        await getList();
+        if (form.value.parentMerchantNumber == form.value.merchantNumber) {
+          await getList();
+        } else {
+          let payMerchant = findMerchantByMerchantNumber(form.value.parentMerchantNumber, true);
+          await getSubList(payMerchant);
+        }
       } else {
         await addPayMerchantRequest(form.value);
         proxy.$modal.msgSuccess("新增成功");
         open.value = false;
-        await getList();
+        if (form.value.parentMerchantNumber == form.value.merchantNumber) {
+          await getList();
+        } else {
+          let payMerchant = findMerchantByMerchantNumber(form.value.parentMerchantNumber, true);
+          await getSubList(payMerchant);
+        }
       }
     }
   });
