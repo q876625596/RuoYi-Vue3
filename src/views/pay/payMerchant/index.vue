@@ -140,6 +140,11 @@
                   <el-descriptions :title="'【' + item.payConfigName + '】' + '支付配置信息'"
                                    border
                                    :column="1">
+                    <el-descriptions-item align="center" label="三方应用id" span="1"
+                                          show-overflow-tooltip>
+                      {{ item.thirdAppId }}
+
+                    </el-descriptions-item>
                     <el-descriptions-item align="center" :label="key" span="1"
                                           show-overflow-tooltip
                                           v-for="(param,key) in getParams(item)">
@@ -298,6 +303,9 @@
                        :value="merchant.id"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="三方应用id" prop="thirdAppId">
+          <el-input v-model="formConfig.thirdAppId" placeholder="请输入三方应用id"/>
         </el-form-item>
         <el-form-item label="支付配置参数（json字符串）" prop="payConfigParams">
           <el-input :autosize="true" v-model="formConfig.payConfigParams" type="textarea" placeholder="请输入内容"/>
@@ -549,6 +557,7 @@ function resetConfig() {
     id: null,
     payConfigName: null,
     payMerchantId: null,
+    thirdAppId: null,
     payConfigParams: null,
     disableFlag: "0",
     createUserId: null,
