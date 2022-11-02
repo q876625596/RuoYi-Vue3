@@ -187,7 +187,9 @@
         </el-form-item>
         <el-form-item label="支付配置" prop="payConfigList">
           <el-select multiple v-model="formBind.payConfigIdList"
+                     style="width: 350px"
                      filterable placeholder="请选择所属支付配置"
+                     no-data-text="请先在支付商户中添加对应三方应用id的支付配置"
                      @change="selectConfigChange">
             <el-option
                 v-for="config in payConfigList"
@@ -199,7 +201,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="默认支付配置" prop="defaultPayConfigId">
-          <el-select v-model="formBind.defaultPayConfigId" filterable placeholder="请选择所属支付配置">
+          <el-select v-model="formBind.defaultPayConfigId"
+                     filterable placeholder="请选择所属支付配置"
+                     style="width: 350px"
+                     no-data-text="请先选择上方的支付配置">
             <el-option
                 v-for="config in payConfigList.filter(it=>formBind.payConfigIdList.indexOf(it.id) != -1)"
                 :key="config.id"
