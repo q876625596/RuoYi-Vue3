@@ -295,7 +295,7 @@
           <el-input v-model="formConfig.payConfigName" placeholder="请输入支付配置名称"/>
         </el-form-item>
         <el-form-item label="所属商户" prop="payMerchantId">
-          <el-select disabled v-model="formConfig.payMerchantId" filterable placeholder="请选择所属支付商户id">
+          <el-select disabled v-model="formConfig.payMerchantId" filterable placeholder="请选择所属支付商户">
             <el-option disabled
                        v-for="merchant in payMerchantList"
                        :key="merchant.id"
