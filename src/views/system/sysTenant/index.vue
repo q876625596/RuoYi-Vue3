@@ -296,7 +296,7 @@ const data = reactive({
     ],
   },
   adminForm: {
-    tenantId: null,
+    adminTenantId: null,
     userId: null,
     deptId: null,
     managerUsername: null,
@@ -341,7 +341,7 @@ function handleEditAdmin(row) {
 /** 初始化超管用户按钮操作 */
 function handleInitAdmin(row) {
   resetAdmin();
-  adminForm.value.tenantId = row.tenantId
+  adminForm.value.adminTenantId = row.tenantId
   openAdmin.value = true;
   titleAdmin.value = "初始化超管用户";
 }
@@ -361,6 +361,9 @@ async function submitAdmin() {
     await initSysTenantConfigRequest(adminForm.value);
     proxy.$modal.msgSuccess("初始化租户配置成功");
   }
+  let configResponse = await getSysTenantConfigRequest(adminForm.value.adminTenantId);
+  let tenant = sysTenantList.value.find(it=>it.tenantId == adminForm.value.adminTenantId);
+  tenant.adminInfo = configResponse.data;
   resetAdmin();
   openAdmin.value = false;
 }
@@ -401,6 +404,7 @@ async function getTenantAdmin(row) {
 // 表单重置
 function resetAdmin() {
   adminForm.value = {
+    adminTenantId: null,
     userId: null,
     deptId: null,
     managerUsername: null,
