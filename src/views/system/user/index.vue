@@ -19,6 +19,7 @@
               :expand-on-click-node="false"
               :filter-node-method="filterNode"
               ref="deptTreeRef"
+              node-key="id"
               highlight-current
               default-expand-all
               @node-click="handleNodeClick"
@@ -218,6 +219,7 @@
                   placeholder="请选择归属部门"
                   :objMap="{ value: 'id', label: 'label', children: 'children' }"
                   check-strictly
+                  :render-after-expand="false"
               />
             </el-form-item>
           </el-col>
@@ -486,6 +488,8 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
+  queryParams.value.deptId = undefined;
+  proxy.$refs.tree.setCurrentKey(null);
   handleQuery();
 }
 

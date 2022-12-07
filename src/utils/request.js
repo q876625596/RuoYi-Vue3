@@ -92,10 +92,11 @@ service.interceptors.response.use(res => {
                 ).then(() => {
                     isRelogin.show = false;
                     piniaStore.userStore.logOut().then(() => {
-                        // 如果是登录页面不需要重新加载
-                        if (window.location.hash.indexOf("#/login") != 0) {
-                            location.href = '/index';
-                        }
+                        // // 如果是登录页面不需要重新加载
+                        // if (window.location.hash.indexOf("#/login") != 0) {
+                        //    location.href = '/index';
+                        // }
+                        location.href = '/index';
                     })
                 }).catch(() => {
                     isRelogin.show = false;
@@ -106,6 +107,12 @@ service.interceptors.response.use(res => {
             ElMessage({
                 message: msg,
                 type: 'error'
+            })
+            return Promise.reject(new Error(msg))
+        } else if (code === 601) {
+            ElMessage({
+                message: msg,
+                type: 'warning'
             })
             return Promise.reject(new Error(msg))
         } else if (code !== 200) {

@@ -3,6 +3,7 @@
     :default-active="activeMenu"
     mode="horizontal"
     @select="handleSelect"
+    :ellipsis="false"
   >
     <template v-for="(item, index) in topMenus">
       <el-menu-item :style="{'--theme': theme}" :index="item.path" :key="index" v-if="index < visibleNumber"
@@ -91,7 +92,9 @@ const activeMenu = computed(() => {
   if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
     const tmpPath = path.substring(1, path.length);
     activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"));
-    piniaStore.appStore.toggleSideBarHide(false)
+    if (!route.meta.link) {
+      piniaStore.appStore.toggleSideBarHide(false);
+    }
   } else if(!route.children) {
     activePath = path;
     piniaStore.appStore.toggleSideBarHide(true)
@@ -133,6 +136,8 @@ function activeRoutes(key) {
   }
   if(routes.length > 0) {
     piniaStore.permissionStore.sidebarRouters = routes
+  } else {
+    piniaStore.appStore.toggleSideBarHide(true);
   }
   return routes;
 }

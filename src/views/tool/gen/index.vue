@@ -1,11 +1,12 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
       <el-form-item label="数据库名" prop="tableName">
         <el-input
           v-model="queryParams.databaseName"
           placeholder="请输入数据库名称"
           clearable
+          style="width: 200px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -14,6 +15,7 @@
             v-model="queryParams.tableName"
             placeholder="请输入表名称"
             clearable
+            style="width: 200px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -22,6 +24,7 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
+          style="width: 200px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -260,7 +263,7 @@ function handleGenTable(row) {
       proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
     });
   } else {
-    proxy.$download.zip("/code/gen/batchGenCode?tableIds=" + tbIds, "ruoyi");
+    proxy.$download.zip("/code/gen/batchGenCode?tableIds=" + tbIds, "ruoyi.zip");
   }
 }
 /** 同步数据库操作 */

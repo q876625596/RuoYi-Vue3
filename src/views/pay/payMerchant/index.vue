@@ -340,6 +340,7 @@
               check-strictly
               check-on-click-node
               multiple
+              :render-after-expand="false"
           />
         </el-form-item>
       </el-form>

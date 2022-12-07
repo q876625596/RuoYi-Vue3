@@ -6,11 +6,12 @@
             v-model="queryParams.menuName"
             placeholder="请输入菜单名称"
             clearable
+            style="width: 200px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="是否停用" prop="disableFlag">
-        <el-select v-model="queryParams.disableFlag" placeholder="是否停用" clearable>
+        <el-select v-model="queryParams.disableFlag" placeholder="是否停用" clearable style="width: 200px">
           <el-option
               v-for="dict in sys_normal_disable"
               :key="dict.value"
@@ -115,6 +116,7 @@
                   value-key="id"
                   placeholder="选择上级菜单"
                   check-strictly
+                  :render-after-expand="false"
               />
             </el-form-item>
           </el-col>

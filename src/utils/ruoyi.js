@@ -85,8 +85,11 @@ export function addDateRange(params, dateRange, propName) {
 
 // 回显数据字典
 export function selectDictLabel(datas, value) {
-  if (value === undefined) {
+  if (value === undefined || value.length ===0) {
     return "";
+  }
+  if (Array.isArray(value)) {
+    value = value.join(",");
   }
   let actions = [];
   Object.keys(datas).some((key) => {
