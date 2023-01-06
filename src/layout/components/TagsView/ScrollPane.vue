@@ -15,7 +15,7 @@ import {piniaStore} from "@/store/indexStore";
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance();
 
-const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap$);
+const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrapRef);
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true)

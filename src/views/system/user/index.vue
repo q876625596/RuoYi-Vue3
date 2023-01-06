@@ -219,7 +219,6 @@
                   placeholder="请选择归属部门"
                   :objMap="{ value: 'id', label: 'label', children: 'children' }"
                   check-strictly
-                  :render-after-expand="false"
               />
             </el-form-item>
           </el-col>
