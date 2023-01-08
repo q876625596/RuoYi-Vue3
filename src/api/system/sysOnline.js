@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function list(data) {
     return request({
         url: '/system/sysOnline/list',
-        method: 'post',
-        data: data
+        method: 'get',
+        query: data
     })
 }
 
