@@ -14,7 +14,7 @@ export default {
       method: 'get',
       url: url,
       responseType: 'blob',
-      headers: { 'authorization': 'Bearer ' + getToken() }
+      headers: { 'token': 'Bearer ' + getToken() }
     }).then(async (res) => {
       const isLogin = await blobValidate(res.data);
       if (isLogin) {
@@ -31,7 +31,7 @@ export default {
       method: 'get',
       url: url,
       responseType: 'blob',
-      headers: { 'authorization': 'Bearer ' + getToken() }
+      headers: { 'token': 'Bearer ' + getToken() }
     }).then(async (res) => {
       const isLogin = await blobValidate(res.data);
       if (isLogin) {
@@ -48,7 +48,7 @@ export default {
       method: 'get',
       url: url,
       responseType: 'blob',
-      headers: { 'authorization': 'Bearer ' + getToken() }
+      headers: { 'token': 'Bearer ' + getToken() }
     }).then(async (res) => {
       const isLogin = await blobValidate(res.data);
       if (isLogin) {
