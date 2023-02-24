@@ -339,7 +339,7 @@
                       v-if="showItem(unionUms)">
           <el-input v-model="formBind.unionUmsMerchantPrefix" placeholder="请输入银联商务商户前缀"/>
         </el-form-item>
-        <el-form-item label="是否禁用">
+        <el-form-item label="是否禁用" label-width="auto">
           <el-radio-group v-model="formBind.disableFlag">
             <el-radio
                 v-for="dict in sys_yes_no"
