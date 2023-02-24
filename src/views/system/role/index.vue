@@ -102,8 +102,8 @@
             <template #default="scope">
                <el-switch
                   v-model="scope.row.disableFlag"
-                  active-value="0"
-                  inactive-value="1"
+                  active-value="1"
+                  inactive-value="0"
                   @change="handleStatusChange(scope.row)"
                ></el-switch>
             </template>
@@ -361,7 +361,7 @@ function handleSelectionChange(selection) {
 }
 /** 角色状态修改 */
 function handleStatusChange(row) {
-  let text = row.disableFlag == "0" ? "启用" : "停用";
+  let text = row.disableFlag == "1" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗?').then(function () {
     return changeRoleStatus(row.roleId, row.roleKey, row.disableFlag);
   }).then(() => {

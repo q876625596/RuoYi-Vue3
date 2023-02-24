@@ -1,18 +1,18 @@
 import request from '@/utils/request'
 
 // 查询支付应用列表
-export function getPayAppListRequest(query) {
+export function getPayProductListRequest(query) {
     return request({
-        url: '/pay/payApp/getPayAppList',
+        url: '/pay/payProduct/getPayProductList',
         method: 'get',
         params: query
     })
 }
 
 // 查询支付应用详细
-export function getPayAppDetailsRequest(id) {
+export function getPayProductDetailsRequest(id) {
     return request({
-        url: '/pay/payApp/getPayAppDetails',
+        url: '/pay/payProduct/getPayProductDetails',
         method: 'get',
         params: {
             id: id
@@ -21,35 +21,35 @@ export function getPayAppDetailsRequest(id) {
 }
 
 // 绑定支付应用配置
-export function bindPayAppConfigRequest(data) {
+export function bindPayProductConfigRequest(data) {
     return request({
-        url: '/pay/payApp/bindPayAppConfig',
+        url: '/pay/payProduct/bindPayProductConfig',
         method: 'post',
         data: data
     })
 }
 // 新增支付应用
-export function addPayAppRequest(data) {
+export function addPayProductRequest(data) {
     return request({
-        url: '/pay/payApp/addPayApp',
+        url: '/pay/payProduct/addPayProduct',
         method: 'post',
         data: data
     })
 }
 
 // 修改支付应用
-export function editPayAppRequest(data) {
+export function editPayProductRequest(data) {
     return request({
-        url: '/pay/payApp/editPayApp',
+        url: '/pay/payProduct/editPayProduct',
         method: 'post',
         data: data
     })
 }
 
 // 删除支付应用
-export function deletePayAppByIdsRequest(idList) {
+export function deletePayProductByIdsRequest(idList) {
     return request({
-            url: '/pay/payApp/deletePayAppByIdListP',
+            url: '/pay/payProduct/deletePayProductByIdListP',
         method: 'post',
         data: {
             idList: idList
@@ -58,9 +58,9 @@ export function deletePayAppByIdsRequest(idList) {
 }
 
 // 启用/禁用支付应用
-export function disablePayAppRequest(data) {
+export function disablePayProductRequest(data) {
     return request({
-        url: '/pay/payApp/disablePayApp',
+        url: '/pay/payProduct/disablePayProduct',
         method: 'post',
         data: data
     })
