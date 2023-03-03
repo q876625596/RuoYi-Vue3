@@ -74,8 +74,8 @@ export function addDateRange(params, dateRange, propName) {
   let search = params;
   dateRange = Array.isArray(dateRange) ? dateRange : [];
   if (typeof (propName) === 'undefined') {
-    search['beginTime'] = dateRange[0];
-    search['endTime'] = dateRange[1];
+    search['beginQueryCreateTime'] = dateRange[0];
+    search['endQueryCreateTime'] = dateRange[1];
   } else {
     search['begin' + propName] = dateRange[0];
     search['end' + propName] = dateRange[1];
@@ -256,12 +256,6 @@ export function getNormalPath(p) {
 }
 
 // 验证是否为blob格式
-export async function blobValidate(data) {
-  try {
-    const text = await data.text();
-    JSON.parse(text);
-    return false;
-  } catch (error) {
-    return true;
-  }
+export function blobValidate(data) {
+  return data.type !== 'application/json'
 }
