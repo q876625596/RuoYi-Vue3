@@ -32,8 +32,12 @@ export default {
   // 关闭指定tab页签
   closePage(obj) {
     if (obj === undefined) {
-      return piniaStore.tagsViewStore.delView(router.currentRoute.value).then(({ lastPath }) => {
-        return router.push(lastPath || '/index');
+      return piniaStore.tagsViewStore.delView(router.currentRoute.value).then(({ visitedViews }) => {
+        const latestView = visitedViews.slice(-1)[0]
+        if (latestView) {
+          return router.push(latestView.fullPath)
+        }
+        return router.push('/');
       });
     }
     return piniaStore.tagsViewStore.delView(obj);
