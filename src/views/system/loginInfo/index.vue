@@ -19,6 +19,36 @@
                @keyup.enter="handleQuery"
             />
          </el-form-item>
+         <el-form-item label="登录类型" prop="loginType">
+            <el-select
+               v-model="queryParams.loginType"
+               placeholder="登录类型"
+               clearable
+               style="width: 240px"
+            >
+               <el-option
+                  v-for="dict in sys_account_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+               />
+            </el-select>
+         </el-form-item>
+         <el-form-item label="登录设备" prop="loginDevice">
+            <el-select
+               v-model="queryParams.loginDevice"
+               placeholder="登录设备"
+               clearable
+               style="width: 240px"
+            >
+               <el-option
+                  v-for="dict in sys_device_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+               />
+            </el-select>
+         </el-form-item>
          <el-form-item label="状态" prop="successFlag">
             <el-select
                v-model="queryParams.successFlag"
@@ -86,6 +116,16 @@
       <el-table ref="loginInfoRef" v-loading="loading" :data="loginInfoList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column label="访问编号" align="center" prop="id" />
+         <el-table-column label="登录类型" align="center" prop="loginType" >
+           <template #default="scope">
+             <dict-tag :options="sys_account_type" :value="scope.row.loginType" />
+           </template>
+         </el-table-column>
+         <el-table-column label="登录设备" align="center" prop="loginDevice" >
+           <template #default="scope">
+             <dict-tag :options="sys_device_type" :value="scope.row.loginDevice" />
+           </template>
+         </el-table-column>
          <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
          <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
          <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
@@ -115,6 +155,8 @@ import {list, delLoginInfo, cleanLoginInfo, unlockLoginInfo} from "@/api/system/
 
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
+const { sys_account_type } = proxy.useDict("sys_account_type");
+const { sys_device_type } = proxy.useDict("sys_device_type");
 
 const loginInfoList = ref([]);
 const loading = ref(true);
@@ -134,6 +176,8 @@ const queryParams = ref({
   ipaddr: undefined,
   userName: undefined,
   successFlag: undefined,
+  loginType: undefined,
+  loginDevice: undefined,
   orderByColumn: undefined,
   isAsc: undefined
 });
