@@ -1,17 +1,17 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
-    <el-scrollbar>
-      <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-      <sidebar v-if="!sidebar.hide" class="sidebar-container" />
-      <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
+    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <sidebar v-if="!sidebar.hide" class="sidebar-container" />
+    <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
+      <el-scrollbar>
         <div :class="{ 'fixed-header': fixedHeader }">
           <navbar @setLayout="setLayout" />
           <tags-view v-if="needTagsView" />
         </div>
         <app-main />
         <settings ref="settingRef" />
-      </div>
-    </el-scrollbar>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
 import {piniaStore} from "@/store/indexStore";
+import {computed, watchEffect} from "vue";
 const component = [
   Sidebar,
   AppMain,
@@ -77,9 +78,14 @@ function setLayout() {
   height: 100%;
   width: 100%;
 
-  .el-scrollbar{
+  .el-scrollbar {
     height: 100%;
   }
+
+  :deep(.el-scrollbar__bar).is-vertical {
+    z-index: 10;
+  }
+
   :deep(.el-scrollbar__wrap) {
     overflow-x: hidden;
   }

@@ -165,7 +165,7 @@
                     </template>
                   </el-input>
                 </template>
-                <icon-select ref="iconSelectRef" @selected="selected"/>
+                <icon-select ref="iconSelectRef" @selected="selected" :active-icon="form.icon" />
               </el-popover>
             </el-form-item>
           </el-col>
