@@ -57,9 +57,14 @@
       >
          <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
          <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
-         <el-table-column prop="disableFlag" label="状态" width="100">
+        <el-table-column prop="disableFlag" label="状态" width="100">
+          <template #default="scope">
+            <dict-tag :options="sys_normal_disable" :value="scope.row.disableFlag" />
+          </template>
+        </el-table-column>
+         <el-table-column prop="registerDeptFlag" label="用户注册默认部门" width="100">
             <template #default="scope">
-               <dict-tag :options="sys_normal_disable" :value="scope.row.disableFlag" />
+               <dict-tag :options="sys_yes_no" :value="scope.row.registerDeptFlag" />
             </template>
          </el-table-column>
          <el-table-column label="创建时间" align="center" prop="createTime" width="200">
@@ -144,6 +149,17 @@
                      </el-radio-group>
                   </el-form-item>
                </el-col>
+              <el-col :span="24">
+                <el-form-item label-width="auto" label="注册用户默认分配部门">
+                  <el-radio-group v-model="form.registerDeptFlag">
+                    <el-radio
+                        v-for="dict in sys_yes_no"
+                        :key="dict.value"
+                        :label="dict.value"
+                    >{{ dict.label }}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
             </el-row>
          </el-form>
          <template #footer>
@@ -161,6 +177,7 @@ import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild }
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
 const deptList = ref([]);
 const open = ref(false);
@@ -211,7 +228,8 @@ function reset() {
     leader: undefined,
     phone: undefined,
     email: undefined,
-    disableFlag: "0"
+    disableFlag: "0",
+    registerDeptFlag: "0"
   };
   proxy.resetForm("deptRef");
 }

@@ -66,13 +66,13 @@
       <span>Copyright © 2018-2023 ruoyi.vip All Rights Reserved.</span>
     </div>
   </div>
-  <VerifyWidget
+  <Verify
       @success="success"
       mode="pop"
       captchaType="blockPuzzle"
       :imgSize="{ width: '330px', height: '155px' }"
       ref="verify"
-  ></VerifyWidget>
+  ></Verify>
 </template>
 
 <script setup>
@@ -80,8 +80,8 @@ import Cookies from "js-cookie";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
 import Verify from "../components/verifition/Verify";
 import {piniaStore} from '@/store/indexStore'
+import {ref} from "vue";
 
-const VerifyWidget = Verify
 const router = useRouter();
 const {proxy} = getCurrentInstance();
 const verify = ref(null);
@@ -101,12 +101,17 @@ const loginRules = {
 };
 
 const loading = ref(false);
+const captchaOnOff = ref(true);
 // 注册开关
-const register = ref(false);
+const register = ref(true);
 const redirect = ref(undefined);
 
 function useVerify() {
-  verify.value.show()
+  proxy.$refs.loginRef.validate(valid => {
+    if (valid) {
+      verify.value.show()
+    }
+  });
 }
 
 function success(params) {
@@ -115,29 +120,25 @@ function success(params) {
 }
 
 function handleLogin() {
-  proxy.$refs.loginRef.validate(valid => {
-    if (valid) {
-      loading.value = true;
-      // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
-      if (loginForm.rememberMe) {
-        Cookies.set("tenantTag", loginForm.tenantTag, {expires: 30});
-        Cookies.set("username", loginForm.username, {expires: 30});
-        Cookies.set("password", encrypt(loginForm.password), {expires: 30});
-        Cookies.set("rememberMe", loginForm.rememberMe, {expires: 30});
-      } else {
-        // 否则移除
-        Cookies.remove("tenantTag");
-        Cookies.remove("username");
-        Cookies.remove("password");
-        Cookies.remove("rememberMe");
-      }
-      // 调用action的登录方法
-      piniaStore.userStore.login(loginForm).then(() => {
-        router.push({path: redirect.value || "/"});
-      }).catch(() => {
-        loading.value = false;
-      });
-    }
+  loading.value = true;
+  // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
+  if (loginForm.rememberMe) {
+    Cookies.set("tenantTag", loginForm.tenantTag, {expires: 30});
+    Cookies.set("username", loginForm.username, {expires: 30});
+    Cookies.set("password", encrypt(loginForm.password), {expires: 30});
+    Cookies.set("rememberMe", loginForm.rememberMe, {expires: 30});
+  } else {
+    // 否则移除
+    Cookies.remove("tenantTag");
+    Cookies.remove("username");
+    Cookies.remove("password");
+    Cookies.remove("rememberMe");
+  }
+  // 调用action的登录方法
+  piniaStore.userStore.login(loginForm).then(() => {
+    router.push({path: redirect.value || "/"});
+  }).catch(() => {
+    loading.value = false;
   });
 }
 

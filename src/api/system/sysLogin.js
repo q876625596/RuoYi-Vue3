@@ -14,14 +14,14 @@ export function checkTenantTag(tenantTag) {
 }
 
 // 登录方法
-export function sysLogin(username, password, captchaVerification, tenantId) {
+export function sysLogin(username, password, captchaVerification) {
     const data = {
         username,
         password,
         captchaVerification
     }
     return request({
-        url: '/auth/login',
+        url: '/auth/management/login',
         headers: {
             isToken: false,
             tenantid: piniaStore.userStore.getTenantId,
@@ -34,9 +34,10 @@ export function sysLogin(username, password, captchaVerification, tenantId) {
 // 注册方法
 export function register(data) {
     return request({
-        url: '/auth/register',
+        url: '/auth/management/register',
         headers: {
-            isToken: false
+            isToken: false,
+            tenantid: piniaStore.userStore.getTenantId,
         },
         method: 'post',
         data: data
@@ -54,7 +55,7 @@ export function getInfo() {
 // 退出方法
 export function logout() {
     return request({
-        url: '/auth/logout',
+        url: '/auth/management/logout',
         method: 'post'
     })
 }
