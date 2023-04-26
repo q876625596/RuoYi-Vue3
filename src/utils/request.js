@@ -30,6 +30,7 @@ service.interceptors.request.use(config => {
         refreshToken();
         config.headers['token'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
+    config.headers['deviceid'] = piniaStore.userStore.deviceId
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
         let url = config.url + '?' + tansParams(config.params);
@@ -83,6 +84,10 @@ service.interceptors.response.use(res => {
         }
         if (code === 401) {
             if (!isRelogin.show) {
+                ElMessage({
+                    message: msg,
+                    type: 'error'
+                });
                 isRelogin.show = true;
                 ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
                         confirmButtonText: '重新登录',

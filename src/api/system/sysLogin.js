@@ -13,6 +13,22 @@ export function checkTenantTag(tenantTag) {
     })
 }
 
+// 验证设备标识
+export function checkDevice(deviceId) {
+    const data = {
+        id: deviceId
+    }
+    return request({
+        url: '/system/sysDevice/checkDevice',
+        headers: {
+            isToken: false,
+            tenantid: piniaStore.userStore.getTenantId,
+        },
+        method: 'post',
+        data: data
+    })
+}
+
 // 登录方法
 export function sysLogin(username, password, captchaVerification) {
     const data = {

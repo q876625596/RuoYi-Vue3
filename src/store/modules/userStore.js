@@ -1,10 +1,11 @@
 import {defineStore} from "pinia";
-import {checkTenantTag, getInfo, logout, sysLogin} from '@/api/system/sysLogin'
+import {checkDevice, checkTenantTag, getInfo, logout, sysLogin} from '@/api/system/sysLogin'
 import {getToken, removeToken, setToken} from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
+        deviceId: "1",
         token: getToken(),
         tenantId: '',
         name: '',
@@ -29,6 +30,9 @@ export const useUserStore = defineStore('userStore', {
                     reject(error)
                 })
                 this.saveTenantId(checkTenantTagRes.data);
+                await checkDevice(this.deviceId).catch(error => {
+                    reject(error)
+                })
                 let sysLoginRes = await sysLogin(username, password, captchaVerification).catch(error => {
                     reject(error)
                 })
