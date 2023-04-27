@@ -41,6 +41,7 @@ export function sysLogin(username, password, captchaVerification) {
         headers: {
             isToken: false,
             tenantid: piniaStore.userStore.getTenantId,
+            deviceid: piniaStore.userStore.deviceId,
         },
         method: 'post',
         data: data
