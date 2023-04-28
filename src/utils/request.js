@@ -113,6 +113,12 @@ service.interceptors.response.use(res => {
                 type: 'error'
             })
             return Promise.reject(new Error(msg))
+        }  else if (code === 502) {
+            ElMessage({
+                message: msg,
+                type: 'error'
+            })
+            return Promise.reject(new Error(msg))
         } else if (code === 601) {
             ElMessage({
                 message: msg,
