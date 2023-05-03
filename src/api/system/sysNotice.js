@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询公告列表
 export function listNotice(query) {
     return request({
-        url: '/system/sysNotice/list',
+        url: '/management/sysNotice/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listNotice(query) {
 // 查询公告详细
 export function getNotice(id) {
     return request({
-        url: '/system/sysNotice/getDetails',
+        url: '/management/sysNotice/getDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getNotice(id) {
 // 新增公告
 export function addNotice(data) {
     return request({
-        url: '/system/sysNotice/add',
+        url: '/management/sysNotice/add',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addNotice(data) {
 // 修改公告
 export function updateNotice(data) {
     return request({
-        url: '/system/sysNotice/edit',
+        url: '/management/sysNotice/edit',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function updateNotice(data) {
 // 删除公告
 export function delNotice(idList) {
     return request({
-        url: '/system/sysNotice/deleteByIdListP',
+        url: '/management/sysNotice/deleteByIdListP',
         method: 'post',
         data: {
             idList: idList

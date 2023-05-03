@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询菜单列表
 export function listMenu(query) {
     return request({
-        url: '/system/sysMenu/list',
+        url: '/management/sysMenu/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listMenu(query) {
 // 查询菜单详细
 export function getMenu(id) {
     return request({
-        url: '/system/sysMenu/getDetails',
+        url: '/management/sysMenu/getDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getMenu(id) {
 // 查询菜单下拉树结构
 export function menuTreeSelect() {
     return request({
-        url: '/system/sysMenu/menuTreeSelect',
+        url: '/management/sysMenu/menuTreeSelect',
         method: 'get'
     })
 }
@@ -31,7 +31,7 @@ export function menuTreeSelect() {
 // 根据角色ID查询菜单下拉树结构
 export function roleMenuTreeSelect(roleId) {
     return request({
-        url: '/system/sysMenu/menuTreeSelectByRoleId',
+        url: '/management/sysMenu/menuTreeSelectByRoleId',
         method: 'get',
         params: {
             id: roleId
@@ -42,7 +42,7 @@ export function roleMenuTreeSelect(roleId) {
 // 新增菜单
 export function addMenu(data) {
     return request({
-        url: '/system/sysMenu/add',
+        url: '/management/sysMenu/add',
         method: 'post',
         data: data
     })
@@ -51,7 +51,7 @@ export function addMenu(data) {
 // 修改菜单
 export function updateMenu(data) {
     return request({
-        url: '/system/sysMenu/edit',
+        url: '/management/sysMenu/edit',
         method: 'post',
         data: data
     })
@@ -60,7 +60,7 @@ export function updateMenu(data) {
 // 删除菜单
 export function delMenu(id) {
     return request({
-        url: '/system/sysMenu/deleteByIdP',
+        url: '/management/sysMenu/deleteByIdP',
         method: 'post',
         data: {
             id: id
@@ -71,7 +71,7 @@ export function delMenu(id) {
 // 获取路由
 export const getRouters = () => {
     return request({
-        url: '/system/sysMenu/getRouters',
+        url: '/management/sysMenu/getRouters',
         method: 'get'
     })
 }

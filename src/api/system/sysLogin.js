@@ -7,7 +7,7 @@ export function checkTenantTag(tenantTag) {
         tag: tenantTag
     }
     return request({
-        url: '/system/sysTenant/checkTenantTag',
+        url: '/management/sysTenant/checkTenantTag',
         method: 'post',
         data: data
     })
@@ -19,7 +19,7 @@ export function checkDevice(deviceId) {
         id: deviceId
     }
     return request({
-        url: '/system/sysDevice/checkDevice',
+        url: '/management/sysDevice/checkDevice',
         headers: {
             isToken: false,
             tenantid: piniaStore.userStore.getTenantId,
@@ -37,7 +37,7 @@ export function sysLogin(username, password, captchaVerification) {
         captchaVerification
     }
     return request({
-        url: '/auth/management/login',
+        url: '/management/auth/login',
         headers: {
             isToken: false,
             tenantid: piniaStore.userStore.getTenantId,
@@ -51,7 +51,7 @@ export function sysLogin(username, password, captchaVerification) {
 // 注册方法
 export function register(data) {
     return request({
-        url: '/auth/management/register',
+        url: '/management/auth/register',
         headers: {
             isToken: false,
             tenantid: piniaStore.userStore.getTenantId,
@@ -64,7 +64,7 @@ export function register(data) {
 // 获取用户详细信息
 export function getInfo() {
     return request({
-        url: '/system/sysUser/getCurrentLoginUser',
+        url: '/management/sysUser/getCurrentLoginUser',
         method: 'get'
     })
 }
@@ -72,19 +72,7 @@ export function getInfo() {
 // 退出方法
 export function logout() {
     return request({
-        url: '/auth/management/logout',
+        url: '/management/auth/logout',
         method: 'post'
-    })
-}
-
-// 获取验证码
-export function getCodeImg() {
-    return request({
-        url: '/code',
-        headers: {
-            isToken: false
-        },
-        method: 'get',
-        timeout: 20000
     })
 }

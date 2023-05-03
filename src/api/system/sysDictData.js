@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询字典数据列表
 export function listData(query) {
     return request({
-        url: '/system/sysDictData/list',
+        url: '/management/sysDictData/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listData(query) {
 // 查询字典数据详细
 export function getData(id) {
     return request({
-        url: '/system/sysDictData/getDetails',
+        url: '/management/sysDictData/getDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getData(id) {
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType) {
     return request({
-        url: '/system/sysDictData/listByDictType',
+        url: '/management/sysDictData/listByDictType',
         method: 'get',
         params: {
             type: dictType
@@ -34,7 +34,7 @@ export function getDicts(dictType) {
 // 新增字典数据
 export function addData(data) {
     return request({
-        url: '/system/sysDictData/add',
+        url: '/management/sysDictData/add',
         method: 'post',
         data: data
     })
@@ -43,7 +43,7 @@ export function addData(data) {
 // 修改字典数据
 export function updateData(data) {
     return request({
-        url: '/system/sysDictData/edit',
+        url: '/management/sysDictData/edit',
         method: 'post',
         data: data
     })
@@ -52,7 +52,7 @@ export function updateData(data) {
 // 删除字典数据
 export function delData(idList) {
     return request({
-        url: '/system/sysDictData/deleteByIdListP',
+        url: '/management/sysDictData/deleteByIdListP',
         method: 'post',
         data: {
             idList: idList

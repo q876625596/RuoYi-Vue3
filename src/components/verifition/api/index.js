@@ -6,7 +6,7 @@ import request from '@/utils/request' //组件内部封装的axios
 //获取验证图片  以及token
 export function reqGet(data) {
     return request({
-        url: '/auth/captcha/get',
+        url: '/management/captcha/get',
         method: 'post',
         data
     })
@@ -15,7 +15,7 @@ export function reqGet(data) {
 //滑动或者点选验证
 export function reqCheck(data) {
     return request({
-        url: '/auth/captcha/check',
+        url: '/management/captcha/check',
         method: 'post',
         data
     })

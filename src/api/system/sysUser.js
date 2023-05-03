@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询用户列表
 export function listUser(query) {
     return request({
-        url: '/system/sysUser/list',
+        url: '/management/sysUser/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listUser(query) {
 // 查询用户详细
 export function getUser(userId) {
     return request({
-        url: '/system/sysUser/getUserInfoById',
+        url: '/management/sysUser/getUserInfoById',
         method: 'get',
         params: {
             id: userId
@@ -23,7 +23,7 @@ export function getUser(userId) {
 // 新增用户
 export function addUser(data) {
     return request({
-        url: '/system/sysUser/add',
+        url: '/management/sysUser/add',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addUser(data) {
 // 修改用户
 export function updateUser(data) {
     return request({
-        url: '/system/sysUser/edit',
+        url: '/management/sysUser/edit',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function updateUser(data) {
 // 删除用户
 export function delUser(userIdList) {
     return request({
-        url: '/system/sysUser/deleteByIdListL',
+        url: '/management/sysUser/deleteByIdListL',
         method: 'post',
         data: {
             idList: userIdList
@@ -56,7 +56,7 @@ export function resetUserPwd(userId, password) {
         password
     }
     return request({
-        url: '/system/sysUser/resetPwd',
+        url: '/management/sysUser/resetPwd',
         method: 'post',
         data: data
     })
@@ -69,7 +69,7 @@ export function changeUserStatus(userId, disableFlag) {
         disableFlag: disableFlag
     }
     return request({
-        url: '/system/sysUser/changeStatus',
+        url: '/management/sysUser/changeStatus',
         method: 'post',
         data: data
     })
@@ -78,7 +78,7 @@ export function changeUserStatus(userId, disableFlag) {
 // 查询用户个人信息
 export function getUserProfile() {
     return request({
-        url: '/system/sysUserProfile/getProfile',
+        url: '/management/sysUserProfile/getProfile',
         method: 'get'
     })
 }
@@ -86,7 +86,7 @@ export function getUserProfile() {
 // 修改用户个人信息
 export function updateUserProfile(data) {
     return request({
-        url: '/system/sysUserProfile/editProfile',
+        url: '/management/sysUserProfile/editProfile',
         method: 'post',
         data: data
     })
@@ -99,7 +99,7 @@ export function updateUserPwd(oldPassword, newPassword) {
         newPassword
     }
     return request({
-        url: '/system/sysUserProfile/updatePwd',
+        url: '/management/sysUserProfile/updatePwd',
         method: 'post',
         data: data
     })
@@ -108,7 +108,7 @@ export function updateUserPwd(oldPassword, newPassword) {
 // 用户头像上传
 export function uploadAvatar(data) {
     return request({
-        url: '/system/sysUserProfile/avatar',
+        url: '/management/sysUserProfile/avatar',
         method: 'post',
         data: data
     })
@@ -117,7 +117,7 @@ export function uploadAvatar(data) {
 // 查询授权角色
 export function getAuthRole(userId) {
     return request({
-        url: '/system/sysUser/getAuthRoleByUserId',
+        url: '/management/sysUser/getAuthRoleByUserId',
         method: 'post',
         data: {
             id: userId
@@ -128,7 +128,7 @@ export function getAuthRole(userId) {
 // 保存授权角色
 export function updateAuthRole(data) {
     return request({
-        url: '/system/sysUser/setAuthRole',
+        url: '/management/sysUser/setAuthRole',
         method: 'post',
         data: data
     })

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询字典类型列表
 export function listType(query) {
     return request({
-        url: '/system/sysDictType/list',
+        url: '/management/sysDictType/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listType(query) {
 // 查询字典类型详细
 export function getType(id) {
     return request({
-        url: '/system/sysDictType/getDetails',
+        url: '/management/sysDictType/getDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getType(id) {
 // 新增字典类型
 export function addType(data) {
     return request({
-        url: '/system/sysDictType/add',
+        url: '/management/sysDictType/add',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addType(data) {
 // 修改字典类型
 export function updateType(data) {
     return request({
-        url: '/system/sysDictType/edit',
+        url: '/management/sysDictType/edit',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function updateType(data) {
 // 删除字典类型
 export function delType(idList) {
     return request({
-        url: '/system/sysDictType/deleteByIdListP',
+        url: '/management/sysDictType/deleteByIdListP',
         method: 'post',
         data: {
             idList: idList
@@ -52,7 +52,7 @@ export function delType(idList) {
 // 刷新字典缓存
 export function refreshCache() {
     return request({
-        url: '/system/sysDictType/refreshCache',
+        url: '/management/sysDictType/refreshCache',
         method: 'post'
     })
 }
@@ -60,7 +60,7 @@ export function refreshCache() {
 // 获取字典选择框列表
 export function optionSelect() {
     return request({
-        url: '/system/sysDictType/optionSelect',
+        url: '/management/sysDictType/optionSelect',
         method: 'get'
     })
 }

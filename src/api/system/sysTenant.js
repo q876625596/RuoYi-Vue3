@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询全部系统租户列表
 export function getAllSysTenantForSelectRequest() {
     return request({
-        url: '/system/sysTenant/getAllSysTenantForSelect',
+        url: '/management/sysTenant/getAllSysTenantForSelect',
         method: 'get',
     })
 }
@@ -11,7 +11,7 @@ export function getAllSysTenantForSelectRequest() {
 // 查询系统租户列表
 export function getSysTenantListRequest(query) {
     return request({
-        url: '/system/sysTenant/getSysTenantList',
+        url: '/management/sysTenant/getSysTenantList',
         method: 'get',
         params: query
     })
@@ -20,7 +20,7 @@ export function getSysTenantListRequest(query) {
 // 查询系统租户详细
 export function getSysTenantDetailsRequest(tenantId) {
     return request({
-        url: '/system/sysTenant/getSysTenantDetails',
+        url: '/management/sysTenant/getSysTenantDetails',
         method: 'get',
         params: {
             id: tenantId
@@ -31,7 +31,7 @@ export function getSysTenantDetailsRequest(tenantId) {
 // 查询租户配置
 export function getSysTenantConfigRequest(tenantId) {
     return request({
-        url: '/system/sysTenant/getSysTenantConfig',
+        url: '/management/sysTenant/getSysTenantConfig',
         method: 'get',
         params: {
             id: tenantId
@@ -42,7 +42,7 @@ export function getSysTenantConfigRequest(tenantId) {
 // 初始化租户配置
 export function initSysTenantConfigRequest(data) {
     return request({
-        url: '/system/sysTenant/initSysTenantConfig',
+        url: '/management/sysTenant/initSysTenantConfig',
         method: 'post',
         data: data
     })
@@ -51,7 +51,7 @@ export function initSysTenantConfigRequest(data) {
 // 修改租户配置
 export function editSysTenantConfigRequest(data) {
     return request({
-        url: '/system/sysTenant/editSysTenantConfig',
+        url: '/management/sysTenant/editSysTenantConfig',
         method: 'post',
         data: data
     })
@@ -65,7 +65,7 @@ export function resetAdminPwd(tenantId, userId, password) {
         password
     }
     return request({
-        url: '/system/sysTenant/resetAdminPwd',
+        url: '/management/sysTenant/resetAdminPwd',
         method: 'post',
         data: data
     })
@@ -74,7 +74,7 @@ export function resetAdminPwd(tenantId, userId, password) {
 // 新增系统租户
 export function addSysTenantRequest(data) {
     return request({
-        url: '/system/sysTenant/addSysTenant',
+        url: '/management/sysTenant/addSysTenant',
         method: 'post',
         data: data
     })
@@ -83,7 +83,7 @@ export function addSysTenantRequest(data) {
 // 修改系统租户
 export function editSysTenantRequest(data) {
     return request({
-        url: '/system/sysTenant/editSysTenant',
+        url: '/management/sysTenant/editSysTenant',
         method: 'post',
         data: data
     })
@@ -92,7 +92,7 @@ export function editSysTenantRequest(data) {
 // 启用/禁用系统租户
 export function disableSysTenantRequest(data) {
     return request({
-        url: '/system/sysTenant/disableSysTenant',
+        url: '/management/sysTenant/disableSysTenant',
         method: 'post',
         data: data
     })
@@ -101,7 +101,7 @@ export function disableSysTenantRequest(data) {
 // 删除系统租户
 export function deleteSysTenantByIdsRequest(tenantIdList) {
     return request({
-        url: '/system/sysTenant/deleteSysTenantByIdListP',
+        url: '/management/sysTenant/deleteSysTenantByIdListP',
         method: 'post',
         data: {
             idList: tenantIdList

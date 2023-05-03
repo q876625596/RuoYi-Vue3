@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询部门列表
 export function listDept(query) {
     return request({
-        url: '/system/sysDept/list',
+        url: '/management/sysDept/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listDept(query) {
 // 查询部门列表（排除节点）
 export function listDeptExcludeChild(id) {
     return request({
-        url: '/system/sysDept/listExcludeId',
+        url: '/management/sysDept/listExcludeId',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function listDeptExcludeChild(id) {
 // 查询部门详细
 export function getDept(id) {
     return request({
-        url: '/system/sysDept/getDetails',
+        url: '/management/sysDept/getDetails',
         method: 'get',
         params: {
             id: id
@@ -34,7 +34,7 @@ export function getDept(id) {
 // 查询部门下拉树结构
 export function deptTreeSelect() {
     return request({
-        url: '/system/sysDept/deptTreeSelect',
+        url: '/management/sysDept/deptTreeSelect',
         method: 'get'
     })
 }
@@ -42,7 +42,7 @@ export function deptTreeSelect() {
 // 根据角色ID查询部门树结构
 export function deptTreeSelectByRoleId(roleId) {
     return request({
-        url: '/system/sysDept/deptTreeSelectByRoleId',
+        url: '/management/sysDept/deptTreeSelectByRoleId',
         method: 'get',
         params: {
             id: roleId
@@ -53,7 +53,7 @@ export function deptTreeSelectByRoleId(roleId) {
 // 新增部门
 export function addDept(data) {
     return request({
-        url: '/system/sysDept/add',
+        url: '/management/sysDept/add',
         method: 'post',
         data: data
     })
@@ -62,7 +62,7 @@ export function addDept(data) {
 // 修改部门
 export function updateDept(data) {
     return request({
-        url: '/system/sysDept/edit',
+        url: '/management/sysDept/edit',
         method: 'post',
         data: data
     })
@@ -71,7 +71,7 @@ export function updateDept(data) {
 // 删除部门
 export function delDept(id) {
     return request({
-        url: '/system/sysDept/deleteByIdL',
+        url: '/management/sysDept/deleteByIdL',
         method: 'post',
         data: {
             id: id

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询生成表数据
 export function listTable(query) {
     return request({
-        url: '/code/gen/list',
+        url: '/management/gen/list',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listTable(query) {
 // 查询db数据库列表
 export function listDbTable(query) {
     return request({
-        url: '/code/gen/db/list',
+        url: '/management/gen/db/list',
         method: 'get',
         params: query
     })
@@ -21,7 +21,7 @@ export function listDbTable(query) {
 // 查询表详细信息
 export function getGenTable(tableId) {
     return request({
-        url: '/code/gen/getInfo',
+        url: '/management/gen/getInfo',
         method: 'get',
         params: {
             tableId: tableId
@@ -32,7 +32,7 @@ export function getGenTable(tableId) {
 // 修改代码生成信息
 export function updateGenTable(data) {
     return request({
-        url: '/code/gen/editSave',
+        url: '/management/gen/editSave',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function updateGenTable(data) {
 // 导入表
 export function importTable(data) {
     return request({
-        url: '/code/gen/importTable',
+        url: '/management/gen/importTable',
         method: 'post',
         data: data
     })
@@ -50,7 +50,7 @@ export function importTable(data) {
 // 预览生成代码
 export function previewTable(tableId) {
     return request({
-        url: '/code/gen/preview',
+        url: '/management/gen/preview',
         method: 'get',
         params: {
             tableId: tableId
@@ -61,7 +61,7 @@ export function previewTable(tableId) {
 // 删除表数据
 export function delTable(ids) {
     return request({
-        url: '/code/gen/deleteByIdsP',
+        url: '/management/gen/deleteByIdsP',
         method: 'post',
         params: {
             ids: ids
@@ -72,7 +72,7 @@ export function delTable(ids) {
 // 生成代码（自定义路径）
 export function genCode(tableId) {
     return request({
-        url: '/code/gen/genCode',
+        url: '/management/gen/genCode',
         method: 'get',
         params: {
             tableId: tableId
@@ -83,7 +83,7 @@ export function genCode(tableId) {
 // 同步数据库
 export function syncDb(databaseName, tableName) {
     return request({
-        url: '/code/gen/syncDb',
+        url: '/management/gen/syncDb',
         method: 'get',
         params: {
             databaseName: databaseName,

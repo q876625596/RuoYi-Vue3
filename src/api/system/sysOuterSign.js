@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询outerSign列表
 export function getSysOuterSignListRequest(query) {
     return request({
-        url: '/system/sysOuterSign/getSysOuterSignList',
+        url: '/management/sysOuterSign/getSysOuterSignList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function getSysOuterSignListRequest(query) {
 // 查询outerSign详细
 export function getSysOuterSignDetailsRequest(id) {
     return request({
-        url: '/system/sysOuterSign/getSysOuterSignDetails',
+        url: '/management/sysOuterSign/getSysOuterSignDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getSysOuterSignDetailsRequest(id) {
 // 新增outerSign
 export function addSysOuterSignRequest(data) {
     return request({
-        url: '/system/sysOuterSign/addSysOuterSign',
+        url: '/management/sysOuterSign/addSysOuterSign',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addSysOuterSignRequest(data) {
 // 修改outerSign
 export function editSysOuterSignRequest(data) {
     return request({
-        url: '/system/sysOuterSign/editSysOuterSign',
+        url: '/management/sysOuterSign/editSysOuterSign',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function editSysOuterSignRequest(data) {
 // 删除outerSign
 export function deleteSysOuterSignByIdsRequest(idList) {
     return request({
-            url: '/system/sysOuterSign/deleteSysOuterSignByIdListL',
+            url: '/management/sysOuterSign/deleteSysOuterSignByIdListL',
         method: 'post',
         data: {
             idList: idList
@@ -52,7 +52,7 @@ export function deleteSysOuterSignByIdsRequest(idList) {
 // 启用/禁用outerSign
 export function disableSysOuterSignRequest(data) {
     return request({
-        url: '/system/sysOuterSign/disableSysOuterSign',
+        url: '/management/sysOuterSign/disableSysOuterSign',
         method: 'post',
         data: data
     })

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询系统设备列表
 export function getSysDeviceListRequest(query) {
     return request({
-        url: '/system/sysDevice/getSysDeviceList',
+        url: '/management/sysDevice/getSysDeviceList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function getSysDeviceListRequest(query) {
 // 查询系统设备详细
 export function getSysDeviceDetailsRequest(id) {
     return request({
-        url: '/system/sysDevice/getSysDeviceDetails',
+        url: '/management/sysDevice/getSysDeviceDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getSysDeviceDetailsRequest(id) {
 // 新增系统设备
 export function addSysDeviceRequest(data) {
     return request({
-        url: '/system/sysDevice/addSysDevice',
+        url: '/management/sysDevice/addSysDevice',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addSysDeviceRequest(data) {
 // 修改系统设备
 export function editSysDeviceRequest(data) {
     return request({
-        url: '/system/sysDevice/editSysDevice',
+        url: '/management/sysDevice/editSysDevice',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function editSysDeviceRequest(data) {
 // 删除系统设备
 export function deleteSysDeviceByIdsRequest(idList) {
     return request({
-            url: '/system/sysDevice/deleteSysDeviceByIdListL',
+            url: '/management/sysDevice/deleteSysDeviceByIdListL',
         method: 'post',
         data: {
             idList: idList
@@ -52,7 +52,7 @@ export function deleteSysDeviceByIdsRequest(idList) {
 // 启用/禁用系统设备
 export function disableSysDeviceRequest(data) {
     return request({
-        url: '/system/sysDevice/disableSysDevice',
+        url: '/management/sysDevice/disableSysDevice',
         method: 'post',
         data: data
     })

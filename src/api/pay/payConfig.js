@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询支付配置列表
 export function getPayConfigListRequest(query) {
     return request({
-        url: '/pay/payConfig/getPayConfigList',
+        url: '/management/payConfig/getPayConfigList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function getPayConfigListRequest(query) {
 // 查询支付配置详细
 export function getPayConfigDetailsRequest(id) {
     return request({
-        url: '/pay/payConfig/getPayConfigDetails',
+        url: '/management/payConfig/getPayConfigDetails',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getPayConfigDetailsRequest(id) {
 // 新增支付配置
 export function addPayConfigRequest(data) {
     return request({
-        url: '/pay/payConfig/addPayConfig',
+        url: '/management/payConfig/addPayConfig',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addPayConfigRequest(data) {
 // 修改支付配置
 export function editPayConfigRequest(data) {
     return request({
-        url: '/pay/payConfig/editPayConfig',
+        url: '/management/payConfig/editPayConfig',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function editPayConfigRequest(data) {
 // 删除支付配置
 export function deletePayConfigByIdsRequest(idList) {
     return request({
-        url: '/pay/payConfig/deletePayConfigByIdsP',
+        url: '/management/payConfig/deletePayConfigByIdsP',
         method: 'post',
         data: {
             idList: idList
@@ -52,7 +52,7 @@ export function deletePayConfigByIdsRequest(idList) {
 // 启用/禁用支付配置
 export function disablePayConfigRequest(data) {
     return request({
-        url: '/pay/payConfig/disablePayConfig',
+        url: '/management/payConfig/disablePayConfig',
         method: 'post',
         data: data
     })

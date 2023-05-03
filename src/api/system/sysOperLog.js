@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询操作日志列表
 export function list(query) {
   return request({
-    url: '/system/sysOperLog/list',
+    url: '/management/sysOperLog/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function list(query) {
 // 删除操作日志
 export function delOperLog(idList) {
   return request({
-    url: '/system/sysOperLog/deleteByIdListP',
+    url: '/management/sysOperLog/deleteByIdListP',
     method: 'post',
     data:{
       idList:idList
@@ -23,7 +23,7 @@ export function delOperLog(idList) {
 // 清空操作日志
 export function clean() {
   return request({
-    url: '/system/sysOperLog/clean',
+    url: '/management/sysOperLog/clean',
     method: 'post'
   })
 }
