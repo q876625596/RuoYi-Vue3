@@ -137,7 +137,7 @@
             </template>
          </el-table-column>
          <el-table-column label="描述" align="center" prop="msg" show-overflow-tooltip/>
-         <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180"/>
+         <el-table-column label="访问时间" align="center" prop="accessTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180"/>
       </el-table>
 
       <pagination
@@ -167,7 +167,7 @@ const multiple = ref(true);
 const selectName = ref("");
 const total = ref(0);
 const dateRange = ref([]);
-const defaultSort = ref({ prop: "loginTime", order: "descending" });
+const defaultSort = ref({ prop: "accessTime", order: "descending" });
 
 // 查询参数
 const queryParams = ref({

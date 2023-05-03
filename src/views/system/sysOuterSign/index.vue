@@ -3,19 +3,19 @@
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="外部签名名称" label-width="auto" prop="signName">
         <el-input
-          v-model="queryParams.signName"
-          placeholder="请输入外部签名名称"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.signName"
+            placeholder="请输入外部签名名称"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="是否禁用" prop="disableFlag">
         <el-select v-model="queryParams.disableFlag" placeholder="请选择是否禁用" clearable>
           <el-option
-            v-for="dict in sys_yes_no"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+              v-for="dict in sys_yes_no"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
           />
         </el-select>
       </el-form-item>
@@ -28,56 +28,59 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['system:sysOuterSign:add']"
-        >新增</el-button>
+            type="primary"
+            plain
+            icon="Plus"
+            @click="handleAdd"
+            v-hasPermi="['system:sysOuterSign:add']"
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleEdit"
-          v-hasPermi="['system:sysOuterSign:edit']"
-        >修改</el-button>
+            type="success"
+            plain
+            icon="Edit"
+            :disabled="single"
+            @click="handleEdit"
+            v-hasPermi="['system:sysOuterSign:edit']"
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:sysOuterSign:remove']"
-        >删除</el-button>
+            type="danger"
+            plain
+            icon="Delete"
+            :disabled="multiple"
+            @click="handleDelete"
+            v-hasPermi="['system:sysOuterSign:remove']"
+        >删除
+        </el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table ref="mainTable" v-loading="loading" :data="sysOuterSignList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="外部签名名称" align="center" prop="signName" />
-      <el-table-column label="外部签名id" align="center" prop="signId" />
-      <el-table-column label="外部签名密钥" align="center" prop="signSecret" />
-    <el-table-column label="状态" align="center" key="disableFlag">
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="外部签名名称" align="center" prop="signName"/>
+      <el-table-column label="外部签名id" align="center" prop="signId"/>
+      <el-table-column label="外部签名密钥" align="center" prop="signSecret"/>
+      <el-table-column label="状态" align="center" key="disableFlag">
         <template #default="scope">
-            <el-switch
-                    v-model="scope.row.disableFlag"
-                    active-value="0"
-                    inactive-value="1"
-                    @change="handleStatusChange(scope.row)"
-            ></el-switch>
+          <el-switch
+              v-model="scope.row.disableFlag"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+          ></el-switch>
         </template>
-    </el-table-column>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="有效起始时间" align="center" prop="startValidTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.startValidTime) }}</span>
@@ -91,40 +94,52 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            type="text"
-            icon="Edit"
-            @click="handleEdit(scope.row)"
-            v-hasPermi="['system:sysOuterSign:edit']"
-          >修改</el-button>
+              type="text"
+              icon="Edit"
+              @click="handleEdit(scope.row)"
+              v-hasPermi="['system:sysOuterSign:edit']"
+          >修改
+          </el-button>
           <el-button
-            type="text"
-            icon="Delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:sysOuterSign:remove']"
-          >删除</el-button>
+              type="text"
+              icon="Delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['system:sysOuterSign:remove']"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
     />
 
     <!-- 添加或修改outerSign对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="sysOuterSignRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="分配租户">
+          <el-select v-model="form.tenantId" filterable placeholder="选择租户" clearable>
+            <el-option
+                v-for="tenant in tenantOptions"
+                :key="tenant.tenantId"
+                :label="tenant.tenantName"
+                :value="tenant.tenantId"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="外部签名名称" label-width="auto" prop="signName">
-          <el-input v-model="form.signName" placeholder="请输入外部签名名称" />
+          <el-input v-model="form.signName" placeholder="请输入外部签名名称"/>
         </el-form-item>
         <el-form-item label="外部签名id" label-width="auto" prop="signId">
-          <el-input v-model="form.signId" placeholder="请输入外部签名id" />
+          <el-input v-model="form.signId" placeholder="请输入外部签名id"/>
         </el-form-item>
         <el-form-item label="外部签名密钥" label-width="auto" prop="signSecret">
-          <el-input v-model="form.signSecret" placeholder="请输入外部签名密钥" />
+          <el-input v-model="form.signSecret" placeholder="请输入外部签名密钥"/>
         </el-form-item>
         <el-form-item label="有效时间" label-width="auto" prop="dateRange">
           <el-date-picker clearable
@@ -139,7 +154,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="备注" label-width="auto" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -154,11 +169,20 @@
 </template>
 
 <script setup name="SysOuterSign">
-    import {getSysOuterSignListRequest, getSysOuterSignDetailsRequest, addSysOuterSignRequest, editSysOuterSignRequest, deleteSysOuterSignByIdsRequest,  disableSysOuterSignRequest } from "@/api/system/sysOuterSign";
-    import {parseTime} from "../../../utils/ruoyi";
+import {
+  addSysOuterSignRequest,
+  deleteSysOuterSignByIdsRequest,
+  disableSysOuterSignRequest,
+  editSysOuterSignRequest,
+  getSysOuterSignDetailsRequest,
+  getSysOuterSignListRequest
+} from "@/api/system/sysOuterSign";
+import {getAllSysTenantForSelectRequest} from "@/api/system/sysTenant";
+import {parseTime} from "@/utils/ruoyi";
+import {ref} from "@vue/reactivity";
 
-const { proxy } = getCurrentInstance();
-const { sys_yes_no } = proxy.useDict('sys_yes_no');
+const {proxy} = getCurrentInstance();
+const {sys_yes_no} = proxy.useDict('sys_yes_no');
 
 const sysOuterSignList = ref([]);
 const open = ref(false);
@@ -169,7 +193,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-
+const tenantOptions = ref([]);
 
 
 const data = reactive({
@@ -181,14 +205,17 @@ const data = reactive({
     disableFlag: null,
   },
   rules: {
+    tenantId: [
+      {required: true, message: "分配的租户不能为空", trigger: "blur"}
+    ],
     signName: [
-      { required: true, message: "外部签名名称不能为空", trigger: "blur" }
+      {required: true, message: "外部签名名称不能为空", trigger: "blur"}
     ],
     signId: [
-      { required: true, message: "外部签名id不能为空", trigger: "blur" }
+      {required: true, message: "外部签名id不能为空", trigger: "blur"}
     ],
     signSecret: [
-      { required: true, message: "外部签名密钥不能为空", trigger: "blur" }
+      {required: true, message: "外部签名密钥不能为空", trigger: "blur"}
     ],
     dateRange: [
       {
@@ -197,14 +224,20 @@ const data = reactive({
     ],
   },
 });
-const { queryParams, form, rules } = toRefs(data);
+const {queryParams, form, rules} = toRefs(data);
+
+async function getTenantList() {
+  let response = await getAllSysTenantForSelectRequest();
+  tenantOptions.value = response.data;
+}
+
 
 /** 查询outerSign列表 */
 async function getList() {
   loading.value = true;
   queryParams.value.aaa = {
-    "cc":"cac",
-    "dd":"ddd",
+    "cc": "cac",
+    "dd": "ddd",
   }
   let response = await getSysOuterSignListRequest(queryParams.value)
   sysOuterSignList.value = response.data.list;
@@ -222,6 +255,7 @@ function cancel() {
 function reset() {
   form.value = {
     id: null,
+    tenantId: null,
     signName: null,
     signId: null,
     signSecret: null,
@@ -298,21 +332,23 @@ function handleDelete(row) {
     await deleteSysOuterSignByIdsRequest(idList);
     await getList();
     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+  }).catch(() => {
+  });
 }
 
 /** 状态修改  */
 function handleStatusChange(row) {
-    let text = row.disableFlag == "0" ? "启用" : "停用";
-    proxy.$modal.confirm('确认要"' + text + '"编号为【' + row.id + '】的项吗?').then(function () {
-        return disableSysOuterSignRequest({
-    id: row.id,
-    disableFlag: row.disableFlag,
-})}).then(() => {
+  let text = row.disableFlag == "0" ? "启用" : "停用";
+  proxy.$modal.confirm('确认要"' + text + '"编号为【' + row.id + '】的项吗?').then(function () {
+    return disableSysOuterSignRequest({
+      id: row.id,
+      disableFlag: row.disableFlag,
+    })
+  }).then(() => {
     proxy.$modal.msgSuccess(text + "成功");
-}).catch(function () {
+  }).catch(function () {
     row.disableFlag = row.disableFlag == "0" ? "1" : "0";
-});
+  });
 }
 
 /** 导出按钮操作 */
@@ -323,4 +359,5 @@ function handleExport() {
 }
 
 getList();
+getTenantList();
 </script>
