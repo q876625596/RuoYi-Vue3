@@ -13,30 +13,12 @@ export function checkTenantTag(tenantTag) {
     })
 }
 
-// 验证设备标识
-export function checkDevice(deviceId) {
-    const data = {
-        id: deviceId
-    }
-    return request({
-        url: '/management/sysDevice/checkDevice',
-        headers: {
-            isToken: false,
-            tenantid: piniaStore.userStore.getTenantId,
-        },
-        method: 'post',
-        data: data
-    })
-}
-
 // 登录方法
 export function sysLogin(data) {
     return request({
         url: '/management/auth/login',
         headers: {
             isToken: false,
-            tenantid: piniaStore.userStore.getTenantId,
-            // deviceid: piniaStore.userStore.deviceId,
         },
         method: 'post',
         data: data
@@ -49,7 +31,6 @@ export function register(data) {
         url: '/management/auth/register',
         headers: {
             isToken: false,
-            tenantid: piniaStore.userStore.getTenantId,
         },
         method: 'post',
         data: data

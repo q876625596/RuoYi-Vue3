@@ -89,7 +89,7 @@
 
 <script setup>
 import {ElMessageBox} from "element-plus";
-import {checkTenantTag, register} from "@/api/system/sysLogin";
+import {register} from "@/api/system/sysLogin";
 import Verify from "../components/verifition/Verify";
 import {ref} from "vue";
 import {piniaStore} from "@/store/indexStore";
@@ -103,6 +103,7 @@ const registerForm = reactive({
   password: "",
   confirmPassword: "",
   tenantTag: "system",
+  deviceAppId: piniaStore.userStore.deviceAppId,
   captchaVerification: ""
 });
 
@@ -147,12 +148,6 @@ function success(params) {
 
 async function handleRegister() {
   loading.value = true;
-  let checkTenantTagRes = await checkTenantTag(registerForm.tenantTag)
-      .catch(error => {
-        loading.value = false;
-        return Promise.reject(error);
-      });
-  piniaStore.userStore.saveTenantId(checkTenantTagRes.data);
   await register(registerForm)
       .catch(error => {
         loading.value = false;

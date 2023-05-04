@@ -17,7 +17,7 @@ const service = axios.create({
     // axios中请求配置有baseURL选项，表示请求URL公共部分
     baseURL: import.meta.env.VITE_APP_BASE_API,
     // 超时
-    timeout: 10000
+    timeout: 10000,
 })
 
 // request拦截器
@@ -30,6 +30,8 @@ service.interceptors.request.use(config => {
         refreshToken();
         config.headers['token'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
+    //加上账户类型
+    config.headers['logintype'] = piniaStore.userStore.loginType
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
         let url = config.url + '?' + tansParams(config.params);
@@ -113,7 +115,7 @@ service.interceptors.response.use(res => {
                 type: 'error'
             })
             return Promise.reject(new Error(msg))
-        }  else if (code === 502) {
+        } else if (code === 502) {
             ElMessage({
                 message: msg,
                 type: 'error'

@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" :rules="rules">
+      <el-form-item label="账户类型" prop="loginType">
+        <el-select v-model="queryParams.loginType" placeholder="请选择账户类型" clearable>
+          <el-option
+              v-for="dict in sys_account_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="登录地址" prop="ipaddr">
         <el-input
             v-model="queryParams.ipaddr"
@@ -68,27 +78,46 @@
 
 <script setup name="Online">
 import {forceLogout, list as initData} from "@/api/system/sysOnline";
+import {getCurrentInstance, ref} from "vue";
 
 const {proxy} = getCurrentInstance();
 
 const onlineList = ref([]);
 const loading = ref(true);
 const total = ref(0);
+const {sys_account_type} = proxy.useDict("sys_account_type");
+const rules = ref({
+  loginType: [{required: true, message: "请选择账户类型", trigger: "blur"}]
+});
 
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
+  loginType: 'login',
   ipaddr: undefined,
   userName: undefined
 });
 
 /** 查询登录日志列表 */
-function getList() {
-  loading.value = true;
-  initData(queryParams.value).then(response => {
-    onlineList.value = response.data.list;
-    total.value = response.data.total;
-    loading.value = false;
+function getList(init) {
+  if (init) {
+    loading.value = true;
+    initData(queryParams.value).then(response => {
+      onlineList.value = response.data.list;
+      total.value = response.data.total;
+      loading.value = false;
+    });
+    return;
+  }
+  proxy.$refs["queryRef"].validate(valid => {
+    if (valid) {
+      loading.value = true;
+      initData(queryParams.value).then(response => {
+        onlineList.value = response.data.list;
+        total.value = response.data.total;
+        loading.value = false;
+      });
+    }
   });
 }
 
@@ -115,7 +144,7 @@ function handleForceLogout(row) {
   });
 }
 
-getList();
+getList(true);
 </script>
 <style lang="scss">
 .tokenDataOuter {

@@ -1,11 +1,12 @@
 import {defineStore} from "pinia";
-import {checkTenantTag, getInfo, logout, sysLogin} from '@/api/system/sysLogin'
+import {getInfo, logout, sysLogin} from '@/api/system/sysLogin'
 import {getToken, removeToken, setToken} from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
-        deviceId: "1",
+        deviceAppId: "1",
+        loginType: "login",
         token: getToken(),
         tenantId: '',
         name: '',
@@ -13,23 +14,11 @@ export const useUserStore = defineStore('userStore', {
         roles: [],
         permissions: []
     }),
-    getters: {
-        getTenantId: (state) => state.tenantId ?? '1',
-    },
+    getters: {},
     actions: {
-        saveTenantId(tenantId) {
-            this.tenantId = tenantId;
-        },
         // 登录
         login(userInfo) {
             return new Promise(async (resolve, reject) => {
-                let checkTenantTagRes = await checkTenantTag(userInfo.tenantTag).catch(error => {
-                    reject(error)
-                })
-                this.saveTenantId(checkTenantTagRes.data);
-                // await checkDevice(this.deviceId).catch(error => {
-                //     reject(error)
-                // })
                 let sysLoginRes = await sysLogin(userInfo).catch(error => {
                     reject(error)
                 })

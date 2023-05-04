@@ -91,7 +91,7 @@ const loginForm = reactive({
   password: "admin123",
   rememberMe: false,
   tenantTag: "system",
-  deviceAppId: "1",
+  deviceAppId: piniaStore.userStore.deviceAppId,
   captchaVerification: ""
 });
 

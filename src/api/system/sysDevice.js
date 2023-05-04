@@ -41,7 +41,7 @@ export function editSysDeviceRequest(data) {
 // 删除系统设备
 export function deleteSysDeviceByIdsRequest(idList) {
     return request({
-            url: '/management/sysDevice/deleteSysDeviceByIdListL',
+        url: '/management/sysDevice/deleteSysDeviceByIdListP',
         method: 'post',
         data: {
             idList: idList

@@ -5,7 +5,7 @@ export function list(data) {
     return request({
         url: '/management/sysOnline/list',
         method: 'get',
-        query: data
+        params: data
     })
 }
 
