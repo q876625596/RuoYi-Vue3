@@ -13,6 +13,15 @@
       </el-col>
 
       <el-col :span="12">
+        <el-form-item prop="rootPackageName">
+          <template #label>
+            生成包root路径
+          </template>
+          <el-input v-model="info.rootPackageName" />
+        </el-form-item>
+      </el-col>
+
+      <el-col :span="12">
         <el-form-item prop="packageName">
           <template #label>
             生成包路径
@@ -21,6 +30,18 @@
             </el-tooltip>
           </template>
           <el-input v-model="info.packageName" />
+        </el-form-item>
+      </el-col>
+
+      <el-col :span="12">
+        <el-form-item prop="moduleName">
+          <template #label>
+            生成包路由名称
+            <el-tooltip content="请求url前缀" placement="top">
+              <el-icon><question-filled /></el-icon>
+            </el-tooltip>
+          </template>
+          <el-input v-model="info.routeName" />
         </el-form-item>
       </el-col>
 
@@ -224,6 +245,7 @@
 
 <script setup>
 import { listMenu } from "@/api/system/sysMenu";
+import {ref} from "vue";
 
 const subColumns = ref([]);
 const menuOptions = ref({});
@@ -243,7 +265,9 @@ const props = defineProps({
 // 表单校验
 const rules = ref({
   tplCategory: [{ required: true, message: "请选择生成模板", trigger: "blur" }],
+  rootPackageName: [{ required: true, message: "请输入生成包root路径", trigger: "blur" }],
   packageName: [{ required: true, message: "请输入生成包路径", trigger: "blur" }],
+  routeName: [{ required: true, message: "请输入生成包路由名称", trigger: "blur" }],
   moduleName: [{ required: true, message: "请输入生成模块名", trigger: "blur" }],
   businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
