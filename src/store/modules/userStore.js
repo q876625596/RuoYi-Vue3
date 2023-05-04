@@ -22,9 +22,6 @@ export const useUserStore = defineStore('userStore', {
         },
         // 登录
         login(userInfo) {
-            const username = userInfo.username.trim()
-            const password = userInfo.password
-            const captchaVerification = userInfo.captchaVerification
             return new Promise(async (resolve, reject) => {
                 let checkTenantTagRes = await checkTenantTag(userInfo.tenantTag).catch(error => {
                     reject(error)
@@ -33,7 +30,7 @@ export const useUserStore = defineStore('userStore', {
                 // await checkDevice(this.deviceId).catch(error => {
                 //     reject(error)
                 // })
-                let sysLoginRes = await sysLogin(username, password, captchaVerification).catch(error => {
+                let sysLoginRes = await sysLogin(userInfo).catch(error => {
                     reject(error)
                 })
                 console.log(sysLoginRes);

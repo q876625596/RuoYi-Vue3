@@ -30,12 +30,7 @@ export function checkDevice(deviceId) {
 }
 
 // 登录方法
-export function sysLogin(username, password, captchaVerification) {
-    const data = {
-        username,
-        password,
-        captchaVerification
-    }
+export function sysLogin(data) {
     return request({
         url: '/management/auth/login',
         headers: {

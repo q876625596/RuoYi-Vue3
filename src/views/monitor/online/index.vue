@@ -30,7 +30,7 @@
         style="width: 100%;"
     >
       <el-table-column label="序号" width="50" type="index" align="center"/>
-      <el-table-column label="所属终端" align="center" prop="clientName" :show-overflow-tooltip="true"/>
+      <el-table-column label="设备名称" align="center" prop="deviceName" :show-overflow-tooltip="true"/>
       <el-table-column label="会话编号" align="center" prop="token" :show-overflow-tooltip="true"/>
       <el-table-column label="用户信息" align="center" prop="userName">
         <template #default="scope">
