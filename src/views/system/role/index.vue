@@ -67,7 +67,6 @@
                icon="Edit"
                :disabled="single"
                @click="handleUpdate"
-               v-hasPermi="['system:role:edit']"
             >修改</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -436,7 +435,7 @@ function handleAdd() {
 /** 修改角色 */
 function handleUpdate(row) {
   reset();
-  const roleId = row.roleId || ids.value;
+  const roleId = row.roleId || ids.value[0];
   const roleMenu = getRoleMenuTreeSelect(roleId);
   getRole(roleId).then(response => {
     form.value = response.data;

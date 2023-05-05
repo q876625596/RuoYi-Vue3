@@ -1,17 +1,4 @@
 import request from '@/utils/request'
-import {piniaStore} from "@/store/indexStore";
-
-// 验证租户标识
-export function checkTenantTag(tenantTag) {
-    const data = {
-        tag: tenantTag
-    }
-    return request({
-        url: '/management/sysTenant/checkTenantTag',
-        method: 'post',
-        data: data
-    })
-}
 
 // 登录方法
 export function sysLogin(data) {
