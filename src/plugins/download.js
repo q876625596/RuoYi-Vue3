@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { blobValidate } from '@/utils/ruoyi'
+import {piniaStore} from "@/store/indexStore";
 
 const baseURL = import.meta.env.VITE_APP_BASE_API
 
@@ -43,12 +44,15 @@ export default {
     })
   },
   zip(url, name) {
-    var url = baseURL + url
+    let urlFull = baseURL + url
     axios({
       method: 'get',
-      url: url,
+      url: urlFull,
       responseType: 'blob',
-      headers: { 'token': 'Bearer ' + getToken() }
+      headers: {
+        'token': 'Bearer ' + getToken(),
+        'loginType': piniaStore.userStore.loginType
+      }
     }).then((res) => {
       const isBlob = blobValidate(res.data);
       if (isBlob) {
