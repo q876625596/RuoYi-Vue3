@@ -58,7 +58,7 @@
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-               <file-upload :on-success="getList" ></file-upload>
+                <file-upload :is-show-tip="false" button-text="上传文件" :on-success="getList" ></file-upload>
             </el-col>
             <el-col :span="1.5">
                 <el-button
@@ -105,7 +105,7 @@
                             <el-button
                                 ref="buttonRef"
                                 type="text"
-                                icon="Download">Click to activate</el-button>
+                                icon="View">预览</el-button>
                         </template>
                     </el-popover>
                     <el-button

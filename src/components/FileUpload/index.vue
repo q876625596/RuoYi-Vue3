@@ -15,7 +15,7 @@
       ref="fileUpload"
     >
       <!-- 上传按钮 -->
-      <el-button type="primary">选取文件</el-button>
+      <el-button type="primary">{{ buttonText }}</el-button>
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
@@ -45,6 +45,11 @@ import {computed, getCurrentInstance, ref, watch} from "vue";
 
 const props = defineProps({
   modelValue: [String, Object, Array],
+  // 按钮文本
+  buttonText: {
+    type: String,
+    default: '选取文件',
+  },
   // 数量限制
   limit: {
     type: Number,
