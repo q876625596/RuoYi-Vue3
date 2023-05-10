@@ -15,7 +15,10 @@ export default {
       method: 'get',
       url: url,
       responseType: 'blob',
-      headers: { 'token': 'Bearer ' + getToken() }
+      headers: {
+        'token': 'Bearer ' + getToken(),
+        'loginType': piniaStore.userStore.loginType
+      }
     }).then((res) => {
       const isBlob = blobValidate(res.data);
       if (isBlob) {
@@ -32,7 +35,10 @@ export default {
       method: 'get',
       url: url,
       responseType: 'blob',
-      headers: { 'token': 'Bearer ' + getToken() }
+      headers: {
+        'token': 'Bearer ' + getToken(),
+        'loginType': piniaStore.userStore.loginType
+      }
     }).then((res) => {
       const isBlob = blobValidate(res.data);
       if (isBlob) {

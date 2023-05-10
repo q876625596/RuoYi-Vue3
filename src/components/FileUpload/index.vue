@@ -40,6 +40,8 @@
 
 <script setup>
 import { getToken } from "@/utils/auth";
+import {piniaStore} from "@/store/indexStore";
+import {computed, getCurrentInstance, ref, watch} from "vue";
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -56,13 +58,17 @@ const props = defineProps({
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
-    default: () => ["doc", "xls", "ppt", "txt", "pdf"],
+    default: () => ["doc","docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf", "png", "jpg", "jpeg"],
   },
   // 是否显示提示
   isShowTip: {
     type: Boolean,
     default: true
-  }
+  },
+    onSuccess: {
+        type: Function,
+        default: null
+    }
 });
 
 const { proxy } = getCurrentInstance();
@@ -70,8 +76,11 @@ const emit = defineEmits();
 const number = ref(0);
 const uploadList = ref([]);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传文件服务器地址
-const headers = ref({ token: "Bearer " + getToken() });
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/file/fileUpload/upload"); // 上传文件服务器地址
+const headers = ref({
+    token: "Bearer " + getToken(),
+    loginType: piniaStore.userStore.loginType
+});
 const fileList = ref([]);
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)
@@ -124,11 +133,13 @@ function handleBeforeUpload(file) {
 // 文件个数超出
 function handleExceed() {
   proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+    proxy.$modal.closeLoading();
 }
 
 // 上传失败
 function handleUploadError(err) {
   proxy.$modal.msgError("上传文件失败");
+    proxy.$modal.closeLoading();
 }
 
 // 上传成功回调
@@ -160,6 +171,7 @@ function uploadedSuccessfully() {
     emit("update:modelValue", listToString(fileList.value));
     proxy.$modal.closeLoading();
   }
+  props.onSuccess?.apply()
 }
 
 // 获取文件名称

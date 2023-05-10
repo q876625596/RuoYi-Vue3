@@ -365,6 +365,7 @@ import {deptTreeSelect} from "@/api/system/sysDept";
 import {addUser, changeUserStatus, delUser, getUser, listUser, resetUserPwd, updateUser} from "@/api/system/sysUser";
 import {getCurrentInstance, reactive, ref, toRefs, watch} from "vue";
 import {useRouter} from "vue-router";
+import {piniaStore} from "@/store/indexStore";
 
 const router = useRouter();
 const {proxy} = getCurrentInstance();
@@ -396,7 +397,10 @@ const upload = reactive({
   // 是否更新已经存在的用户数据
   updateSupport: 0,
   // 设置上传的请求头部
-  headers: {token: "Bearer " + getToken()},
+  headers: {
+      token: "Bearer " + getToken(),
+      loginType: piniaStore.userStore.loginType
+  },
   // 上传的地址
   url: import.meta.env.VITE_APP_BASE_API + "/system/sysUser/importData"
 });
