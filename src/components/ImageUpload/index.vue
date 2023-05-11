@@ -160,7 +160,7 @@ function handleExceed() {
 // 上传成功回调
 function handleUploadSuccess(res, file) {
     if (res.code === 200) {
-        uploadList.value.push({name: res.fileName, url: res.fileName});
+        uploadList.value.push({name: res.data.name, url: res.data.url});
         uploadedSuccessfully();
     } else {
         number.value--;
@@ -187,10 +187,11 @@ function uploadedSuccessfully() {
         fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
         uploadList.value = [];
         number.value = 0;
-        emit("update:modelValue", listToString(fileList.value));
+        let list = listToString(fileList.value);
+        emit("update:modelValue", list);
+        props.onSuccess?.apply(list)
         proxy.$modal.closeLoading();
     }
-    props.onSuccess?.apply()
 }
 
 // 上传失败

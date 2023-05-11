@@ -58,7 +58,7 @@
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <file-upload :is-show-tip="false" button-text="上传文件" :on-success="getList" ></file-upload>
+                <file-upload :is-show-tip="false" button-text="上传文件" :on-success="onFileUploadSuccess"></file-upload>
             </el-col>
             <el-col :span="1.5">
                 <el-button
@@ -96,16 +96,17 @@
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-popover
-                        placement="left"
-                        width="500"
-                        trigger="click"
+                            placement="left"
+                            width="500"
+                            trigger="click"
                     >
-                        <img style="object-fit: contain; width: 470px" :src="scope.row.netFileRootPath + scope.row.netFileName">
+                        <img style="width: 100%" :src="scope.row.netFileRootPath + scope.row.netFileName">
                         <template #reference>
                             <el-button
-                                ref="buttonRef"
-                                type="text"
-                                icon="View">预览</el-button>
+                                    ref="buttonRef"
+                                    type="text"
+                                    icon="View">预览
+                            </el-button>
                         </template>
                     </el-popover>
                     <el-button
@@ -136,13 +137,9 @@
 </template>
 
 <script setup name="SysFileManagement">
-import {
-    addSysFileManagementRequest,
-    deleteSysFileManagementByIdsRequest,
-    getSysFileManagementListRequest,
-} from "@/api/system/sysFileManagement";
+import {deleteSysFileManagementByIdsRequest, getSysFileManagementListRequest,} from "@/api/system/sysFileManagement";
 import {parseTime} from "@/utils/ruoyi";
-import {toRefs} from "vue";
+import {getCurrentInstance, reactive, ref, toRefs} from "vue";
 import FileUpload from "@/components/FileUpload/index.vue";
 
 const {proxy} = getCurrentInstance();
@@ -227,6 +224,12 @@ function handleDelete(row) {
         proxy.$modal.msgSuccess("删除成功");
     }).catch(() => {
     });
+}
+
+function onFileUploadSuccess(s){
+    proxy.$modal.msgSuccess("上传成功");
+    console.log("asas");
+    getList();
 }
 
 getList();
