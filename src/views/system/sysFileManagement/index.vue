@@ -58,7 +58,7 @@
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <file-upload :is-show-tip="false" button-text="上传文件" :on-success="onFileUploadSuccess"></file-upload>
+                <file-upload :success-clear-all="true" :is-show-tip="false" button-text="上传文件" :on-success="onFileUploadSuccess"></file-upload>
             </el-col>
             <el-col :span="1.5">
                 <el-button
@@ -228,7 +228,6 @@ function handleDelete(row) {
 
 function onFileUploadSuccess(s){
     proxy.$modal.msgSuccess("上传成功");
-    console.log("asas");
     getList();
 }
 
