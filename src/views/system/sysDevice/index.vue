@@ -261,8 +261,8 @@ const {queryParams, form, rules} = toRefs(data);
 async function getList() {
     loading.value = true;
     let response = await getSysDeviceListRequest(queryParams.value)
-    sysDeviceList.value = response.data.list;
-    total.value = response.data.total;
+    sysDeviceList.value = response.data.records;
+    total.value = response.data.totalRow;
     loading.value = false;
 }
 
