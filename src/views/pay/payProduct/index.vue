@@ -176,26 +176,50 @@
         </el-table-column>
       </el-table-column>
       <el-table-column label="银联商务渠道" align="center" prop="wxPay">
-        <el-table-column label="银联商务App" align="center" prop="wxAppPayConfigId">
+        <el-table-column label="银联商务微信App" align="center" prop="unionUmsWxAppPayConfigId">
           <template #default="scope">
-            <el-icon size="40" :color="scope.row.unionUmsAppPayConfig?.id ? 'limegreen' : 'darkgray'"
-                     @click="handleBindConfig(unionUms,unionUmsApp,scope.row.unionUmsAppPayConfig,scope.row)">
+            <el-icon size="40" :color="scope.row.unionUmsWxAppPayConfig?.id ? 'limegreen' : 'darkgray'"
+                     @click="handleBindConfig(unionUms,unionUmsWxApp,scope.row.unionUmsWxAppPayConfig,scope.row)">
               <CircleCheckFilled class="payEnableConfigIcon"
-                                 v-if="scope.row.unionUmsAppPayConfig?.id && scope.row.unionUmsAppPayConfig?.disableFlag == 0"/>
+                                 v-if="scope.row.unionUmsWxAppPayConfig?.id && scope.row.unionUmsWxAppPayConfig?.disableFlag == 0"/>
               <CircleCloseFilled class="payDisableConfigIcon"
-                                 v-else-if="scope.row.unionUmsAppPayConfig?.id && scope.row.unionUmsAppPayConfig?.disableFlag == 1"/>
+                                 v-else-if="scope.row.unionUmsWxAppPayConfig?.id && scope.row.unionUmsWxAppPayConfig?.disableFlag == 1"/>
               <CirclePlusFilled class="payAddConfigIcon" v-else/>
             </el-icon>
           </template>
         </el-table-column>
-        <el-table-column label="银联商务小程序" align="center" prop="wxAppletPayConfigId">
+        <el-table-column label="银联商务支付宝App" align="center" prop="unionUmsAliAppPayConfigId">
           <template #default="scope">
-            <el-icon size="40" :color="scope.row.unionUmsAppletPayConfig?.id ? 'limegreen' : 'darkgray'"
-                     @click="handleBindConfig(unionUms,unionUmsApplet,scope.row.unionUmsAppletPayConfig,scope.row)">
+            <el-icon size="40" :color="scope.row.unionUmsAliAppPayConfig?.id ? 'limegreen' : 'darkgray'"
+                     @click="handleBindConfig(unionUms,unionUmsAliApp,scope.row.unionUmsAliAppPayConfig,scope.row)">
               <CircleCheckFilled class="payEnableConfigIcon"
-                                 v-if="scope.row.unionUmsAppletPayConfig?.id && scope.row.unionUmsAppletPayConfig?.disableFlag == 0"/>
+                                 v-if="scope.row.unionUmsAliAppPayConfig?.id && scope.row.unionUmsAliAppPayConfig?.disableFlag == 0"/>
               <CircleCloseFilled class="payDisableConfigIcon"
-                                 v-else-if="scope.row.unionUmsAppletPayConfig?.id && scope.row.unionUmsAppletPayConfig?.disableFlag == 1"/>
+                                 v-else-if="scope.row.unionUmsAliAppPayConfig?.id && scope.row.unionUmsAliAppPayConfig?.disableFlag == 1"/>
+              <CirclePlusFilled class="payAddConfigIcon" v-else/>
+            </el-icon>
+          </template>
+        </el-table-column>
+        <el-table-column label="银联商务微信小程序" align="center" prop="unionUmsWxAppletPayConfigId">
+          <template #default="scope">
+            <el-icon size="40" :color="scope.row.unionUmsWxAppletPayConfig?.id ? 'limegreen' : 'darkgray'"
+                     @click="handleBindConfig(unionUms,unionUmsWxApplet,scope.row.unionUmsWxAppletPayConfig,scope.row)">
+              <CircleCheckFilled class="payEnableConfigIcon"
+                                 v-if="scope.row.unionUmsWxAppletPayConfig?.id && scope.row.unionUmsWxAppletPayConfig?.disableFlag == 0"/>
+              <CircleCloseFilled class="payDisableConfigIcon"
+                                 v-else-if="scope.row.unionUmsWxAppletPayConfig?.id && scope.row.unionUmsWxAppletPayConfig?.disableFlag == 1"/>
+              <CirclePlusFilled class="payAddConfigIcon" v-else/>
+            </el-icon>
+          </template>
+        </el-table-column>
+        <el-table-column label="银联商务支付宝小程序" align="center" prop="unionUmsAliAppletPayConfigId">
+          <template #default="scope">
+            <el-icon size="40" :color="scope.row.unionUmsAliAppletPayConfig?.id ? 'limegreen' : 'darkgray'"
+                     @click="handleBindConfig(unionUms,unionUmsAliApplet,scope.row.unionUmsAliAppletPayConfig,scope.row)">
+              <CircleCheckFilled class="payEnableConfigIcon"
+                                 v-if="scope.row.unionUmsAliAppletPayConfig?.id && scope.row.unionUmsAliAppletPayConfig?.disableFlag == 0"/>
+              <CircleCloseFilled class="payDisableConfigIcon"
+                                 v-else-if="scope.row.unionUmsAliAppletPayConfig?.id && scope.row.unionUmsAliAppletPayConfig?.disableFlag == 1"/>
               <CirclePlusFilled class="payAddConfigIcon" v-else/>
             </el-icon>
           </template>
@@ -411,8 +435,10 @@ const aliApp = "ali_app"
 const aliApplet = "ali_applet"
 const aliPC = "ali_pc"
 const aliWap = "ali_wap"
-const unionUmsApp = "union_ums_app"
-const unionUmsApplet = "union_ums_applet"
+const unionUmsWxApp = "union_ums_wx_app"
+const unionUmsAliApp = "union_ums_ali_app"
+const unionUmsWxApplet = "union_ums_wx_applet"
+const unionUmsAliApplet = "union_ums_ali_applet"
 
 const data = reactive({
   form: {},
