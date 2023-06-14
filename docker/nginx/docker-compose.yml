@@ -1,0 +1,19 @@
+version : '3.8'
+networks:
+  ruoyi-ui:
+
+services:
+  ruoyi-ui:
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+    # 仅本地调试使用
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    # 生产环境使用，需要先将镜像推送到仓库
+    #    image: registry.cn-hongkong.aliyuncs.com/kumi-test/ruoyi-ui:x.x.x
+    networks:
+      - ruoyi-ui

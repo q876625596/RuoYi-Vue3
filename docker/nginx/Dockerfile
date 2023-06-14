@@ -13,3 +13,5 @@ WORKDIR /home/ruoyi/projects/ruoyi-ui
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 # 复制html文件到路径
 COPY ./html/dist  /home/ruoyi/projects/ruoyi-ui
+
+ENV GATEWAY_HOST="host.docker.internal"
