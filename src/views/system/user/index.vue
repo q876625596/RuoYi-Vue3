@@ -15,7 +15,7 @@
         <div class="head-container">
           <el-tree
               :data="deptOptions"
-              :props="{ label: 'label', children: 'children' }"
+              :props="{ label: 'name', children: 'children' }"
               :expand-on-click-node="false"
               :filter-node-method="filterNode"
               ref="deptTreeRef"
@@ -214,10 +214,10 @@
               <el-tree-select
                   v-model="form.deptId"
                   :data="deptOptions"
-                  :props="{ value: 'id', label: 'label', children: 'children' }"
+                  :props="{ value: 'id', label: 'name', children: 'children' }"
                   value-key="id"
                   placeholder="请选择归属部门"
-                  :objMap="{ value: 'id', label: 'label', children: 'children' }"
+                  :objMap="{ value: 'id', label: 'name', children: 'children' }"
                   check-strictly
               />
             </el-form-item>

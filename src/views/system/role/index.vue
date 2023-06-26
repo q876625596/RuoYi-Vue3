@@ -247,7 +247,7 @@
                   node-key="id"
                   :check-strictly="!form.deptCheckStrictly"
                   empty-text="加载中，请稍候"
-                  :props="{ label: 'label', children: 'children' }"
+                  :props="{ label: 'name', children: 'children' }"
                ></el-tree>
             </el-form-item>
          </el-form>
