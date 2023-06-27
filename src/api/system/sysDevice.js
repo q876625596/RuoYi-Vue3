@@ -12,7 +12,7 @@ export function getSysDeviceListRequest(query) {
 // 查询系统设备详细
 export function getSysDeviceDetailsRequest(id) {
     return request({
-        url: '/management/sysDevice/getSysDeviceDetails',
+        url: '/management/sysDevice/getSysDevice',
         method: 'get',
         params: {
             id: id
@@ -41,7 +41,7 @@ export function editSysDeviceRequest(data) {
 // 删除系统设备
 export function deleteSysDeviceByIdsRequest(idList) {
     return request({
-        url: '/management/sysDevice/deleteSysDeviceByIdListP',
+        url: '/management/sysDevice/deleteSysDevice',
         method: 'post',
         data: {
             idList: idList

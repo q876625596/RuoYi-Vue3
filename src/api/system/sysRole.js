@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询角色列表
 export function listRole(query) {
     return request({
-        url: '/management/sysRole/list',
+        url: '/management/sysRole/getSysRoleList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listRole(query) {
 // 查询角色详细
 export function getRole(id) {
     return request({
-        url: '/management/sysRole/getDetails',
+        url: '/management/sysRole/getSysRole',
         method: 'get',
         params: {
             id: id
@@ -23,7 +23,7 @@ export function getRole(id) {
 // 新增角色
 export function addRole(data) {
     return request({
-        url: '/management/sysRole/add',
+        url: '/management/sysRole/addSysRole',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addRole(data) {
 // 修改角色
 export function updateRole(data) {
     return request({
-        url: '/management/sysRole/edit',
+        url: '/management/sysRole/editSysRole',
         method: 'post',
         data: data
     })
@@ -41,21 +41,20 @@ export function updateRole(data) {
 // 角色数据权限
 export function dataScope(data) {
     return request({
-        url: '/management/sysRole/dataScope',
+        url: '/management/sysRole/editRoleDataScope',
         method: 'post',
         data: data
     })
 }
 
 // 角色状态修改
-export function changeRoleStatus(roleId, roleKey, status) {
+export function disableSysRole(roleId, disableFlag) {
     const data = {
-        roleId,
-        roleKey,
-        status
+        id: roleId,
+        disableFlag: disableFlag
     }
     return request({
-        url: '/management/sysRole/changeStatus',
+        url: '/management/sysRole/disableSysRole',
         method: 'post',
         data: data
     })
@@ -64,7 +63,7 @@ export function changeRoleStatus(roleId, roleKey, status) {
 // 删除角色
 export function delRole(idList) {
     return request({
-        url: '/management/sysRole/deleteByIdListL',
+        url: '/management/sysRole/deleteSysRole',
         method: 'post',
         data: {
             idList: idList

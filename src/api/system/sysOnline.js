@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询在线用户列表
 export function list(data) {
     return request({
-        url: '/management/sysOnline/list',
+        url: '/management/sysOnline/getSysUserOnlineList',
         method: 'get',
         params: data
     })

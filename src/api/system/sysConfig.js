@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询参数列表
 export function listConfig(query) {
     return request({
-        url: '/management/sysConfig/list',
+        url: '/management/sysConfig/getSysConfigList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function listConfig(query) {
 // 查询参数详细
 export function getConfig(configId) {
     return request({
-        url: '/management/sysConfig/getDetails',
+        url: '/management/sysConfig/getSysConfig',
         method: 'get',
         params: {
             id: configId
@@ -23,7 +23,7 @@ export function getConfig(configId) {
 // 新增参数配置
 export function addConfig(data) {
     return request({
-        url: '/management/sysConfig/add',
+        url: '/management/sysConfig/addSysConfig',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function addConfig(data) {
 // 修改参数配置
 export function updateConfig(data) {
     return request({
-        url: '/management/sysConfig/edit',
+        url: '/management/sysConfig/editSysConfig',
         method: 'post',
         data: data
     })
@@ -41,7 +41,7 @@ export function updateConfig(data) {
 // 删除参数配置
 export function delConfig(idList) {
     return request({
-        url: '/management/sysConfig/deleteByIdListP',
+        url: '/management/sysConfig/deleteSysConfig',
         method: 'post',
         data: {
             idList: idList
@@ -52,7 +52,7 @@ export function delConfig(idList) {
 // 刷新参数缓存
 export function refreshCache() {
     return request({
-        url: '/management/sysConfig/refreshCache',
+        url: '/management/sysConfig/refreshSysConfigCache',
         method: 'post'
     })
 }

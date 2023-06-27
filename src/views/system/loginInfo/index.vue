@@ -89,7 +89,7 @@
                         icon="Delete"
                         :disabled="multiple"
                         @click="handleDelete"
-                        v-hasPermi="['system:loginInfo:remove']"
+                        v-hasPermi="['system:sysLoginInfo:remove']"
                 >删除
                 </el-button>
             </el-col>
@@ -99,7 +99,7 @@
                         plain
                         icon="Delete"
                         @click="handleClean"
-                        v-hasPermi="['system:loginInfo:remove']"
+                        v-hasPermi="['system:sysLoginInfo:remove']"
                 >清空
                 </el-button>
             </el-col>
@@ -109,7 +109,7 @@
                         plain
                         icon="Download"
                         @click="handleExport"
-                        v-hasPermi="['system:loginInfo:export']"
+                        v-hasPermi="['system:sysLoginInfo:export']"
                 >导出
                 </el-button>
             </el-col>
@@ -157,7 +157,7 @@
 </template>
 
 <script setup name="LoginInfo">
-import {cleanLoginInfo, delLoginInfo, list, unlockLoginInfo} from "@/api/system/sysLoginInfo";
+import {cleanLoginInfo, delLoginInfo, list, unlockAccount} from "@/api/system/sysLoginInfo";
 
 const {proxy} = getCurrentInstance();
 const {sys_common_status} = proxy.useDict("sys_common_status");
@@ -255,7 +255,7 @@ function handleClean() {
 function handleUnlock() {
     const username = selectName.value;
     proxy.$modal.confirm('是否确认解锁用户"' + username + '"数据项?').then(function () {
-        return unlockLoginInfo(username);
+        return unlockAccount(username);
     }).then(() => {
         proxy.$modal.msgSuccess("用户" + username + "解锁成功");
     }).catch(() => {
@@ -264,7 +264,7 @@ function handleUnlock() {
 
 /** 导出按钮操作 */
 function handleExport() {
-    proxy.download("system/sysLoginInfo/export", {
+    proxy.download("system/sysLoginInfo/exportSysLoginInfoList", {
         ...queryParams.value,
     }, `config_${new Date().getTime()}.xlsx`);
 }

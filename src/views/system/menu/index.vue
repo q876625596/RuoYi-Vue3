@@ -33,7 +33,7 @@
             plain
             icon="Plus"
             @click="handleAdd"
-            v-hasPermi="['system:menu:add']"
+            v-hasPermi="['system:sysMenu:add']"
         >新增
         </el-button>
       </el-col>
@@ -82,21 +82,21 @@
               type="text"
               icon="Edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:menu:edit']"
+              v-hasPermi="['system:sysMenu:edit']"
           >修改
           </el-button>
           <el-button
               type="text"
               icon="Plus"
               @click="handleAdd(scope.row)"
-              v-hasPermi="['system:menu:add']"
+              v-hasPermi="['system:sysMenu:add']"
           >新增
           </el-button>
           <el-button
               type="text"
               icon="Delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['system:menu:remove']"
+              v-hasPermi="['system:sysMenu:remove']"
           >删除
           </el-button>
         </template>
@@ -225,7 +225,7 @@
               <el-input v-model="form.perms" placeholder="请输入权限标识" maxlength="100"/>
               <template #label>
                         <span>
-                           <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasPermi('system:user:list')`)"
+                           <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasPermi('system:sysUser:list')`)"
                                        placement="top">
                               <el-icon><question-filled/></el-icon>
                            </el-tooltip>

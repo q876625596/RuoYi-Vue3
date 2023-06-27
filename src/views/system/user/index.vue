@@ -88,7 +88,7 @@
                 plain
                 icon="Plus"
                 @click="handleAdd"
-                v-hasPermi="['system:user:add']"
+                v-hasPermi="['system:sysUser:add']"
             >新增
             </el-button>
           </el-col>
@@ -99,7 +99,7 @@
                 icon="Delete"
                 :disabled="multiple"
                 @click="handleDelete"
-                v-hasPermi="['system:user:remove']"
+                v-hasPermi="['system:sysUser:remove']"
             >删除
             </el-button>
           </el-col>
@@ -109,7 +109,7 @@
                 plain
                 icon="Upload"
                 @click="handleImport"
-                v-hasPermi="['system:user:import']"
+                v-hasPermi="['system:sysUser:import']"
             >导入
             </el-button>
           </el-col>
@@ -119,7 +119,7 @@
                 plain
                 icon="Download"
                 @click="handleExport"
-                v-hasPermi="['system:user:export']"
+                v-hasPermi="['system:sysUser:export']"
             >导出
             </el-button>
           </el-col>
@@ -160,7 +160,7 @@
                     type="text"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:user:edit']"
+                    v-hasPermi="['system:sysUser:edit']"
                 ></el-button>
               </el-tooltip>
               <el-tooltip content="删除" placement="top" v-if="scope.row.adminFlag !== 1">
@@ -168,7 +168,7 @@
                     type="text"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:user:remove']"
+                    v-hasPermi="['system:sysUser:remove']"
                 ></el-button>
               </el-tooltip>
               <el-tooltip content="重置密码" placement="top" v-if="scope.row.adminFlag !== 1">
@@ -176,7 +176,7 @@
                     type="text"
                     icon="Key"
                     @click="handleResetPwd(scope.row)"
-                    v-hasPermi="['system:user:resetPwd']"
+                    v-hasPermi="['system:sysUser:resetPwd']"
                 ></el-button>
               </el-tooltip>
               <el-tooltip content="分配角色" placement="top" v-if="scope.row.adminFlag !== 1">
@@ -184,7 +184,7 @@
                     type="text"
                     icon="CircleCheck"
                     @click="handleAuthRole(scope.row)"
-                    v-hasPermi="['system:user:edit']"
+                    v-hasPermi="['system:sysUser:edit']"
                 ></el-button>
               </el-tooltip>
             </template>
@@ -402,7 +402,7 @@ const upload = reactive({
       loginType: piniaStore.userStore.loginType
   },
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "/system/sysUser/importData"
+  url: import.meta.env.VITE_APP_BASE_API + "/system/sysUser/importSysUserList"
 });
 // 列显隐信息
 const columns = ref([
@@ -510,7 +510,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/sysUser/export", {
+  proxy.download("system/sysUser/exportSysUserList", {
     ...queryParams.value,
   }, `user_${new Date().getTime()}.xlsx`);
 }
@@ -587,7 +587,7 @@ function handleImport() {
 
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.download("system/sysUser/importTemplate", {}, `user_template_${new Date().getTime()}.xlsx`);
+  proxy.download("system/sysUser/importSysUserTemplate", {}, `user_template_${new Date().getTime()}.xlsx`);
 }
 
 /**文件上传中处理 */

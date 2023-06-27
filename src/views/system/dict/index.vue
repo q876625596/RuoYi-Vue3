@@ -307,7 +307,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/sysDictType/export", {
+  proxy.download("system/sysDictType/exportSysDictTypeList", {
     ...queryParams.value
   }, `dict_${new Date().getTime()}.xlsx`);
 }

@@ -53,7 +53,7 @@
                plain
                icon="Plus"
                @click="handleAdd"
-               v-hasPermi="['system:config:add']"
+               v-hasPermi="['system:sysConfig:add']"
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -63,7 +63,7 @@
                icon="Edit"
                :disabled="single"
                @click="handleUpdate"
-               v-hasPermi="['system:config:edit']"
+               v-hasPermi="['system:sysConfig:edit']"
             >修改</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -73,7 +73,7 @@
                icon="Delete"
                :disabled="multiple"
                @click="handleDelete"
-               v-hasPermi="['system:config:remove']"
+               v-hasPermi="['system:sysConfig:remove']"
             >删除</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -82,7 +82,7 @@
                plain
                icon="Download"
                @click="handleExport"
-               v-hasPermi="['system:config:export']"
+               v-hasPermi="['system:sysConfig:export']"
             >导出</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -91,7 +91,7 @@
                plain
                icon="Refresh"
                @click="handleRefreshCache"
-               v-hasPermi="['system:config:remove']"
+               v-hasPermi="['system:sysConfig:remove']"
             >刷新缓存</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -131,13 +131,13 @@
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:config:edit']"
+                  v-hasPermi="['system:sysConfig:edit']"
                >修改</el-button>
                <el-button
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:config:remove']"
+                  v-hasPermi="['system:sysConfig:remove']"
                >删除</el-button>
             </template>
          </el-table-column>
@@ -313,7 +313,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/sysConfig/export", {
+  proxy.download("system/sysConfig/exportSysConfigList", {
     ...queryParams.value
   }, `config_${new Date().getTime()}.xlsx`);
 }

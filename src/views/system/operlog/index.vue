@@ -195,7 +195,7 @@
 </template>
 
 <script setup name="Operlog">
-import { list, delOperLog, clean } from "@/api/system/sysOperLog";
+import { list, delOperLog, cleanSysOperLog } from "@/api/system/sysOperLog";
 
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_error } = proxy.useDict("sys_oper_type","sys_common_error");
@@ -281,7 +281,7 @@ function handleDelete(row) {
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
-    return clean();
+    return cleanSysOperLog();
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("清空成功");
@@ -289,7 +289,7 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/sysOperLog/export",{
+  proxy.download("monitor/sysOperLog/exportSysOperLogList",{
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }

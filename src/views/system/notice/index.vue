@@ -42,7 +42,7 @@
                plain
                icon="Plus"
                @click="handleAdd"
-               v-hasPermi="['system:notice:add']"
+               v-hasPermi="['system:sysNotice:add']"
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -52,7 +52,7 @@
                icon="Edit"
                :disabled="single"
                @click="handleUpdate"
-               v-hasPermi="['system:notice:edit']"
+               v-hasPermi="['system:sysNotice:edit']"
             >修改</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -62,7 +62,7 @@
                icon="Delete"
                :disabled="multiple"
                @click="handleDelete"
-               v-hasPermi="['system:notice:remove']"
+               v-hasPermi="['system:sysNotice:remove']"
             >删除</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -99,13 +99,13 @@
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:notice:edit']"
+                  v-hasPermi="['system:sysNotice:edit']"
                >修改</el-button>
                <el-button
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:notice:remove']"
+                  v-hasPermi="['system:sysNotice:remove']"
                >删除</el-button>
             </template>
          </el-table-column>

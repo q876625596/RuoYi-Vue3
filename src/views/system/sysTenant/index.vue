@@ -527,7 +527,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('system/sysTenant/export', {
+  proxy.download('system/sysTenant/exportSysTenantList', {
     ...queryParams.value
   }, `sysTenant_${new Date().getTime()}.xlsx`)
 }

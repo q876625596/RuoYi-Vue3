@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询登录日志列表
 export function list(query) {
     return request({
-        url: '/management/sysLoginInfo/list',
+        url: '/management/sysLoginInfo/getSysLoginInfoList',
         method: 'get',
         params: query
     })
@@ -12,7 +12,7 @@ export function list(query) {
 // 删除登录日志
 export function delLoginInfo(idList) {
     return request({
-        url: '/management/sysLoginInfo/deleteByIdsP',
+        url: '/management/sysLoginInfo/deleteSysLoginInfo',
         method: 'post',
         data: {
             idList: idList
@@ -21,9 +21,9 @@ export function delLoginInfo(idList) {
 }
 
 // 解锁用户登录状态
-export function unlockLoginInfo(username) {
+export function unlockAccount(username) {
     return request({
-        url: '/monitor/sysLoginInfo/unlock',
+        url: '/monitor/sysLoginInfo/unlockAccount',
         method: 'post',
         data: {
             username: username
@@ -34,7 +34,7 @@ export function unlockLoginInfo(username) {
 // 清空登录日志
 export function cleanLoginInfo() {
     return request({
-        url: '/management/sysLoginInfo/clean',
+        url: '/management/sysLoginInfo/cleanSysLoginInfo',
         method: 'post'
     })
 }

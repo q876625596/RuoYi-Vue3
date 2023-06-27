@@ -200,7 +200,7 @@
                   node-key="id"
                   :check-strictly="!form.menuCheckStrictly"
                   empty-text="加载中，请稍候"
-                  :props="{ label: 'label', children: 'children' }"
+                  :props="{ label: 'name', children: 'children' }"
                ></el-tree>
             </el-form-item>
             <el-form-item label="备注">
@@ -262,7 +262,7 @@
 </template>
 
 <script setup name="Role">
-import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/sysRole";
+import { addRole, disableSysRole, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/sysRole";
 import { roleMenuTreeSelect, menuTreeSelect as menuTreeSelect } from "@/api/system/sysMenu";
 import { deptTreeSelect as deptTreeSelect, deptTreeSelectByRoleId } from "@/api/system/sysDept";
 
@@ -349,7 +349,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/sysRole/export", {
+  proxy.download("system/sysRole/exportSysRoleList", {
     ...queryParams.value,
   }, `role_${new Date().getTime()}.xlsx`);
 }
@@ -363,7 +363,7 @@ function handleSelectionChange(selection) {
 function handleStatusChange(row) {
   let text = row.disableFlag == "0" ? "启用" : "停用";
   proxy.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗?').then(function () {
-    return changeRoleStatus(row.roleId, row.roleKey, row.disableFlag);
+    return disableSysRole(row.roleId, row.disableFlag);
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功");
   }).catch(function () {

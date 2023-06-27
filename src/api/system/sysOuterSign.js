@@ -12,7 +12,7 @@ export function getSysOuterSignListRequest(query) {
 // 查询outerSign详细
 export function getSysOuterSignDetailsRequest(id) {
     return request({
-        url: '/management/sysOuterSign/getSysOuterSignDetails',
+        url: '/management/sysOuterSign/getSysOuterSign',
         method: 'get',
         params: {
             id: id
@@ -41,7 +41,7 @@ export function editSysOuterSignRequest(data) {
 // 删除outerSign
 export function deleteSysOuterSignByIdsRequest(idList) {
     return request({
-            url: '/management/sysOuterSign/deleteSysOuterSignByIdListL',
+            url: '/management/sysOuterSign/deleteSysOuterSign',
         method: 'post',
         data: {
             idList: idList

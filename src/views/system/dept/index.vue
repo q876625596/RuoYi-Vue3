@@ -33,7 +33,7 @@
                plain
                icon="Plus"
                @click="handleAdd"
-               v-hasPermi="['system:dept:add']"
+               v-hasPermi="['system:sysDept:add']"
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
@@ -78,20 +78,20 @@
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dept:edit']"
+                  v-hasPermi="['system:sysDept:edit']"
                >修改</el-button>
                <el-button
                   type="text"
                   icon="Plus"
                   @click="handleAdd(scope.row)"
-                  v-hasPermi="['system:dept:add']"
+                  v-hasPermi="['system:sysDept:add']"
                >新增</el-button>
                <el-button
                   v-if="scope.row.parentId != 0"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:dept:remove']"
+                  v-hasPermi="['system:sysDept:remove']"
                >删除</el-button>
             </template>
          </el-table-column>

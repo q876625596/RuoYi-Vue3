@@ -353,7 +353,7 @@ function handleStatusChange(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('system/sysOuterSign/export', {
+  proxy.download('system/sysOuterSign/exportSysOuterSignList', {
     ...queryParams.value
   }, `sysOuterSign_${new Date().getTime()}.xlsx`)
 }
