@@ -641,7 +641,7 @@ function handleStatusChange(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('pay/payProduct/export', {
+  proxy.download('pay/payProduct/exportPayProductList', {
     ...queryParams.value
   }, `payProduct_${new Date().getTime()}.xlsx`)
 }

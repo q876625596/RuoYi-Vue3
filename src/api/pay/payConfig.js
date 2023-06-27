@@ -12,7 +12,7 @@ export function getPayConfigListRequest(query) {
 // 查询支付配置详细
 export function getPayConfigDetailsRequest(id) {
     return request({
-        url: '/management/payConfig/getPayConfigDetails',
+        url: '/management/payConfig/getPayConfig',
         method: 'get',
         params: {
             id: id
@@ -41,7 +41,7 @@ export function editPayConfigRequest(data) {
 // 删除支付配置
 export function deletePayConfigByIdsRequest(idList) {
     return request({
-        url: '/management/payConfig/deletePayConfigByIdsP',
+        url: '/management/payConfig/deletePayConfig',
         method: 'post',
         data: {
             idList: idList

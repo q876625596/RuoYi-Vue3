@@ -12,7 +12,7 @@ export function getPayProductListRequest(query) {
 // 查询支付应用详细
 export function getPayProductDetailsRequest(id) {
     return request({
-        url: '/management/payProduct/getPayProductDetails',
+        url: '/management/payProduct/getPayProduct',
         method: 'get',
         params: {
             id: id
@@ -20,14 +20,6 @@ export function getPayProductDetailsRequest(id) {
     })
 }
 
-// 绑定支付应用配置
-export function bindPayProductConfigRequest(data) {
-    return request({
-        url: '/management/payProduct/bindPayProductConfig',
-        method: 'post',
-        data: data
-    })
-}
 // 新增支付应用
 export function addPayProductRequest(data) {
     return request({
@@ -49,7 +41,7 @@ export function editPayProductRequest(data) {
 // 删除支付应用
 export function deletePayProductByIdsRequest(idList) {
     return request({
-            url: '/management/payProduct/deletePayProductByIdListP',
+            url: '/management/payProduct/deletePayProduct',
         method: 'post',
         data: {
             idList: idList

@@ -67,13 +67,13 @@
                         icon="Delete"
                         :disabled="multiple"
                         @click="handleDelete"
-                        v-hasPermi="['system:sysFileManagement:remove']"
+                        v-hasPermi="['system:sysFileData:remove']"
                 >删除
                 </el-button>
             </el-col>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
-        <el-table ref="mainTable" v-loading="loading" :data="sysFileManagementList"
+        <el-table ref="mainTable" v-loading="loading" :data="sysFileDataList"
                   @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center"/>
             <el-table-column label="主键id" align="center" prop="id" show-overflow-tooltip/>
@@ -119,7 +119,7 @@
                             type="text"
                             icon="Delete"
                             @click="handleDelete(scope.row)"
-                            v-hasPermi="['system:sysFileManagement:remove']"
+                            v-hasPermi="['system:sysFileData:remove']"
                     >删除
                     </el-button>
                 </template>
@@ -136,8 +136,8 @@
     </div>
 </template>
 
-<script setup name="SysFileManagement">
-import {deleteSysFileManagementByIdsRequest, getSysFileManagementListRequest,} from "@/api/system/sysFileManagement";
+<script setup name="SysFileData">
+import {deleteSysFileDataByIdsRequest, getSysFileDataListRequest,} from "@/api/system/sysFileData";
 import {parseTime} from "@/utils/ruoyi";
 import {getCurrentInstance, reactive, ref, toRefs} from "vue";
 import FileUpload from "@/components/FileUpload/index.vue";
@@ -145,7 +145,7 @@ import FileUpload from "@/components/FileUpload/index.vue";
 const {proxy} = getCurrentInstance();
 const {sys_file_oss_type} = proxy.useDict('sys_file_oss_type');
 
-const sysFileManagementList = ref([]);
+const sysFileDataList = ref([]);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -180,8 +180,8 @@ const {queryParams, form, rules} = toRefs(data);
 /** 查询文件管理列表 */
 async function getList() {
     loading.value = true;
-    let response = await getSysFileManagementListRequest(queryParams.value)
-    sysFileManagementList.value = response.data.list;
+    let response = await getSysFileDataListRequest(queryParams.value)
+    sysFileDataList.value = response.data.list;
     total.value = response.data.total;
     loading.value = false;
 }
@@ -193,7 +193,7 @@ function reset() {
         bucketName: null,
         ossType: null,
     };
-    proxy.resetForm("sysFileManagementRef");
+    proxy.resetForm("sysFileDataRef");
 }
 
 /** 搜索按钮操作 */
@@ -219,7 +219,7 @@ function handleSelectionChange(selection) {
 function handleDelete(row) {
     const idList = row.id ? [row.id] : ids.value;
     proxy.$modal.confirm('是否确认删除文件管理编号为"' + idList + '"的数据项？').then(async () => {
-        await deleteSysFileManagementByIdsRequest(idList);
+        await deleteSysFileDataByIdsRequest(idList);
         await getList();
         proxy.$modal.msgSuccess("删除成功");
     }).catch(() => {
