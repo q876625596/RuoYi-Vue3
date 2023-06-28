@@ -247,7 +247,7 @@ import {
   resetAdminPwd,
 } from "@/api/system/sysTenant";
 import UserAvatar from "../../../components/ImageCropUpload";
-import {uploadImage} from "@/api/system/sysFile";
+import {uploadImage} from "@/api/file/fileUpload";
 import logo from '@/assets/logo/logo.png'
 import loginBackground from '@/assets/images/login-background.jpg'
 import {reactive} from "vue";

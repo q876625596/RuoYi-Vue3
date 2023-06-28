@@ -1,11 +1,13 @@
 <template>
   <div class="upload-file">
     <el-upload
-        multiple
-        :action="uploadFileUrl"
+        :multiple="multiple"
+        :drag="drag"
+        :action="customUploadFileUrl ?? uploadFileUrl"
         :before-upload="handleBeforeUpload"
         :file-list="fileList"
         :limit="limit"
+        :data="data"
         :on-error="handleUploadError"
         :on-exceed="handleExceed"
         :on-success="handleUploadSuccess"
@@ -52,6 +54,26 @@ const props = defineProps({
     type: String,
     default: '选取文件',
   },
+  // 多选
+  multiple: {
+    type: Boolean,
+    default: true,
+  },
+  // 拖拽
+  drag: {
+    type: Boolean,
+    default: false,
+  },
+  // 上传地址
+  customUploadFileUrl: {
+    type: String,
+    default: null,
+  },
+  // 额外参数
+  data: {
+    type: Map,
+    default: {},
+  },
   // 数量限制
   limit: {
     type: Number,
@@ -65,7 +87,7 @@ const props = defineProps({
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
-    default: () => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf", "png", "jpg", "jpeg"],
+    default: () => piniaStore.fileStore.suffixList,
   },
   // 是否显示提示
   isShowTip: {

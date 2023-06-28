@@ -1,27 +1,27 @@
 import request from '@/utils/request'
 
 // 查询文件管理列表
-export function getSysFileDataListRequest(query) {
+export function getFileDataListRequest(query) {
     return request({
-        url: '/management/sysFileData/getSysFileDataList',
+        url: '/management/fileData/getFileDataList',
         method: 'get',
         params: query
     })
 }
 
 // 新增文件管理
-export function addSysFileDataRequest(data) {
+export function addFileDataRequest(data) {
     return request({
-        url: '/management/sysFileData/addSysFileData',
+        url: '/management/fileData/addFileData',
         method: 'post',
         data: data
     })
 }
 
 // 删除文件管理
-export function deleteSysFileDataByIdsRequest(idList) {
+export function deleteFileDataByIdsRequest(idList) {
     return request({
-            url: '/management/sysFileData/deleteSysFileData',
+            url: '/management/fileData/deleteFileData',
         method: 'post',
         data: {
             idList: idList
