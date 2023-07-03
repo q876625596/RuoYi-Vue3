@@ -63,7 +63,7 @@
     <el-table ref="mainTable" v-loading="loading" :data="sysOuterSignList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="外部签名名称" align="center" prop="signName"/>
-      <el-table-column label="外部签名id" align="center" prop="signId"/>
+      <el-table-column label="外部签名id" align="center" prop="signAppId"/>
       <el-table-column label="外部签名密钥" align="center" prop="signSecret"/>
       <el-table-column label="状态" align="center" key="disableFlag">
         <template #default="scope">
@@ -135,8 +135,8 @@
         <el-form-item label="外部签名名称" label-width="auto" prop="signName">
           <el-input v-model="form.signName" placeholder="请输入外部签名名称"/>
         </el-form-item>
-        <el-form-item label="外部签名id" label-width="auto" prop="signId">
-          <el-input v-model="form.signId" placeholder="请输入外部签名id"/>
+        <el-form-item label="外部签名id" label-width="auto" prop="signAppId">
+          <el-input v-model="form.signAppId" placeholder="请输入外部签名id"/>
         </el-form-item>
         <el-form-item label="外部签名密钥" label-width="auto" prop="signSecret">
           <el-input v-model="form.signSecret" placeholder="请输入外部签名密钥"/>
@@ -211,7 +211,7 @@ const data = reactive({
     signName: [
       {required: true, message: "外部签名名称不能为空", trigger: "blur"}
     ],
-    signId: [
+    signAppId: [
       {required: true, message: "外部签名id不能为空", trigger: "blur"}
     ],
     signSecret: [
@@ -257,7 +257,7 @@ function reset() {
     id: null,
     tenantId: null,
     signName: null,
-    signId: null,
+    signAppId: null,
     signSecret: null,
     remark: null,
     startValidTime: null,
