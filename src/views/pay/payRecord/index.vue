@@ -92,12 +92,13 @@
           <dict-tag :options="pay_record_status" :value="scope.row.recordStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="订单总金额" align="center" prop="transactionAmount"/>
-      <el-table-column label="主商户金额" align="center" prop="mainMerchantAmount"/>
-      <el-table-column label="已退款金额" align="center" prop="refundAmount">
+      <el-table-column label="订单总金额(元)" align="center" prop="transactionAmount"/>
+      <el-table-column label="主商户金额(元)" align="center" prop="mainMerchantAmount"/>
+      <el-table-column label="已退款金额(元)" align="center" prop="refundAmount">
         <template #default="scope">
           <el-button
               type="text"
+              icon="View"
               @click="getRefundRecordList(scope.row)"
           >{{ scope.row.refundAmount ?? '0' }}
           </el-button>
@@ -111,16 +112,6 @@
       <el-table-column label="支付配置类型" align="center" prop="payConfigType">
         <template #default="scope">
           <dict-tag :options="pay_config_type" :value="scope.row.payConfigType"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="请求发起时间" align="center" prop="requestTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.requestTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="响应接收时间" align="center" prop="responseTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.responseTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -181,13 +172,13 @@
         <el-descriptions-item align="center" label="交易状态">
           <dict-tag :options="pay_record_status" :value="currentPayRecordDetails.recordStatus"/>
         </el-descriptions-item>
-        <el-descriptions-item align="center" label="支付金额">
+        <el-descriptions-item align="center" label="支付金额(元)">
           {{ currentPayRecordDetails.transactionAmount }}
         </el-descriptions-item>
-        <el-descriptions-item align="center" label="主商户收款金额">
+        <el-descriptions-item align="center" label="主商户收款金额(元)">
           {{ currentPayRecordDetails.mainMerchantAmount }}
         </el-descriptions-item>
-        <el-descriptions-item align="center" label="已退款金额">
+        <el-descriptions-item align="center" label="已退款金额(元)">
           {{ currentPayRecordDetails.refundAmount }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="支付商户类型">
@@ -195,12 +186,6 @@
         </el-descriptions-item>
         <el-descriptions-item align="center" label="支付配置类型">
           <dict-tag :options="pay_config_type" :value="currentPayRecordDetails.payConfigType"/>
-        </el-descriptions-item>
-        <el-descriptions-item align="center" label="请求时间">
-          {{ currentPayRecordDetails.requestTime }}
-        </el-descriptions-item>
-        <el-descriptions-item align="center" label="响应时间">
-          {{ currentPayRecordDetails.responseTime }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="创建时间">
           {{ currentPayRecordDetails.createTime }}
@@ -220,8 +205,14 @@
         <el-descriptions-item align="center" label="回调地址">
           {{ currentPayRecordDetails.payRecordExInfo.notifyUrl ?? '暂无' }}
         </el-descriptions-item>
+        <el-descriptions-item align="center" label="请求时间">
+          {{ currentPayRecordDetails.requestTime }}
+        </el-descriptions-item>
         <el-descriptions-item align="center" label="请求体">
           {{ currentPayRecordDetails.payRecordExInfo.requestBody ?? '暂无' }}
+        </el-descriptions-item>
+        <el-descriptions-item align="center" label="响应时间">
+          {{ currentPayRecordDetails.responseTime }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="响应体">
           {{ currentPayRecordDetails.payRecordExInfo.responseBody ?? '暂无' }}
@@ -232,12 +223,12 @@
     <el-drawer
         v-loading="loadingDetails"
         v-model="openRefundRecordListDrawer"
-        title="退款记录"
+        :title="'退款记录：共【' + currentRefundRecordList.length +'】条'"
         :direction="'rtl'"
         @closed="closeRefundRecordListDrawer"
     >
-      <el-card style="margin-bottom: 20px" v-for="item in currentRefundRecordList">
-        <el-descriptions border :column="1">
+      <el-card style="margin-bottom: 20px" v-for="(item,index) in currentRefundRecordList">
+        <el-descriptions border :column="1" :title="'第【' +(index+1)+'】条退款'">
           <el-descriptions-item align="center" label="主键">
             {{ item.id }}
           </el-descriptions-item>
@@ -265,10 +256,10 @@
           <el-descriptions-item align="center" label="退款状态">
             <dict-tag :options="pay_record_status" :value="item.recordStatus"/>
           </el-descriptions-item>
-          <el-descriptions-item align="center" label="退款金额">
+          <el-descriptions-item align="center" label="退款金额(元)">
             {{ item.transactionAmount }}
           </el-descriptions-item>
-          <el-descriptions-item align="center" label="主商户退款金额">
+          <el-descriptions-item align="center" label="主商户退款金额(元)">
             {{ item.mainMerchantAmount }}
           </el-descriptions-item>
           <el-descriptions-item align="center" label="支付商户类型">
