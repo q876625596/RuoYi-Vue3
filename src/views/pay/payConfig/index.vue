@@ -106,7 +106,8 @@
               <el-aside width="500px" style="background: #00000000">
                 <el-card>
                   <el-descriptions border :column="1" title="支付配置参数">
-                    <el-descriptions-item align="center" :label="getParamsName(key)" v-for="(value,key) in scope.row.payConfigParams">
+                    <el-descriptions-item align="center" :label="getParamsName(key)"
+                                          v-for="(value,key) in scope.row.payConfigParams">
                       {{ value }}
                     </el-descriptions-item>
                   </el-descriptions>
@@ -235,7 +236,7 @@
         <el-form-item label="支付配置名称" label-width="auto" prop="payConfigName">
           <el-input v-model="form.payConfigName" placeholder="请输入支付配置名称"/>
         </el-form-item>
-        <el-form-item label="支付商户类型" label-width="auto">
+        <el-form-item label="支付商户类型" label-width="auto" prop="payMerchantType">
           <el-select @change="form.payConfigType = null" v-model="form.payMerchantType" filterable
                      placeholder="请选择支付商户类型">
             <el-option
@@ -246,7 +247,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="支付配置类型" label-width="auto">
+        <el-form-item label="支付配置类型" label-width="auto" prop="payConfigType">
           <el-select v-model="form.payConfigType" filterable placeholder="请选择支付配置类型">
             <el-option
                 v-for="config in pay_config_type.filter(it=>it.value.startsWith(form.payMerchantType))"
@@ -289,6 +290,13 @@
         <el-form-item label="银联商务商户前缀" label-width="auto" prop="unionUmsMerchantPrefix"
                       v-if="showItem(unionUms)">
           <el-input v-model="form.unionUmsMerchantPrefix" placeholder="请输入银联商务商户前缀"/>
+        </el-form-item>
+        <!--        公共参数-->
+        <el-form-item label="支付回调地址" label-width="auto" prop="payNotifyUrl">
+          <el-input v-model="form.payNotifyUrl" placeholder="请输入支付回调地址"/>
+        </el-form-item>
+        <el-form-item label="退款回调地址" label-width="auto" prop="refundNotifyUrl">
+          <el-input v-model="form.refundNotifyUrl" placeholder="请输入退款回调地址"/>
         </el-form-item>
         <el-form-item label="是否禁用" label-width="auto">
           <el-radio-group v-model="form.disableFlag">
@@ -391,9 +399,9 @@ const openSubMerchant = ref(false);
 const loadingSubMerchant = ref(false);
 
 // 支付商户类型
-const wx = "wx"
-const ali = "ali"
-const unionUms = "union_ums"
+const wx = "A"
+const ali = "B"
+const unionUms = "C"
 
 // //支付配置类型
 // const wxApp = "wx_app"
@@ -466,6 +474,12 @@ const data = reactive({
     unionUmsMerchantPrefix: [
       {required: true, message: "银联商务商户前缀不能为空", trigger: "blur"}
     ],
+    payNotifyUrl: [
+      {required: true, message: "支付回调地址不能为空", trigger: "blur"}
+    ],
+    refundNotifyUrl: [
+      {required: true, message: "退款回调地址不能为空", trigger: "blur"}
+    ],
     disableFlag: [
       {required: true, message: "是否禁用不能为空", trigger: "blur"}
     ],
@@ -531,6 +545,12 @@ function getParamsName(params) {
     case 'unionUmsMerchantPrefix':
       paramsName = '银联商务商户前缀';
       break;
+    case 'payNotifyUrl':
+      paramsName = '支付回调地址';
+      break;
+    case 'refundNotifyUrl':
+      paramsName = '退款回调地址';
+      break;
   }
   return paramsName;
 }
@@ -589,6 +609,9 @@ function reset() {
     unionUmsAppSecret: null,//银联商务appSecret
     unionUmsTid: null,//银联商务终端号
     unionUmsMerchantPrefix: null,//银联商务商户前缀
+    //公共参数
+    payNotifyUrl: null,//支付回调地址
+    refundNotifyUrl: null,//退款回调地址
     disableFlag: '0',
   };
   proxy.resetForm("payConfigRef");
@@ -619,10 +642,9 @@ async function handleEdit(row) {
   const id = row.id || ids.value[0]
   let response = await getPayConfigRequest(id);
   form.value = response.data;
-  form.value.thirdAppId = response.data.thirdAppId;
-  form.value.merchantNumber = response.data.merchantNumber;
-  form.value.disableFlag = response.data.disableFlag;
   let payConfigParams = JSON.parse(response.data.payConfigParams);
+  form.value.payNotifyUrl = payConfigParams.payNotifyUrl;
+  form.value.refundNotifyUrl = payConfigParams.refundNotifyUrl;
   switch (form.value.payMerchantType) {
     case wx:
       form.value.wxMerchantSerialNumber = payConfigParams.wxMerchantSerialNumber;
@@ -654,7 +676,9 @@ function submitForm() {
             "wxMerchantId": form.value.merchantNumber,
             "wxMerchantSerialNumber": form.value.wxMerchantSerialNumber,
             "wxApiV3Key": form.value.wxApiV3Key,
-            "wxPrivateKey": form.value.wxPrivateKey
+            "wxPrivateKey": form.value.wxPrivateKey,
+            "payNotifyUrl": form.value.payNotifyUrl,
+            "refundNotifyUrl": form.value.refundNotifyUrl
           }
           form.value.payConfigParams = JSON.stringify(wxParams);
           break;
@@ -667,7 +691,9 @@ function submitForm() {
             "unionUmsAppSecret": form.value.unionUmsAppSecret,
             "unionUmsMerchantNumber": form.value.merchantNumber,
             "unionUmsTid": form.value.unionUmsTid,
-            "unionUmsMerchantPrefix": form.value.unionUmsMerchantPrefix
+            "unionUmsMerchantPrefix": form.value.unionUmsMerchantPrefix,
+            "payNotifyUrl": form.value.payNotifyUrl,
+            "refundNotifyUrl": form.value.refundNotifyUrl
           }
           form.value.payConfigParams = JSON.stringify(unionUmsParams);
           break;

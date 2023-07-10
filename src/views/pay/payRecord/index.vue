@@ -150,6 +150,7 @@
         v-loading="loadingDetails"
         v-model="openDetailsDrawer"
         title="支付记录详情"
+        size="40%"
         :direction="'rtl'"
         @close="closeDetailsDrawer"
     >
@@ -187,6 +188,9 @@
         <el-descriptions-item align="center" label="支付配置类型">
           <dict-tag :options="pay_config_type" :value="currentPayRecordDetails.payConfigType"/>
         </el-descriptions-item>
+        <el-descriptions-item align="center" label="三方appId">
+          {{ currentPayRecordDetails.thirdAppId }}
+        </el-descriptions-item>
         <el-descriptions-item align="center" label="创建时间">
           {{ currentPayRecordDetails.createTime }}
         </el-descriptions-item>
@@ -223,6 +227,7 @@
     <el-drawer
         v-loading="loadingDetails"
         v-model="openRefundRecordListDrawer"
+        size="40%"
         :title="'退款记录：共【' + currentRefundRecordList.length +'】条'"
         :direction="'rtl'"
         @closed="closeRefundRecordListDrawer"
@@ -268,6 +273,9 @@
           <el-descriptions-item align="center" label="支付配置类型">
             <dict-tag :options="pay_config_type" :value="item.payConfigType"/>
           </el-descriptions-item>
+          <el-descriptions-item align="center" label="三方appId">
+            {{ item.thirdAppId }}
+          </el-descriptions-item>
           <el-descriptions-item align="center" label="请求时间">
             {{ item.requestTime }}
           </el-descriptions-item>
@@ -277,7 +285,7 @@
           <el-descriptions-item align="center" label="创建时间">
             {{ item.createTime }}
           </el-descriptions-item>
-          <el-descriptions-item align="center" label="交易完成时间">
+          <el-descriptions-item align="center" label="退款完成时间">
             {{ item.completeTime }}
           </el-descriptions-item>
           <el-descriptions-item align="center" label="查询历史记录">
