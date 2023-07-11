@@ -9,17 +9,17 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="原始商户订单号" label-width="auto" prop="originalMerPayOrderId">
+      <el-form-item label="原始商户订单号" label-width="auto" prop="merPayOrderId">
         <el-input
-            v-model="queryParams.originalMerPayOrderId"
+            v-model="queryParams.merPayOrderId"
             placeholder="请输入原始商户订单号"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商户支付订单号" label-width="auto" prop="merPayOrderId">
+      <el-form-item label="商户支付订单号" label-width="auto" prop="finalMerPayOrderId">
         <el-input
-            v-model="queryParams.merPayOrderId"
+            v-model="queryParams.finalMerPayOrderId"
             placeholder="请输入商户支付订单号"
             clearable
             @keyup.enter="handleQuery"
@@ -63,6 +63,14 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="三方appId" label-width="auto" prop="thirdAppId">
+        <el-input
+            v-model="queryParams.thirdAppId"
+            placeholder="请输入三方appId"
+            clearable
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -84,8 +92,8 @@
     </el-row>
     <el-table ref="mainTable" v-loading="loading" :data="payRecordList">
       <el-table-column label="商户号" align="center" prop="merchantNumber"/>
-      <!--      <el-table-column label="原始商户订单号" align="center" prop="originalMerPayOrderId" />-->
-      <el-table-column label="商户支付订单号" align="center" prop="merPayOrderId"/>
+      <!--      <el-table-column label="原始商户订单号" align="center" prop="merPayOrderId" />-->
+      <el-table-column label="商户支付订单号" align="center" prop="finalMerPayOrderId"/>
       <el-table-column label="交易流水号" align="center" prop="transactionId"/>
       <el-table-column label="记录状态" align="center" prop="recordStatus">
         <template #default="scope">
@@ -114,6 +122,7 @@
           <dict-tag :options="pay_config_type" :value="scope.row.payConfigType"/>
         </template>
       </el-table-column>
+      <el-table-column label="三方appId" align="center" prop="thirdAppId"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -162,10 +171,10 @@
           {{ currentPayRecordDetails.merchantNumber }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="原始商户订单号">
-          {{ currentPayRecordDetails.originalMerPayOrderId }}
+          {{ currentPayRecordDetails.merPayOrderId }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="商户订单号">
-          {{ currentPayRecordDetails.merPayOrderId }}
+          {{ currentPayRecordDetails.finalMerPayOrderId }}
         </el-descriptions-item>
         <el-descriptions-item align="center" label="交易流水号">
           {{ currentPayRecordDetails.transactionId }}
@@ -241,10 +250,10 @@
             {{ item.merchantNumber }}
           </el-descriptions-item>
           <el-descriptions-item align="center" label="原始商户订单号">
-            {{ item.originalMerPayOrderId }}
+            {{ item.merPayOrderId }}
           </el-descriptions-item>
           <el-descriptions-item align="center" label="商户订单号">
-            {{ item.merPayOrderId }}
+            {{ item.finalMerPayOrderId }}
           </el-descriptions-item>
           <el-descriptions-item align="center" label="交易流水号">
             {{ item.transactionId }}
@@ -347,8 +356,9 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     merchantNumber: null,
-    originalMerPayOrderId: null,
     merPayOrderId: null,
+    finalMerPayOrderId: null,
+    thirdAppId: null,
     transactionId: null,
     recordStatus: null,
     payMerchantType: null,
