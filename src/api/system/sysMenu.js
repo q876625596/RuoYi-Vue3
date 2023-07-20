@@ -34,7 +34,7 @@ export function roleMenuTreeSelect(roleId) {
         url: '/management/sysMenu/getSysMenuTreeListByRoleId',
         method: 'get',
         params: {
-            id: roleId
+            roleId: roleId
         }
     })
 }

@@ -45,7 +45,7 @@ export function deptTreeSelectByRoleId(roleId) {
         url: '/management/sysDept/getSysDeptTreeListByRoleId',
         method: 'get',
         params: {
-            id: roleId
+            roleId: roleId
         }
     })
 }

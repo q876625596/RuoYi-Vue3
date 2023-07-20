@@ -34,7 +34,7 @@ export function getSysTenantConfigRequest(tenantId) {
         url: '/management/sysTenant/getSysTenantConfig',
         method: 'get',
         params: {
-            id: tenantId
+            tenantId: tenantId
         }
     })
 }
